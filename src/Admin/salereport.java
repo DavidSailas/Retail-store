@@ -221,6 +221,8 @@ public void countOfAllProducts() {
         total = new javax.swing.JLabel();
         date = new javax.swing.JLabel();
         time = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        sale_id = new javax.swing.JLabel();
         exportData = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -248,6 +250,7 @@ public void countOfAllProducts() {
         jScrollPane1 = new javax.swing.JScrollPane();
         sales_list = new javax.swing.JTable();
         searchBar = new javax.swing.JTextField();
+        export = new javax.swing.JButton();
 
         view.setText("View");
         view.addActionListener(new java.awt.event.ActionListener() {
@@ -330,6 +333,12 @@ public void countOfAllProducts() {
         time.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         time.setText("Time");
 
+        jLabel25.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jLabel25.setText("Sale Id");
+
+        sale_id.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        sale_id.setText("Sale Id");
+
         javax.swing.GroupLayout viewpanelLayout = new javax.swing.GroupLayout(viewpanel);
         viewpanel.setLayout(viewpanelLayout);
         viewpanelLayout.setHorizontalGroup(
@@ -338,6 +347,7 @@ public void countOfAllProducts() {
             .addGroup(viewpanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(viewpanelLayout.createSequentialGroup()
                         .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
@@ -346,24 +356,29 @@ public void countOfAllProducts() {
                             .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel25))
                         .addGap(63, 63, 63)
                         .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sale_id)
                             .addComponent(prodname)
                             .addComponent(cat, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(quansold, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(quansold, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 125, Short.MAX_VALUE))
         );
         viewpanelLayout.setVerticalGroup(
             viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(viewpanelLayout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel25)
+                    .addComponent(sale_id))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(viewpanelLayout.createSequentialGroup()
                         .addComponent(jLabel15)
@@ -393,7 +408,7 @@ public void countOfAllProducts() {
                         .addComponent(date)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(time)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
                 .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -599,6 +614,18 @@ public void countOfAllProducts() {
         });
         jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 190, 220, -1));
 
+        export.setBackground(new java.awt.Color(89, 196, 19));
+        export.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        export.setForeground(new java.awt.Color(255, 255, 255));
+        export.setText("EXPORT");
+        export.setBorder(null);
+        export.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportActionPerformed(evt);
+            }
+        });
+        jPanel2.add(export, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 190, 120, 20));
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
         pack();
@@ -721,52 +748,63 @@ public void countOfAllProducts() {
 
     private void pdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfActionPerformed
 
-        if(nameField.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Please name the pdf first to generate");
-            return;
-        }
-        String name = nameField.getText() + ".pdf";
-        String location = System.getProperty("user.home") + "/Documents/";
+if (nameField.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(null, "Please name the PDF first to generate.");
+    return;
+}
 
-        try {
-            dbConnector dbc = new dbConnector();
-            String query = "SELECT u_id, u_fname, u_lname, u_email, u_uname FROM tbl_u";
-            ResultSet resultSet = dbc.getData(query);
+String name = nameField.getText() + ".pdf";
+String location = System.getProperty("user.home") + "/Documents/";
 
-            com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A5.rotate());
-            PdfWriter.getInstance(document, new FileOutputStream(location + name));
-            document.open();
+try {
+    dbConnector dbc = new dbConnector();
+    String query = "SELECT sale_id, prod_name, quantity_sold, price, (quantity_sold * price) AS total, date, time FROM sales";
+    ResultSet resultSet = dbc.getData(query);
 
-            PdfPTable pdfPTable = new PdfPTable(5);
+    com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A5.rotate());
+    PdfWriter.getInstance(document, new FileOutputStream(location + name));
+    document.open();
 
-            pdfPTable.addCell("ID");
-            pdfPTable.addCell("Firstname");
-            pdfPTable.addCell("Lastname");
-            pdfPTable.addCell("Email");
-            pdfPTable.addCell("Username");
+    PdfPTable pdfPTable = new PdfPTable(7); // 7 columns for the table
 
-            if (resultSet.next()) {
-                do {
+    // Add table headers
+    pdfPTable.addCell("Sale ID");
+    pdfPTable.addCell("Product Name");
+    pdfPTable.addCell("Quantity Sold");
+    pdfPTable.addCell("Price");
+    pdfPTable.addCell("Total");
+    pdfPTable.addCell("Date");
+    pdfPTable.addCell("Time");
 
-                    pdfPTable.addCell(resultSet.getString("u_id"));
-                    pdfPTable.addCell(resultSet.getString("u_fname"));
-                    pdfPTable.addCell(resultSet.getString("u_lname"));
-                    pdfPTable.addCell(resultSet.getString("u_email"));
-                    pdfPTable.addCell(resultSet.getString("u_uname"));
-                } while (resultSet.next());
-            }
+    // Add rows to the table
+    if (resultSet.next()) {
+        do {
+            pdfPTable.addCell(resultSet.getString("sale_id"));
+            pdfPTable.addCell(resultSet.getString("prod_name"));
+            pdfPTable.addCell(resultSet.getString("quantity_sold"));
+            pdfPTable.addCell(resultSet.getString("price"));
+            pdfPTable.addCell(resultSet.getString("total"));
+            pdfPTable.addCell(resultSet.getString("date"));
+            pdfPTable.addCell(resultSet.getString("time"));
+        } while (resultSet.next());
+    }
 
-            document.add(pdfPTable);
-            document.close();
-            Window window = SwingUtilities.getWindowAncestor(exportData);
-            window.dispose();
-            JOptionPane.showMessageDialog(null, "Successfully Generated");
-            nameField.setText("");
-        } catch (DocumentException | FileNotFoundException e) {
-            System.err.println(e);
-        } catch (SQLException ex) {
-            System.out.println("" + ex);
-        }
+    document.add(pdfPTable);
+    document.close();
+
+    Window window = SwingUtilities.getWindowAncestor(exportData);
+    if (window != null) {
+        window.dispose();
+    }
+    JOptionPane.showMessageDialog(null, "Successfully Generated");
+    nameField.setText("");
+} catch (DocumentException | FileNotFoundException e) {
+    System.err.println("Document Error: " + e);
+} catch (SQLException ex) {
+    System.out.println("SQL Error: " + ex);
+}
+
+        
     }//GEN-LAST:event_pdfActionPerformed
 
     private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
@@ -817,53 +855,69 @@ try {
 // Check if any row is selected
 int selectedRow = sales_list.getSelectedRow();
 if (selectedRow == -1) {
-    // No row selected, display an error or exit the method
     JOptionPane.showMessageDialog(null, "Please select a sale record to view.");
     return;
 }
 
-// Get the product ID from the selected row
-String prodId = sales_list.getValueAt(selectedRow, 0).toString();
+// Get the hidden `sale_id` from the table model directly (hidden column)
+TableModel tableModel = sales_list.getModel();
+String saleId = tableModel.getValueAt(selectedRow, 0).toString(); // Assuming column 0 holds `sale_id`
 
 try {
     dbConnector dbc = new dbConnector();
+
+    // Debugging: Print the retrieved saleId to verify correctness
+    System.out.println("Selected Sale ID: " + saleId);
+
+    // Fetch details for the selected sale record
     ResultSet rs = dbc.getData(
-        "SELECT product_table.prod_name AS prodname, " +
-        "product_table.category AS cat, " +
+        "SELECT sales.sale_id AS saleId, " +
+        "product_table.prod_name AS prodname, " +
         "sales.quantity_sold AS quansold, " +
         "product_table.price AS price, " +
-        "(product_table.price * sales.quantity_sold) AS total, " +
+        "(sales.quantity_sold * product_table.price) AS total, " +
         "sales.date AS date, " +
         "sales.time AS time " +
         "FROM sales " +
         "JOIN product_table ON sales.prod_id = product_table.prod_id " +
-        "WHERE sales.sale_id = '" + prodId + "'"
+        "WHERE sales.sale_id = '" + saleId + "'"
     );
 
+    // Check if the query returned data
     if (rs.next()) {
-        // Set only the values of the product details (no labels)
+        // Populate the viewpanel with fetched data
+        saleid.setText(rs.getString("saleId"));
         prodname.setText(rs.getString("prodname"));
-        cat.setText(rs.getString("cat"));
         quansold.setText(rs.getString("quansold"));
         price.setText(rs.getString("price"));
         total.setText(rs.getString("total"));
         date.setText(rs.getString("date"));
         time.setText(rs.getString("time"));
 
-        // Display the viewpanel with the fetched details
+        // Show the viewpanel in a dialog
         Object[] options = {};
-        JOptionPane.showOptionDialog(null, viewpanel, "",
+        JOptionPane.showOptionDialog(null, viewpanel, "Sale Details",
             JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
             null, options, null);
+    } else {
+        JOptionPane.showMessageDialog(null, "No data found for the selected sale.");
     }
 
     rs.close();
 } catch (SQLException ex) {
-    System.out.println("Error: " + ex.getMessage());
+    JOptionPane.showMessageDialog(null, "Error fetching sale details: " + ex.getMessage());
 }
-       
+      
         
     }//GEN-LAST:event_viewActionPerformed
+
+    private void exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportActionPerformed
+
+        Object[] options = {};
+        JOptionPane.showOptionDialog(null, exportData, "",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+            null, options, null);
+    }//GEN-LAST:event_exportActionPerformed
 
     /**
      * @param args the command line arguments
@@ -906,6 +960,7 @@ try {
     private javax.swing.JLabel dailySale;
     private javax.swing.JLabel date;
     private javax.swing.JButton excel;
+    private javax.swing.JButton export;
     private javax.swing.JPanel exportData;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -923,6 +978,7 @@ try {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel9;
@@ -942,6 +998,7 @@ try {
     private javax.swing.JLabel prodname;
     private javax.swing.JLabel product;
     private javax.swing.JLabel quansold;
+    private javax.swing.JLabel sale_id;
     private javax.swing.JTable sales_list;
     private javax.swing.JTextField searchBar;
     private javax.swing.JLabel time;
