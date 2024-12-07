@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -25,6 +26,7 @@ public class adminDashboard extends javax.swing.JFrame {
         countOfAllProducts();
         availableStocks();
         outOfStocks();
+        Table();
     }
 
 
@@ -38,49 +40,6 @@ public void countOfAllProducts() {
             rowCount = rs.getInt("NROWS");
         }
         productCount.setText(rowCount + " ");
-        rs.close();
-    } catch (SQLException ex) {
-        System.out.println("Errors: " + ex.getMessage());
-    }
-}
-
-public void countProduct() {
-    try {
-        dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData("SELECT prod_name, price, expire, category FROM product_table");
-
-        // Set up the table model with custom columns
-        DefaultTableModel model = new DefaultTableModel(new String[]{
-            "Product Name", "Price", "Expire Date", "Category"
-        }, 0);
-
-        // Populate the table with data from the result set
-        while (rs.next()) {
-            String expireDisplay = "";
-            Date expireValue = rs.getDate("expire"); // Use getDate for proper date handling
-
-            if (expireValue == null) {
-                expireDisplay = "No Expire"; // If expire is NULL, show "No Expire"
-            } else {
-                // If the expire date is '9999-12-31', display "No Expire"
-                String expireString = new java.text.SimpleDateFormat("yyyy-MM-dd").format(expireValue);
-                if ("9999-12-31".equals(expireString)) {
-                    expireDisplay = "No Expire";
-                } else {
-                    expireDisplay = expireString; // Use the formatted date
-                }
-            }
-
-            model.addRow(new Object[]{
-                rs.getString("prod_name"),
-                rs.getDouble("price"),
-                expireDisplay,
-                rs.getString("category")
-            });
-        }
-
-        // Set the model for the table
-        products.setModel(model);
         rs.close();
     } catch (SQLException ex) {
         System.out.println("Errors: " + ex.getMessage());
@@ -104,75 +63,78 @@ public void availableStocks() {
     }
 }
 
-public void loadAvailableStock() {
+public void Table() {
     try {
         dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData("SELECT prod_name, quantity, expire, category FROM product_table WHERE quantity > 0");
+        ResultSet rs = dbc.getData("SELECT prod_name, quantity, expire, category, price FROM product_table WHERE quantity > 0");
 
         // Set up the table model with custom columns
         DefaultTableModel model = new DefaultTableModel(new String[]{
-            "Product Name", "Quantity", "Expire Date", "Category"
+            "Category", "Product Name", "Price", "Stocks", "Expire Date"
         }, 0);
 
         // Populate the table with data from the result set
         while (rs.next()) {
-            String expireDisplay = "";
+            String expireDisplay;
             Date expireValue = rs.getDate("expire"); // Use getDate for proper date handling
 
+            // Handle expire date display
             if (expireValue == null) {
-                expireDisplay = "No Expire"; // If expire is NULL, show "No Expire"
+                expireDisplay = "No Expiry Date"; // If expire is NULL, show "No Expiry Date"
             } else {
-                // If the expire date is '9999-12-31', display "No Expire"
                 String expireString = new java.text.SimpleDateFormat("yyyy-MM-dd").format(expireValue);
-                if ("9999-12-31".equals(expireString)) {
-                    expireDisplay = "No Expire";
+                if ("0001-12-31".equals(expireString)) {
+                    expireDisplay = "No Expiry Date"; // Specific marker date for no expiry
                 } else {
                     expireDisplay = expireString; // Use the formatted date
                 }
             }
 
+            // Add row data
             model.addRow(new Object[]{
+                rs.getString("category"),
                 rs.getString("prod_name"),
-                rs.getInt("quantity"),
-                expireDisplay,
-                rs.getString("category")
+                "₱" + String.format("%.2f", rs.getDouble("price")), // Format price as currency
+                rs.getInt("quantity"), // Stocks
+                expireDisplay // Expire Date
             });
         }
-        
+
         // Set the model for the table
         products.setModel(model);
-        
-                // Apply custom cell rendering to change the quantity color (only the quantity cell)
-        products.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+
+        // Apply custom cell renderer to the "Stocks" column
+        products.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent (table, value, isSelected, hasFocus, row, column);
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                // Only modify the quantity column
-                if (column == 1) {  // Column index 1 is "Quantity"
+                // Ensure value is a valid number
+                if (value instanceof Integer) {
                     int quantity = (int) value;
 
                     // Set color based on quantity value
                     if (quantity > 5) {
-                        c.setForeground(Color.GREEN);
-                    } else if (quantity <= 5) {
-                        c.setForeground(Color.ORANGE);
+                        c.setForeground(Color.GREEN); // Green for abundant stocks
+                    } else if (quantity > 0) {
+                        c.setForeground(Color.ORANGE); // Orange for low stocks
                     } else {
-                        c.setForeground(Color.BLACK); // Default color for other quantities
+                        c.setForeground(Color.RED); // Red for critical/zero stocks
                     }
                 } else {
-                    c.setForeground(Color.BLACK); // Reset color for other columns
+                    c.setForeground(Color.BLACK); // Default color for invalid data
                 }
 
                 return c;
             }
         });
-        
-        rs.close();
+
+        rs.close(); // Close ResultSet
     } catch (SQLException ex) {
         System.out.println("Errors: " + ex.getMessage());
     }
 }
+
 
 // Method to display out of stock products
 public void outOfStocks() {
@@ -197,7 +159,7 @@ public void loadOutOfStock() {
 
         // Set up the table model with custom columns
         DefaultTableModel model = new DefaultTableModel(new String[]{
-            "Product Name", "Quantity", "Expire Date", "Category"
+            "Category", "Product Name", "Quantity", "Expire Date"
         }, 0);
 
         // Populate the table with data from the result set
@@ -205,51 +167,59 @@ public void loadOutOfStock() {
             String expireDisplay = "";
             Date expireValue = rs.getDate("expire"); // Use getDate for proper date handling
 
-            if (expireValue == null) {
-                expireDisplay = "No Expire"; // If expire is NULL, show "No Expire"
-            } else {
-                // If the expire date is '9999-12-31', display "No Expire"
+            if (expireValue != null) {
+                // Format and handle specific expiration dates
                 String expireString = new java.text.SimpleDateFormat("yyyy-MM-dd").format(expireValue);
-                if ("9999-12-31".equals(expireString)) {
-                    expireDisplay = "No Expire";
-                } else {
+                if (!"0001-12-31".equals(expireString)) {
                     expireDisplay = expireString; // Use the formatted date
+                } else {
+                    continue; // Skip rows with '0001-12-31'
                 }
+            } else {
+                expireDisplay = "No Expiry Date"; // Handle NULL expiry dates
             }
 
             model.addRow(new Object[]{
+                rs.getString("category"),
                 rs.getString("prod_name"),
                 rs.getInt("quantity"),
-                expireDisplay,
-                rs.getString("category")
+                expireDisplay
             });
         }
 
         // Set the model for the table
         products.setModel(model);
-        
-                // Apply custom cell rendering to highlight rows with quantity = 0
-        products.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+
+        // Apply custom cell rendering for "Product Name" and "Quantity"
+        DefaultTableCellRenderer redRenderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                // Highlight quantity column if the value is 0
-                if (column == 1) {  // Column index 1 is "Quantity"
-                    int quantity = (int) value;
-                    if (quantity == 0) {
-                        c.setForeground(Color.RED);
-                    } else {
-                        c.setForeground(Color.BLACK); // Reset color for non-zero quantities
-                    }
+                int quantity = (int) table.getValueAt(row, 2); // Get quantity from the table
+                if (quantity == 0 && (column == 1 || column == 2)) { // Apply red color to Product Name and Quantity
+                    c.setForeground(Color.RED);
                 } else {
-                    c.setForeground(Color.BLACK); // Reset color for other columns
+                    c.setForeground(Color.BLACK); // Default color
                 }
+                return c;
+            }
+        };
 
+        // Apply the renderer to "Product Name" (index 1) and "Quantity" (index 2) columns
+        products.getColumnModel().getColumn(1).setCellRenderer(redRenderer); // Product Name
+        products.getColumnModel().getColumn(2).setCellRenderer(redRenderer); // Quantity
+
+        // Optionally set default cell renderer for "Expire Date" (index 3)
+        products.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setForeground(Color.BLACK); // Expire Date in black
                 return c;
             }
         });
-        
+
         rs.close();
     } catch (SQLException ex) {
         System.out.println("Errors: " + ex.getMessage());
@@ -268,16 +238,16 @@ public void loadOutOfStock() {
         outOfStocks = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         productCount = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         availableStock = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         products = new javax.swing.JTable();
         label = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         panel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -331,16 +301,6 @@ public void loadOutOfStock() {
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel4.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel4.setText("View");
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel4MouseClicked(evt);
-            }
-        });
-        jPanel6.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, -1, -1));
-
         productCount.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         productCount.setForeground(new java.awt.Color(0, 128, 0));
         productCount.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -359,16 +319,6 @@ public void loadOutOfStock() {
         jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setText("View");
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel5MouseClicked(evt);
-            }
-        });
-        jPanel8.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, -1, -1));
-
         availableStock.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         availableStock.setForeground(new java.awt.Color(0, 128, 0));
         availableStock.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -378,7 +328,7 @@ public void loadOutOfStock() {
         jLabel10.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 128, 0));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("Available stocks");
+        jLabel10.setText("Total stock");
         jPanel8.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 210, -1));
 
         jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 210, 100));
@@ -405,6 +355,28 @@ public void loadOutOfStock() {
         label.setForeground(new java.awt.Color(102, 102, 102));
         label.setText("Reports");
         jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 340, -1));
+
+        jButton1.setBackground(new java.awt.Color(83, 215, 105));
+        jButton1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 200, 110, -1));
+
+        jButton2.setBackground(new java.awt.Color(252, 61, 57));
+        jButton2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Expired Product");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 200, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
@@ -490,16 +462,6 @@ public void loadOutOfStock() {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        countProduct();
-        label.setText("Count of all product's");
-    }//GEN-LAST:event_jLabel4MouseClicked
-
-    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        loadAvailableStock();
-        label.setText("Available stock's");
-    }//GEN-LAST:event_jLabel5MouseClicked
-
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         loadOutOfStock();
         label.setText("Out of stock's");
@@ -556,6 +518,88 @@ public void loadOutOfStock() {
 
     }//GEN-LAST:event_productsMousePressed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Table();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+        dbConnector dbc = new dbConnector();
+
+        // SQL query to fetch expired and soon-to-expire products, ordered by expiration date
+        String query = "SELECT prod_name, quantity, expire, category, price " +
+               "FROM product_table " +
+               "WHERE quantity > 0 " +
+               "AND expire <= CURDATE() + INTERVAL 7 DAY " +
+               "AND expire <> '0001-12-31' " + // Exclude specific invalid date
+               "ORDER BY expire ASC";
+
+
+
+        ResultSet rs = dbc.getData(query);
+
+        // Set up the table model with custom columns
+         DefaultTableModel model = new DefaultTableModel(new String[]{
+        "Category", "Product Name", "Price", "Stocks", "Expire Date"
+    }, 0);
+
+    while (rs.next()) {
+        String productName = rs.getString("prod_name");
+        String category = rs.getString("category");
+        double price = rs.getDouble("price");
+        int quantity = rs.getInt("quantity");
+        Date expireDate = rs.getDate("expire");
+
+        String expireDisplay = new SimpleDateFormat("yyyy-MM-dd").format(expireDate);
+
+        model.addRow(new Object[]{category, productName, "₱" + String.format("%.2f", price), quantity, expireDisplay});
+    }
+
+    products.setModel(model);
+
+    // Custom cell renderer for Product Name and Expire Date columns
+    products.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            // Get the expire date for the current row
+            String expireDate = table.getValueAt(row, 4).toString();
+            LocalDate expire = LocalDate.parse(expireDate);
+
+            // Current date and date for the 7-day window
+            LocalDate currentDate = LocalDate.now();
+            LocalDate weekBeforeExpire = currentDate.plusDays(7);
+
+            // Apply colors based on expiration
+            if (expire.isBefore(currentDate) || expire.isEqual(currentDate)) {
+                c.setForeground(Color.RED); // Red for expired and current-day products
+            } else if (expire.isAfter(currentDate) && expire.isBefore(weekBeforeExpire)) {
+                c.setForeground(Color.ORANGE); // Orange for 7 days before expiration
+            } else {
+                c.setForeground(Color.BLACK); // Default color
+            }
+
+            return c;
+        }
+    });
+
+    // Apply the same logic to the Expire Date column
+    products.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            return products.getColumnModel().getColumn(1).getCellRenderer().getTableCellRendererComponent(
+                table, value, isSelected, hasFocus, row, column
+            );
+        }
+    });
+
+    rs.close();
+} catch (SQLException ex) {
+    System.out.println("Errors: " + ex.getMessage());
+}
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -593,14 +637,14 @@ public void loadOutOfStock() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel availableStock;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;

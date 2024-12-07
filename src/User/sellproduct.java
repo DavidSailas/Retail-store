@@ -5,6 +5,7 @@ import config.dbConnector;
 import form.Loginfrom;
 import java.awt.Color;
 import java.awt.Component;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -45,6 +46,12 @@ public void displayData() {
             String productStatus = rs.getString("prod_status");
             String category = rs.getString("category");
             double price = rs.getDouble("price");
+            int quantity = rs.getInt("quantity");
+
+            // Check if the quantity is 0, and change the product status to "Out of stock"
+            if (quantity == 0) {
+                productStatus = "Out of stock";
+            }
 
             model.addRow(new Object[]{
                 prodId,
@@ -71,11 +78,11 @@ public void displayData() {
                 if (value != null) {
                     String status = value.toString();
                     if (status.equals("Available")) {
-                        comp.setForeground(Color.GREEN);
+                        comp.setForeground(Color.GREEN);  // Green for Available
                     } else if (status.equals("Out of stock")) {
-                        comp.setForeground(Color.RED);
+                        comp.setForeground(Color.RED);  // Red for Out of stock
                     } else {
-                        comp.setForeground(Color.BLACK);
+                        comp.setForeground(Color.BLACK);  // Default for other statuses
                     }
                 }
                 return comp;
@@ -105,7 +112,6 @@ public void displayData() {
         jScrollPane1 = new javax.swing.JScrollPane();
         stock = new javax.swing.JTable();
         label = new javax.swing.JLabel();
-        cat = new javax.swing.JComboBox<>();
         searchBar = new javax.swing.JTextField();
         buyButton = new panelRoundComponents.PanelRound();
         jLabel6 = new javax.swing.JLabel();
@@ -200,19 +206,9 @@ public void displayData() {
         label.setText("Available Product's");
         jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 180, -1));
 
-        cat.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Snacks", "Drinks", "Canned goods", "Crackers", "Poultry products", "Beverage", "Condiments", "Dairy", "Grains ", "Bread", "Oil ", "Fat" }));
-        cat.setSelectedIndex(-1);
-        cat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                catActionPerformed(evt);
-            }
-        });
-        jPanel2.add(cat, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 70, 140, -1));
-
         searchBar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         searchBar.setForeground(new java.awt.Color(102, 102, 102));
-        searchBar.setText("Search");
+        searchBar.setText(" Search");
         searchBar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -232,7 +228,7 @@ public void displayData() {
                 searchBarKeyReleased(evt);
             }
         });
-        jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 70, 220, -1));
+        jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 280, -1));
 
         buyButton.setBackground(new java.awt.Color(83, 215, 105));
         buyButton.setRoundBottomLeft(10);
@@ -276,12 +272,8 @@ public void displayData() {
 
     }//GEN-LAST:event_stockMouseClicked
 
-    private void catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_catActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_catActionPerformed
-
     private void searchBarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBarFocusGained
-        if (searchBar.getText().equals("Search")){
+        if (searchBar.getText().equals(" Search")){
             searchBar.setText("");
             searchBar.setForeground(new Color(153,153,153));
         }
@@ -289,7 +281,7 @@ public void displayData() {
 
     private void searchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBarFocusLost
         if (searchBar.getText().equals("")){
-            searchBar.setText("Search");
+            searchBar.setText(" Search");
             searchBar.setForeground(new Color(153,153,153));
         }
     }//GEN-LAST:event_searchBarFocusLost
@@ -300,22 +292,74 @@ public void displayData() {
 
     private void searchBarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyReleased
 
-        try {
-            dbConnector dbc = new dbConnector();
-            String searchText = searchBar.getText().trim();
-            ResultSet rs;
+try {
+    dbConnector dbc = new dbConnector();
+    String searchText = searchBar.getText().trim();
+    ResultSet rs;
 
-            if (searchText.isEmpty()) {
-                rs = dbc.getData("SELECT prod_id, prod_name, category, price, quantity FROM product_table");
-            } else {
-                rs = dbc.getData("SELECT prod_id, prod_name, category, price, quantity FROM product_table WHERE prod_name LIKE '%" + searchText + "%'");
-            }
+    // Modify the query to select the quantity column as well
+    if (searchText.isEmpty()) {
+        rs = dbc.getData("SELECT prod_name, prod_status, category, price, quantity FROM product_table");
+    } else {
+        rs = dbc.getData("SELECT prod_name, prod_status, category, price, quantity FROM product_table WHERE prod_name LIKE '%" + searchText + "%'");
+    }
 
-            stock.setModel(DbUtils.resultSetToTableModel(rs));
-            rs.close();
-        } catch (SQLException ex) {
-            System.out.println("Errors: " + ex.getMessage());
+    // Set up the table model with the necessary columns
+    DefaultTableModel model = new DefaultTableModel(new String[]{
+        "Product Name", "Product Status", "Category", "Price"
+    }, 0);
+
+    // Populate the model with data from the result set
+    while (rs.next()) {
+        String productName = rs.getString("prod_name");
+        String productStatus = rs.getString("prod_status");
+        String category = rs.getString("category");
+        double price = rs.getDouble("price");
+        int quantity = rs.getInt("quantity"); // Fetch quantity from the database
+
+        // If the quantity is 0, set the product status to "Out of stock"
+        if (quantity == 0) {
+            productStatus = "Out of stock";
         }
+
+        model.addRow(new Object[]{
+            productName,
+            productStatus,
+            category,
+            "₱" + String.format("%.2f", price)
+        });
+    }
+
+    // Set the table model
+    stock.setModel(model);
+
+    // Custom cell renderer for product status (coloring based on status)
+    stock.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            if (value != null) {
+                String status = value.toString();
+                if (status.equals("Available")) {
+                    comp.setForeground(Color.GREEN); // Green for Available
+                } else if (status.equals("Out of stock")) {
+                    comp.setForeground(Color.RED); // Red for Out of stock
+                } else {
+                    comp.setForeground(Color.BLACK); // Default color
+                }
+            }
+            return comp;
+        }
+    });
+
+    // Close the result set
+    rs.close();
+} catch (SQLException ex) {
+    System.out.println("Errors: " + ex.getMessage());
+}
+
+        
     }//GEN-LAST:event_searchBarKeyReleased
 
     private void buyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buyButtonMouseClicked
@@ -444,7 +488,6 @@ if (rowIndex < 0) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private panelRoundComponents.PanelRound buyButton;
-    private javax.swing.JComboBox<String> cat;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;

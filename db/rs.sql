@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2024 at 09:53 PM
+-- Generation Time: Dec 07, 2024 at 11:36 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,13 +46,17 @@ INSERT INTO `product_table` (`prod_id`, `prod_name`, `category`, `price`, `quant
 (2, 'Fita', 'Snacks', 9, 10, 'Available', '2025-05-10'),
 (3, 'Fudgee bar', 'Snacks', 9, 0, 'Out of stock', '2025-08-15'),
 (4, 'Fish Cracker', 'Crackers', 10, 10, 'Available', '2025-03-25'),
-(5, 'Sky Flakes', 'Snacks', 9, 9, 'Available', '2025-06-30'),
+(5, 'Sky Flakes', 'Snacks', 9, 9, 'Available', '2024-12-07'),
 (6, 'Coke', 'Drinks', 15, 11, 'Available', '2025-12-01'),
 (7, 'Sprite', 'Drinks', 15, 12, 'Available', '2025-12-01'),
 (8, 'Oishi', 'Crackers', 9, 10, 'Available', '2025-07-20'),
-(9, 'Corned Beef', 'Canned goods', 35, 4, 'Available', '2026-01-05'),
+(9, 'Corned Beef', 'Canned goods', 35, 0, 'Out of stock', '2026-01-05'),
 (10, 'Sanmarino Big', 'Canned goods', 45, 4, 'Available', '2025-11-10'),
-(11, 'Salt', 'Condiments', 5, 9, 'Available', '9999-12-31');
+(11, 'Salt', 'Condiments', 5, 9, 'Available', '0001-12-31'),
+(12, 'Oil', 'Oil', 5, 5, 'Available', '2024-12-06'),
+(13, 'Vinegar', 'Condiments', 5, 5, 'Available', '0001-12-31'),
+(14, 'Sugar', 'Condiments', 20, 10, 'Available', '0001-12-31'),
+(15, 'KitKat', 'Dairy', 40, 5, 'Available', '2024-12-10');
 
 -- --------------------------------------------------------
 
@@ -85,7 +89,8 @@ INSERT INTO `sales` (`sale_id`, `prod_id`, `quantity_sold`, `date`, `time`) VALU
 (10, 6, 6, '2024-12-04', '02:41:52'),
 (11, 11, 1, '2024-12-07', '09:26:29'),
 (12, 1, 1, '2024-12-07', '09:34:11'),
-(13, 9, 1, '2024-12-07', '09:54:00');
+(13, 9, 1, '2024-12-07', '09:54:00'),
+(14, 9, 4, '2024-12-07', '11:59:04');
 
 -- --------------------------------------------------------
 
@@ -144,13 +149,13 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `product_table`
 --
 ALTER TABLE `product_table`
-  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `sale_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `sale_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `user_table`

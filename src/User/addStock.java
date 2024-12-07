@@ -4,6 +4,7 @@ package User;
 import config.dbConnector;
 import java.awt.Color;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 
 public class addStock extends javax.swing.JFrame {
@@ -11,6 +12,7 @@ public class addStock extends javax.swing.JFrame {
 
     public addStock() {
         initComponents();
+        expire.setVisible(false);
     }
 
  
@@ -33,7 +35,9 @@ public class addStock extends javax.swing.JFrame {
         cancel = new panelRoundComponents.PanelRound();
         jLabel7 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        expire = new javax.swing.JTextField();
+        expire = new com.toedter.calendar.JDateChooser();
+        wo = new javax.swing.JCheckBox();
+        w = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,7 +96,7 @@ public class addStock extends javax.swing.JFrame {
         category.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         category.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Snacks", "Drinks", "Canned goods", "Crackers", "Poultry products", "Beverage", "Condiments", "Dairy", "Grains ", "Bread", "Oil ", "Fat" }));
         category.setSelectedIndex(-1);
-        jPanel1.add(category, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, 160, 30));
+        jPanel1.add(category, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, 190, 30));
 
         submitButton.setBackground(new java.awt.Color(83, 215, 105));
         submitButton.setRoundBottomLeft(10);
@@ -152,9 +156,30 @@ public class addStock extends javax.swing.JFrame {
         jLabel17.setText("Exipre Date");
         jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 170, 100, -1));
 
-        expire.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        expire.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
-        jPanel1.add(expire, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 190, 160, 30));
+        expire.setBackground(new java.awt.Color(255, 255, 255));
+        expire.setDateFormatString("yyyy-MM-dd");
+        expire.setEnabled(false);
+        jPanel1.add(expire, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 190, 30));
+
+        wo.setBackground(new java.awt.Color(255, 255, 255));
+        wo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        wo.setText("Without expiry");
+        wo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                woMouseClicked(evt);
+            }
+        });
+        jPanel1.add(wo, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 190, -1, -1));
+
+        w.setBackground(new java.awt.Color(255, 255, 255));
+        w.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        w.setText("With expiry");
+        w.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                wMouseClicked(evt);
+            }
+        });
+        jPanel1.add(w, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 190, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -195,47 +220,47 @@ public class addStock extends javax.swing.JFrame {
 
     private void submitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseClicked
 
-    dbConnector dbc = new dbConnector();
 
-    // Check if any required field is empty
-    if (productName.getText().isEmpty() || quant.getText().isEmpty() || price.getText().isEmpty() || expire.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "All fields are required!");
+dbConnector dbc = new dbConnector();
+
+// Check if any required field is empty
+if (productName.getText().isEmpty() || quant.getText().isEmpty() || price.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(null, "All fields are required!");
+} else {
+    String expireDate; // Declare expireDate variable
+
+    // Check if the checkbox is selected
+    if (wo.isSelected()) { 
+        expireDate = "0001-12-31"; // Set expire date to "0001-12-31" if checkbox is selected
     } else {
-        // Get the expire value
-        String expireDate = expire.getText();
-        
-        // Check if expire is "0" (No expiration) or handle it as a placeholder date if empty
-        if (expireDate.equals("0")) {
-            expireDate = "'9999-12-31'";  // Use a placeholder date for products that don't expire
-        } else if (expireDate.isEmpty()) {
-            expireDate = "'9999-12-31'";  // Use a placeholder date if empty (you can also handle this differently)
+        // If the checkbox is not selected, get the expire date from the date picker
+        if (expire.getDate() != null) {
+            expireDate = new SimpleDateFormat("yyyy-MM-dd").format(expire.getDate());
         } else {
-            // Optionally, validate if expireDate is in the correct date format (YYYY-MM-DD)
-            try {
-                // Check if the expire date is valid (you can customize this check further if needed)
-                Date.valueOf(expireDate); // Throws exception if invalid date format
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(null, "Invalid date format. Please use YYYY-MM-DD.");
-                return; // Exit the method if the date format is incorrect
-            }
-        }
-
-        // Proceed with the insert query
-        String query = "INSERT INTO product_table (prod_name, category, price, quantity, expire, prod_status) " +
-            "VALUES('" + productName.getText() + "','" + category.getSelectedItem() + "','" + price.getText() + "','" +
-            quant.getText() + "'," + expireDate + ", 'Available')";
-
-        if (dbc.insertData(query)) {
-            // Successful insert, proceed to next step
-            JOptionPane.showMessageDialog(null, "Product added successfully!");
-            userDashboard ud = new userDashboard();
-            ud.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(null, "Failed to add product.");
+            JOptionPane.showMessageDialog(null, "Invalid expiry date.");
+            return; // Exit if the date is invalid
         }
     }
-        
+
+    // Proceed with the insert query
+    String query = "INSERT INTO product_table (prod_name, category, price, quantity, expire, prod_status) " +
+                   "VALUES('" + productName.getText() + "','" + category.getSelectedItem() + "','" + price.getText() + "','" +
+                   quant.getText() + "','" + expireDate + "', 'Available')";
+
+    // Perform the database insert operation
+    if (dbc.insertData(query)) {
+        // Successful insert
+        JOptionPane.showMessageDialog(null, "Product added successfully!");
+        userDashboard ud = new userDashboard();
+        ud.setVisible(true);
+        this.dispose();
+    } else {
+        // Insert failed
+        JOptionPane.showMessageDialog(null, "Failed to add product.");
+    }
+}
+
+
     }//GEN-LAST:event_submitButtonMouseClicked
 
     private void submitButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMousePressed
@@ -259,6 +284,20 @@ public class addStock extends javax.swing.JFrame {
     private void cancelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelMouseReleased
         // TODO addStock your handling code here:
     }//GEN-LAST:event_cancelMouseReleased
+
+    private void wMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wMouseClicked
+        expire.setEnabled(true);
+        expire.setVisible(true);
+        wo.setSelected(false);
+    }//GEN-LAST:event_wMouseClicked
+
+    private void woMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_woMouseClicked
+        expire.setEnabled(false);
+        expire.setVisible(false);
+        w.setSelected(false);
+        
+        
+    }//GEN-LAST:event_woMouseClicked
 
     /**
      * @param args the command line arguments
@@ -299,7 +338,7 @@ public class addStock extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private panelRoundComponents.PanelRound cancel;
     private javax.swing.JComboBox<String> category;
-    private javax.swing.JTextField expire;
+    private com.toedter.calendar.JDateChooser expire;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -313,5 +352,7 @@ public class addStock extends javax.swing.JFrame {
     private javax.swing.JTextField productName;
     private javax.swing.JTextField quant;
     private panelRoundComponents.PanelRound submitButton;
+    private javax.swing.JCheckBox w;
+    private javax.swing.JCheckBox wo;
     // End of variables declaration//GEN-END:variables
 }

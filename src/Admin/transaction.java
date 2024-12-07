@@ -951,8 +951,8 @@ try {
 
         // Handle expiration date
         String expireDate = rs.getString("expire");
-        if ("9999-12-31".equals(expireDate)) {
-            psd.expire.setText("No Expire"); // Set 'No Expire' if expiration date is 9999-12-31
+        if ("0001-12-31".equals(expireDate)) {
+            psd.expire.setText("No Expiry Date"); // Set 'No Expire' if expiration date is 9999-12-31
         } else {
             psd.expire.setText(expireDate); // Otherwise, display the actual expiration date
         }
