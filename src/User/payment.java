@@ -52,11 +52,20 @@ public class payment extends javax.swing.JFrame {
         total = new javax.swing.JTextField();
         quantity = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        availstock = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        price = new javax.swing.JTextField();
+        pid = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(248, 248, 248));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        jPanel1.setMinimumSize(new java.awt.Dimension(440, 500));
+        jPanel1.setPreferredSize(new java.awt.Dimension(451, 500));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         printButton.setBackground(new java.awt.Color(83, 215, 105));
         printButton.setToolTipText("Print");
@@ -95,6 +104,8 @@ public class payment extends javax.swing.JFrame {
             printButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
         );
+
+        jPanel1.add(printButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 430, -1, -1));
 
         cancelButton.setBackground(new java.awt.Color(252, 61, 57));
         cancelButton.setToolTipText("Cancel");
@@ -136,36 +147,57 @@ public class payment extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 430, -1, -1));
+
         jLabel18.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel18.setText("Recieved:");
+        jLabel18.setText("Payment:");
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, -1, 28));
 
         cash.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         cash.setText(" ");
         cash.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        cash.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cashActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cash, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, 195, 37));
 
         change.setEditable(false);
         change.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         change.setText(" ");
         change.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        change.setEnabled(false);
         change.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changeActionPerformed(evt);
             }
         });
+        jPanel1.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, 195, 37));
 
         jLabel23.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel23.setText("Change:");
+        jPanel1.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 350, -1, 28));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(153, 153, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Cash payment");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 24, 429, -1));
 
         jLabel24.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel24.setText("Total:");
+        jPanel1.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 300, -1, 28));
 
         total.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         total.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        total.setEnabled(false);
+        total.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                totalActionPerformed(evt);
+            }
+        });
+        jPanel1.add(total, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 195, 37));
 
         quantity.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         quantity.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
@@ -174,82 +206,51 @@ public class payment extends javax.swing.JFrame {
                 quantityActionPerformed(evt);
             }
         });
+        quantity.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                quantityKeyReleased(evt);
+            }
+        });
+        jPanel1.add(quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 195, 35));
 
         jLabel15.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel15.setText("Quantity");
+        jLabel15.setText("Quantity:");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(quantity, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel18)
-                                    .addComponent(jLabel24)
-                                    .addComponent(jLabel23))
-                                .addGap(38, 38, 38)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cash, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(change, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(53, 53, 53)
-                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(quantity, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cash, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(change, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(printButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
-        );
+        jLabel16.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel16.setText("Available Stock:");
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        availstock.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        availstock.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        availstock.setEnabled(false);
+        availstock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                availstockActionPerformed(evt);
+            }
+        });
+        jPanel1.add(availstock, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 195, 35));
+
+        jLabel20.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel20.setText("Price:");
+        jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, -1, 28));
+
+        price.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        price.setText(" ");
+        price.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        price.setEnabled(false);
+        price.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                priceActionPerformed(evt);
+            }
+        });
+        jPanel1.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 240, 195, 37));
+
+        pid.setForeground(new java.awt.Color(255, 255, 255));
+        pid.setText("jLabel2");
+        jPanel1.add(pid, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 440, 10));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 438, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -269,7 +270,7 @@ try {
     double cashAmount = Double.parseDouble(cash.getText()); // Amount provided by the user
 
     // Fetch product details
-    ResultSet rs = dbc.getData("SELECT quantity, price FROM product_table WHERE prod_id = '" + productId + "'");
+    ResultSet rs = dbc.getData("SELECT quantity, price FROM product_table WHERE prod_id = '" + pid.getText() + "'");
     if (rs.next()) {
         int availableQuantity = rs.getInt("quantity"); // Quantity available in stock
         double productPrice = rs.getDouble("price"); // Price per item
@@ -288,26 +289,28 @@ try {
                     if (changeAmount >= 0) {
                         // Update the database
                         int newQuantity = availableQuantity - desiredQuantity;
-                        dbc.updateData("UPDATE product_table SET quantity = '" + newQuantity + "' WHERE prod_id = '" + productId + "'");
+                        dbc.updateData("UPDATE product_table SET quantity = " + newQuantity + " WHERE prod_id = '" + pid.getText() + "'");
 
                         // Get current date and time
                         LocalDateTime now = LocalDateTime.now();
-                        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                        String currentDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // Date part
                         String currentTime = now.format(DateTimeFormatter.ofPattern("HH:mm:ss")); // Time part
 
                         // Insert into sales table with both date and time
-                        dbc.updateData("INSERT INTO sales (prod_id, quantity_sold, Date, time) VALUES ('" + productId + "', '" + desiredQuantity + "', '" + formattedDateTime + "', '" + currentTime + "')");
+                        dbc.updateData("INSERT INTO sales (prod_id, quantity_sold, Date, time) VALUES ('" + pid.getText() + "', " + desiredQuantity + ", '" + currentDate + "', '" + currentTime + "')");
 
                         // Notify user of successful purchase
                         change.setText(String.format("₱%.2f", changeAmount)); // Display change
                         JOptionPane.showMessageDialog(null, "Purchase successful!\nTotal Amount: ₱" + String.format("%.2f", totalAmount) +
                                 "\nChange: ₱" + String.format("%.2f", changeAmount) +
-                                "\nDate and Time: " + formattedDateTime);
+                                "\nDate: " + currentDate +
+                                "\nTime: " + currentTime);
 
                         sell.displayData(); // Refresh user dashboard
 
                         // Return to user dashboard
                         sell.setVisible(true);
+                        this.dispose();
                     } else {
                         // Notify insufficient cash
                         JOptionPane.showMessageDialog(null, "Insufficient cash. You need ₱" + String.format("%.2f", -changeAmount) + " more.");
@@ -363,6 +366,43 @@ try {
         // TODO add your handling code here:
     }//GEN-LAST:event_quantityActionPerformed
 
+    private void totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_totalActionPerformed
+
+    private void cashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cashActionPerformed
+
+    private void availstockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_availstockActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_availstockActionPerformed
+
+    private void priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_priceActionPerformed
+
+    private void quantityKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantityKeyReleased
+
+           int q = Integer.parseInt(quantity.getText());
+        
+      if (q == 0) {
+    JOptionPane.showMessageDialog(null, "Quantity cannot be 0");
+} else {
+    try {
+        double p = Double.parseDouble(price.getText());
+
+        double t = p * q;
+        
+        total.setText(String.format("%.2f", t));
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Please enter valid numbers for quantity and price.");
+    }
+}
+
+          
+    }//GEN-LAST:event_quantityKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -399,17 +439,22 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JTextField availstock;
     private panelRoundComponents.PanelRound cancelButton;
     private javax.swing.JTextField cash;
     private javax.swing.JTextField change;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JPanel jPanel1;
+    public javax.swing.JLabel pid;
+    public javax.swing.JTextField price;
     private panelRoundComponents.PanelRound printButton;
     private javax.swing.JTextField quantity;
     public javax.swing.JTextField total;

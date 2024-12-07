@@ -1,8 +1,13 @@
 
 package Admin;
 
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import config.PanelPrinter;
@@ -12,8 +17,10 @@ import java.awt.Color;
 import java.awt.Window;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.BoxLayout;
@@ -40,36 +47,6 @@ public class salereport extends javax.swing.JFrame {
         dailySales();
     }
 
-    public class PrintSalesDetails {
-    public JTextField prodname = new JTextField();
-    public JTextField cat = new JTextField();
-    public JTextField quansold = new JTextField();
-    public JTextField price = new JTextField();
-    public JTextField total = new JTextField();
-    public JTextField date = new JTextField();
-    public JTextField time = new JTextField();
-    public JPanel page = new JPanel();
-
-    public PrintSalesDetails() {
-        // Setup the layout and fields for printing
-        page.setLayout(new BoxLayout(page, BoxLayout.Y_AXIS));
-
-        page.add(new JLabel("Product Name:"));
-        page.add(prodname);
-        page.add(new JLabel("Category:"));
-        page.add(cat);
-        page.add(new JLabel("Quantity Sold:"));
-        page.add(quansold);
-        page.add(new JLabel("Price:"));
-        page.add(price);
-        page.add(new JLabel("Total:"));
-        page.add(total);
-        page.add(new JLabel("Date:"));
-        page.add(date);
-        page.add(new JLabel("Time:"));
-        page.add(time);
-    }
-}
 
 
 public static String getCurrentDate() {
@@ -80,6 +57,10 @@ public static String getCurrentDate() {
 
 public void displayData() {
     try {
+        // Get today's date
+        LocalDate today = LocalDate.now();
+        String todayDate = Date.valueOf(today).toString();
+
         dbConnector dbc = new dbConnector();
         ResultSet rs = dbc.getData(
             "SELECT sales.sale_id AS Sale_Id, product_table.prod_name AS Product_Name, " +
@@ -88,31 +69,29 @@ public void displayData() {
             "(product_table.price * sales.quantity_sold) AS Total " +
             "FROM sales " +
             "JOIN product_table ON sales.prod_id = product_table.prod_id " +
+            "WHERE sales.date = '" + todayDate + "' " + // Filter for today's sales
             "ORDER BY sales.quantity_sold DESC"
         );
 
         // Custom table model
         DefaultTableModel model = new DefaultTableModel(new String[]{
-            "Product Name", "Category", "Price", "Quantity Sold", "Date", "Time", "Total"
+            "Sale Id", "Product Name", "Category", "Quantity Sold", "Date"
         }, 0);
 
+        // Populate the table with data
         while (rs.next()) {
             model.addRow(new Object[]{
+                rs.getString("Sale_Id"),
                 rs.getString("Product_Name"),
                 rs.getString("Category"),
-                rs.getDouble("Price"),
                 rs.getInt("Quantity_Sold"),
                 rs.getString("Date"),
-                rs.getString("Time"),
-                rs.getDouble("Total")
             });
         }
         sales_list.setModel(model);
 
-        // Hide specific columns
-        hideColumn(sales_list, 2); // Hide "Price" (index 2)
-        hideColumn(sales_list, 5); // Hide "Time" (index 5)
-        hideColumn(sales_list, 6); // Hide "Total" (index 6)
+        // Hide specific columns (optional)
+        hideColumn(sales_list, 0); // Example: Hide "Sale Id" column (index 0)
 
         rs.close();
     } catch (SQLException ex) {
@@ -182,19 +161,6 @@ public void dailySales() {
     }
 }
 
-public void countOfAllProducts() {
-    try {
-        dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData("SELECT COUNT(*) AS NROWS FROM product_table");
-        int rowCount = 0;
-        if (rs.next()) {
-            rowCount = rs.getInt("NROWS");
-        }
-        product.setText("" + rowCount + " ");
-    } catch (SQLException ex) {
-        System.out.println("Errors: " + ex.getMessage());
-    }
-}
 
     
     @SuppressWarnings("unchecked")
@@ -227,7 +193,6 @@ public void countOfAllProducts() {
         jLabel21 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
-        excel = new javax.swing.JButton();
         nameField = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
@@ -238,6 +203,8 @@ public void countOfAllProducts() {
         panel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        panel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         totalSale = new javax.swing.JLabel();
@@ -428,17 +395,6 @@ public void countOfAllProducts() {
         jPanel7.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 60));
 
         exportData.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 60));
-
-        excel.setBackground(new java.awt.Color(0, 51, 184));
-        excel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        excel.setForeground(new java.awt.Color(255, 255, 255));
-        excel.setText("EXCEL");
-        excel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                excelActionPerformed(evt);
-            }
-        });
-        exportData.add(excel, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 210, 110, 30));
         exportData.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 290, 30));
 
         jLabel23.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -461,7 +417,7 @@ public void countOfAllProducts() {
                 pdfActionPerformed(evt);
             }
         });
-        exportData.add(pdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, 110, 30));
+        exportData.add(pdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 110, 30));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -486,10 +442,10 @@ public void countOfAllProducts() {
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Sales Reports");
+        jLabel2.setText("Top Sales");
         panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
 
-        jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
+        jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 200, 40));
 
         panel.setBackground(new java.awt.Color(89, 196, 19));
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -520,6 +476,27 @@ public void countOfAllProducts() {
             }
         });
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, -1, -1));
+
+        panel2.setBackground(new java.awt.Color(89, 196, 19));
+        panel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel2MouseExited(evt);
+            }
+        });
+        panel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Sales Reports");
+        panel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
+
+        jPanel1.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
@@ -624,7 +601,7 @@ public void countOfAllProducts() {
                 exportActionPerformed(evt);
             }
         });
-        jPanel2.add(export, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 190, 120, 20));
+        jPanel2.add(export, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 190, 100, 20));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
@@ -633,8 +610,8 @@ public void countOfAllProducts() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked
-        salereport r = new salereport();
-        r.setVisible(true);
+        Analytics a = new Analytics();
+        a.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_panel1MouseClicked
 
@@ -686,13 +663,13 @@ public void countOfAllProducts() {
 
     private void searchBarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyReleased
 
-        try {
+try {
     dbConnector dbc = new dbConnector();
     String searchText = searchBar.getText().trim();
     ResultSet rs;
 
     if (searchText.isEmpty()) {
-        // Default query when no search text is provided
+        // Default query when no search text is provided (fetch today's data)
         rs = dbc.getData(
             "SELECT sales.sale_id AS Sale_Id, product_table.prod_name AS Product_Name, " +
             "product_table.category AS Category, product_table.price AS Price, " +
@@ -700,8 +677,13 @@ public void countOfAllProducts() {
             "(product_table.price * sales.quantity_sold) AS Total " +
             "FROM sales " +
             "JOIN product_table ON sales.prod_id = product_table.prod_id " +
+            "WHERE sales.date = CURDATE() " + // Fetch only today's sales
             "ORDER BY sales.quantity_sold DESC"
         );
+        
+        // Refresh the display data with all sales for today
+        displayData(); // Call to refresh the data if the search is empty or cleared
+        
     } else {
         // Query with search text filtering
         rs = dbc.getData(
@@ -719,15 +701,25 @@ public void countOfAllProducts() {
     }
 
     // Update the table model
-    sales_list.setModel(DbUtils.resultSetToTableModel(rs));
+    DefaultTableModel model = new DefaultTableModel(new String[]{
+        "Sale Id", "Product Name", "Category", "Quantity Sold", "Date"
+    }, 0);
 
-    // Hide specific columns
-    hideColumn(sales_list, 0); // Hide "Sale_Id" (index 0)
-    hideColumn(sales_list, 3); // Hide "Price" (index 3)
-    hideColumn(sales_list, 6); // Hide "Time" (index 6)
-    hideColumn(sales_list, 7); // Hide "Total" (index 7)
+    while (rs.next()) {
+        model.addRow(new Object[]{
+            rs.getString("Sale_Id"),
+            rs.getString("Product_Name"),
+            rs.getString("Category"),
+            rs.getInt("Quantity_Sold"),
+            rs.getString("Date"),
+        });
+    }
 
-    
+    sales_list.setModel(model);
+
+    // Hide specific columns (optional)
+    hideColumn(sales_list, 0);
+
     rs.close();
 } catch (SQLException ex) {
     System.out.println("Errors: " + ex.getMessage());
@@ -742,10 +734,6 @@ public void countOfAllProducts() {
         }
     }//GEN-LAST:event_sales_listMousePressed
 
-    private void excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excelActionPerformed
-
-    }//GEN-LAST:event_excelActionPerformed
-
     private void pdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfActionPerformed
 
 if (nameField.getText().isEmpty()) {
@@ -758,39 +746,98 @@ String location = System.getProperty("user.home") + "/Documents/";
 
 try {
     dbConnector dbc = new dbConnector();
-    String query = "SELECT sale_id, prod_name, quantity_sold, price, (quantity_sold * price) AS total, date, time FROM sales";
+    String query = "SELECT sales.sale_id AS Sale_Id, product_table.prod_name AS Product_Name, " +
+            "product_table.category AS Category, product_table.price AS Price, " +
+            "sales.quantity_sold AS Quantity_Sold, sales.date AS Date, sales.time AS Time, " +
+            "(product_table.price * sales.quantity_sold) AS Total " +
+            "FROM sales " +
+            "JOIN product_table ON sales.prod_id = product_table.prod_id " +
+            "ORDER BY sales.quantity_sold DESC";
     ResultSet resultSet = dbc.getData(query);
 
-    com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A5.rotate());
-    PdfWriter.getInstance(document, new FileOutputStream(location + name));
-    document.open();
+// Initialize the document and table
+com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A5.rotate());
+PdfWriter.getInstance(document, new FileOutputStream(location + name));
+document.open();
 
-    PdfPTable pdfPTable = new PdfPTable(7); // 7 columns for the table
+// Create a font for the header
+Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
+Font cellFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
 
-    // Add table headers
-    pdfPTable.addCell("Sale ID");
-    pdfPTable.addCell("Product Name");
-    pdfPTable.addCell("Quantity Sold");
-    pdfPTable.addCell("Price");
-    pdfPTable.addCell("Total");
-    pdfPTable.addCell("Date");
-    pdfPTable.addCell("Time");
+// Create a table with 7 columns
+PdfPTable pdfPTable = new PdfPTable(7);
+pdfPTable.setWidthPercentage(100); // Make table width span the entire page
+pdfPTable.setSpacingBefore(10f);
+pdfPTable.setSpacingAfter(10f);
 
-    // Add rows to the table
-    if (resultSet.next()) {
-        do {
-            pdfPTable.addCell(resultSet.getString("sale_id"));
-            pdfPTable.addCell(resultSet.getString("prod_name"));
-            pdfPTable.addCell(resultSet.getString("quantity_sold"));
-            pdfPTable.addCell(resultSet.getString("price"));
-            pdfPTable.addCell(resultSet.getString("total"));
-            pdfPTable.addCell(resultSet.getString("date"));
-            pdfPTable.addCell(resultSet.getString("time"));
-        } while (resultSet.next());
-    }
+// Set column widths
+float[] columnWidths = {1.5f, 3f, 3f, 2f, 2f, 2.5f, 2.5f};
+pdfPTable.setWidths(columnWidths);
 
-    document.add(pdfPTable);
-    document.close();
+// Create header cells
+PdfPCell headerCell = new PdfPCell();
+headerCell.setBackgroundColor(BaseColor.DARK_GRAY);
+headerCell.setPadding(5);
+headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+// Add table headers with styling
+String[] headers = {"Sale ID", "Product Name", "Quantity Sold", "Price", "Total", "Date", "Time"};
+for (String header : headers) {
+    headerCell.setPhrase(new Phrase(header, headerFont));
+    pdfPTable.addCell(headerCell);
+}
+
+// Add rows to the table
+if (resultSet.next()) {
+    do {
+        // Sale ID
+        PdfPCell saleIdCell = new PdfPCell(new Phrase(resultSet.getString("Sale_Id"), cellFont));
+        saleIdCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        saleIdCell.setPadding(5);
+        pdfPTable.addCell(saleIdCell);
+
+        // Product Name
+        PdfPCell productNameCell = new PdfPCell(new Phrase(resultSet.getString("Product_Name"), cellFont));
+        productNameCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        productNameCell.setPadding(5);
+        pdfPTable.addCell(productNameCell);
+
+        // Quantity Sold
+        PdfPCell quantityCell = new PdfPCell(new Phrase(resultSet.getString("Quantity_Sold"), cellFont));
+        quantityCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        quantityCell.setPadding(5);
+        pdfPTable.addCell(quantityCell);
+
+        // Price
+        PdfPCell priceCell = new PdfPCell(new Phrase(resultSet.getString("Price"), cellFont));
+        priceCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        priceCell.setPadding(5);
+        pdfPTable.addCell(priceCell);
+
+        // Total
+        PdfPCell totalCell = new PdfPCell(new Phrase(resultSet.getString("Total"), cellFont));
+        totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        totalCell.setPadding(5);
+        pdfPTable.addCell(totalCell);
+
+        // Date
+        PdfPCell dateCell = new PdfPCell(new Phrase(resultSet.getString("Date"), cellFont));
+        dateCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        dateCell.setPadding(5);
+        pdfPTable.addCell(dateCell);
+
+        // Time
+        PdfPCell timeCell = new PdfPCell(new Phrase(resultSet.getString("Time"), cellFont));
+        timeCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        timeCell.setPadding(5);
+        pdfPTable.addCell(timeCell);
+    } while (resultSet.next());
+}
+
+// Add the table to the document
+document.add(pdfPTable);
+document.close();
+
 
     Window window = SwingUtilities.getWindowAncestor(exportData);
     if (window != null) {
@@ -859,9 +906,8 @@ if (selectedRow == -1) {
     return;
 }
 
-// Get the hidden `sale_id` from the table model directly (hidden column)
-TableModel tableModel = sales_list.getModel();
-String saleId = tableModel.getValueAt(selectedRow, 0).toString(); // Assuming column 0 holds `sale_id`
+
+ String saleId = sales_list.getValueAt(sales_list.getSelectedRow(), 0).toString(); // Assuming column 0 holds `sale_id`
 
 try {
     dbConnector dbc = new dbConnector();
@@ -886,7 +932,7 @@ try {
     // Check if the query returned data
     if (rs.next()) {
         // Populate the viewpanel with fetched data
-        saleid.setText(rs.getString("saleId"));
+        sale_id.setText(rs.getString("saleId"));
         prodname.setText(rs.getString("prodname"));
         quansold.setText(rs.getString("quansold"));
         price.setText(rs.getString("price"));
@@ -918,6 +964,20 @@ try {
             JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
             null, options, null);
     }//GEN-LAST:event_exportActionPerformed
+
+    private void panel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseClicked
+        salereport r = new salereport();
+        r.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_panel2MouseClicked
+
+    private void panel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_panel2MouseEntered
+
+    private void panel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_panel2MouseExited
 
     /**
      * @param args the command line arguments
@@ -959,7 +1019,6 @@ try {
     private javax.swing.JLabel cat;
     private javax.swing.JLabel dailySale;
     private javax.swing.JLabel date;
-    private javax.swing.JButton excel;
     private javax.swing.JButton export;
     private javax.swing.JPanel exportData;
     private javax.swing.JLabel jLabel1;
@@ -981,6 +1040,7 @@ try {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -991,6 +1051,7 @@ try {
     private javax.swing.JTextField nameField;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panel1;
+    private javax.swing.JPanel panel2;
     private javax.swing.JButton pdf;
     private javax.swing.JPopupMenu popUp;
     private javax.swing.JLabel price;

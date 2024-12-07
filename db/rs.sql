@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2024 at 06:56 PM
+-- Generation Time: Dec 04, 2024 at 02:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,9 +41,16 @@ CREATE TABLE `product_table` (
 --
 
 INSERT INTO `product_table` (`prod_id`, `prod_name`, `category`, `price`, `quantity`, `prod_status`) VALUES
-(1, 'Royal', 'Drinks', 15, 10, 'Available'),
-(2, 'Fita', 'Snacks', 9, 11, 'Available'),
-(3, 'fudgee bar', 'Snacks', 9, 0, 'Available');
+(1, 'Royal', 'Drinks', 15, 15, 'Available'),
+(2, 'Fita', 'Snacks', 9, 10, 'Available'),
+(3, 'Fudgee bar', 'Snacks', 9, 0, 'Available'),
+(4, 'Fish Cracker', 'Crackers', 10, 10, 'Available'),
+(5, 'Sky Flakes', 'Snacks', 9, 9, 'Available'),
+(6, 'Coke', 'Drinks', 15, 11, 'Available'),
+(7, 'Sprite', 'Drinks', 15, 12, 'Available'),
+(8, 'Oishi', 'Crackers', 9, 10, 'Available'),
+(9, 'Corned Beef', 'Canned goods', 35, 5, 'Available'),
+(10, 'Sanmarino Big', 'Canned goods', 45, 4, 'Available');
 
 -- --------------------------------------------------------
 
@@ -58,6 +65,22 @@ CREATE TABLE `sales` (
   `date` date NOT NULL,
   `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`sale_id`, `prod_id`, `quantity_sold`, `date`, `time`) VALUES
+(1, 4, 1, '2024-11-27', '08:20:17'),
+(2, 2, 1, '2024-12-02', '14:35:11'),
+(3, 4, 4, '2024-12-03', '22:09:43'),
+(4, 5, 5, '2024-12-04', '00:15:40'),
+(5, 5, 2, '2024-12-04', '00:18:25'),
+(6, 5, 2, '2024-12-04', '00:35:15'),
+(7, 6, 3, '2024-12-04', '02:37:01'),
+(8, 10, 2, '2024-12-04', '02:40:55'),
+(9, 7, 3, '2024-12-04', '02:41:27'),
+(10, 6, 6, '2024-12-04', '02:41:52');
 
 -- --------------------------------------------------------
 
@@ -116,13 +139,13 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `product_table`
 --
 ALTER TABLE `product_table`
-  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `sale_id` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `sale_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user_table`

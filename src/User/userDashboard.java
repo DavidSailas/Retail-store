@@ -107,8 +107,6 @@ public class userDashboard extends javax.swing.JFrame {
         cat = new javax.swing.JComboBox<>();
         category = new javax.swing.JComboBox<>();
         searchBar = new javax.swing.JTextField();
-        butButton = new panelRoundComponents.PanelRound();
-        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -133,7 +131,7 @@ public class userDashboard extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("unknown");
+        jLabel2.setText("Counter");
         panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
 
         jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
@@ -280,7 +278,7 @@ public class userDashboard extends javax.swing.JFrame {
         jLabel8.setText("UPDATE");
         updateButton.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 100, 40));
 
-        jPanel2.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 120, 40));
+        jPanel2.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 120, 40));
 
         label.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         label.setForeground(new java.awt.Color(102, 102, 102));
@@ -290,39 +288,44 @@ public class userDashboard extends javax.swing.JFrame {
         pid.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         pid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
         pid.setEnabled(false);
-        jPanel2.add(pid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 90, -1));
+        pid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pidActionPerformed(evt);
+            }
+        });
+        jPanel2.add(pid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 90, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel12.setText("Product Code");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 90, -1));
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 90, -1));
 
         productName.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         productName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
-        jPanel2.add(productName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 140, -1));
+        jPanel2.add(productName, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 140, -1));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel13.setText("Product Name");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel16.setText("Price");
-        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, -1, -1));
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, -1, -1));
 
         price.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         price.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
-        jPanel2.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 90, -1));
+        jPanel2.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 90, -1));
 
         quantity.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         quantity.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
-        jPanel2.add(quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 90, -1));
+        jPanel2.add(quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 90, -1));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel15.setText("Quantity");
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, -1, -1));
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel14.setText("Category");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, -1, -1));
 
         cat.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         cat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Snacks", "Drinks", "Canned goods", "Crackers", "Poultry products", "Beverage", "Condiments", "Dairy", "Grains ", "Bread", "Oil ", "Fat" }));
@@ -342,7 +345,7 @@ public class userDashboard extends javax.swing.JFrame {
                 categoryActionPerformed(evt);
             }
         });
-        jPanel2.add(category, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 140, -1));
+        jPanel2.add(category, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 140, -1));
 
         searchBar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         searchBar.setForeground(new java.awt.Color(102, 102, 102));
@@ -367,34 +370,6 @@ public class userDashboard extends javax.swing.JFrame {
             }
         });
         jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 130, 220, -1));
-
-        butButton.setBackground(new java.awt.Color(83, 215, 105));
-        butButton.setRoundBottomLeft(10);
-        butButton.setRoundBottomRight(10);
-        butButton.setRoundTopLeft(10);
-        butButton.setRoundTopRight(10);
-        butButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                butButtonMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                butButtonMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                butButtonMouseReleased(evt);
-            }
-        });
-        butButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel6.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8-buy-18.png"))); // NOI18N
-        jLabel6.setText("BUY");
-        butButton.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 0, 90, 40));
-
-        jPanel2.add(butButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 120, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
@@ -592,66 +567,13 @@ if (pid.getText().isEmpty()) {
         this.dispose();
     }//GEN-LAST:event_jLabel11MouseClicked
 
-    private void butButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butButtonMouseClicked
-        
-dbConnector dbc = new dbConnector();
-payment pay = new payment();
-
-if (pid.getText().isEmpty()) {
-    JOptionPane.showMessageDialog(null, "Select a product");
-} else if (productName.getText().isEmpty() || price.getText().isEmpty()) {
-    JOptionPane.showMessageDialog(null, "All fields are required!");
-} else {
-    try {
-
-        int purchasedQuantity = 1; 
-
-        String productId = pid.getText();
-
-
-        ResultSet rs = dbc.getData("SELECT quantity, price FROM product_table WHERE prod_id = '" + productId + "'");
-        if (rs.next()) {
-            int currentQuantity = rs.getInt("quantity"); 
-            double productPrice = rs.getDouble("price"); 
-
-            if (currentQuantity >= purchasedQuantity) {
-                
-                int newQuantity = currentQuantity - purchasedQuantity;
-
-                double totalAmount = purchasedQuantity * productPrice;
-
-                pay.setVisible(true);
-                pay.productNewQuantity = newQuantity;
-                pay.total.setText("₱" + totalAmount); 
-                pay.productId = productId;
-                pay.quantitySold = purchasedQuantity;
-            } else {
-                
-                JOptionPane.showMessageDialog(null, "Insufficient stock for the selected product.");
-            }
-        } else {
-           
-            JOptionPane.showMessageDialog(null, "Product not found!");
-        }
-        rs.close();
-    } catch (NumberFormatException | SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
-    }
-}
-        
-    }//GEN-LAST:event_butButtonMouseClicked
-
-    private void butButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butButtonMousePressed
-        butButton.setBackground(new Color(70,194,99));
-    }//GEN-LAST:event_butButtonMousePressed
-
-    private void butButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_butButtonMouseReleased
-        butButton.setBackground(new Color(83,215,105));
-    }//GEN-LAST:event_butButtonMouseReleased
-
     private void catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_catActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_catActionPerformed
+
+    private void pidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pidActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pidActionPerformed
 
     /**
      * @param args the command line arguments
@@ -690,7 +612,6 @@ if (pid.getText().isEmpty()) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private panelRoundComponents.PanelRound addproduct;
-    private panelRoundComponents.PanelRound butButton;
     private javax.swing.JComboBox<String> cat;
     private javax.swing.JComboBox<String> category;
     private panelRoundComponents.PanelRound deleteButton;
@@ -706,7 +627,6 @@ if (pid.getText().isEmpty()) {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
