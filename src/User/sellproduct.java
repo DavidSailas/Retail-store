@@ -4,9 +4,13 @@ package User;
 import config.dbConnector;
 import form.Loginfrom;
 import java.awt.Color;
+import java.awt.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 
@@ -19,16 +23,72 @@ public class sellproduct extends javax.swing.JFrame {
         displayData();
     }
     
-            public void displayData(){
-        try{
-            dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT prod_id, prod_name, category, price, quantity FROM product_table");
-            stock.setModel(DbUtils.resultSetToTableModel(rs));
-            rs.close();
-        }catch(SQLException ex){
-            System.out.println("Errors: "+ex.getMessage());
+public void displayData() {
+    try {
+        dbConnector dbc = new dbConnector();
+
+        // Fetch data from the database, including prod_id and quantity
+        ResultSet rs = dbc.getData(
+            "SELECT prod_id, prod_name, prod_status, category, price, quantity " +
+            "FROM product_table"
+        );
+
+        // Set up the table model with an additional column for prod_id
+        DefaultTableModel model = new DefaultTableModel(new String[]{
+            "Product ID", "Product Name", "Product Status", "Category", "Price"
+        }, 0);
+
+        // Populate the model with data
+        while (rs.next()) {
+            String prodId = rs.getString("prod_id");
+            String productName = rs.getString("prod_name");
+            String productStatus = rs.getString("prod_status");
+            String category = rs.getString("category");
+            double price = rs.getDouble("price");
+
+            model.addRow(new Object[]{
+                prodId,
+                productName,
+                productStatus,
+                category,
+                "₱" + String.format("%.2f", price)
+            });
         }
+
+        stock.setModel(model);
+
+        // Hide the Product ID column
+        stock.getColumnModel().getColumn(0).setMinWidth(0);
+        stock.getColumnModel().getColumn(0).setMaxWidth(0);
+        stock.getColumnModel().getColumn(0).setWidth(0);
+
+        // Custom cell renderer for product status
+        stock.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                if (value != null) {
+                    String status = value.toString();
+                    if (status.equals("Available")) {
+                        comp.setForeground(Color.GREEN);
+                    } else if (status.equals("Out of stock")) {
+                        comp.setForeground(Color.RED);
+                    } else {
+                        comp.setForeground(Color.BLACK);
+                    }
+                }
+                return comp;
+            }
+        });
+
+        rs.close();
+    } catch (SQLException ex) {
+        System.out.println("Errors: " + ex.getMessage());
     }
+}
+
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -260,21 +320,18 @@ public class sellproduct extends javax.swing.JFrame {
 
     private void buyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buyButtonMouseClicked
 
-dbConnector dbc = new dbConnector();
+        dbConnector dbc = new dbConnector();
 payment pay = new payment();
 
-
 int rowIndex = stock.getSelectedRow();
-// Validate selection and required fields
-if (rowIndex <  0) {
+if (rowIndex < 0) {
     JOptionPane.showMessageDialog(null, "Please select a product first.");
 } else {
     try {
-        
-        
-        Object value = stock.getValueAt(rowIndex, 0);
-        String productId = value.toString();
-        
+        // Retrieve the hidden Product ID from the selected row
+        String productId = stock.getValueAt(rowIndex, 0).toString();
+
+        // Fetch quantity and price from the database using prod_id
         ResultSet rs = dbc.getData(
             "SELECT quantity, price FROM product_table WHERE prod_id = '" + productId + "'"
         );
@@ -285,9 +342,9 @@ if (rowIndex <  0) {
 
             // Check if stock is available
             if (availableStock > 0) {
-                // Pass data to payment form
+                // Pass data to the payment form
                 pay.setVisible(true);
-                pay.pid.setText(""+productId); // Assuming pay has a JLabel for product ID
+                pay.pid.setText(productId); // Assuming pay has a JLabel for product ID
                 pay.availstock.setText(String.valueOf(availableStock)); // JTextField for available stock
                 pay.price.setText(String.format("%.2f", productPrice)); // JTextField for price
             } else {
@@ -301,7 +358,6 @@ if (rowIndex <  0) {
         JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
     }
 }
-
         
     }//GEN-LAST:event_buyButtonMouseClicked
 

@@ -36,24 +36,30 @@ import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 
 
-public class salereport extends javax.swing.JFrame {
+public class transaction extends javax.swing.JFrame {
 
 
-    public salereport() {
+    public transaction() {
         initComponents();
         displayData();
         productSold();
-        totalSales();
+        weeklySales();
         dailySales();
     }
 
 
 
-public static String getCurrentDate() {
+public String getCurrentDate() {
     LocalDate today = LocalDate.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-    return today.format(formatter);
+    return today.toString();  // Returns date in YYYY-MM-DD format
 }
+
+public String getLastWeekDate() {
+    LocalDate today = LocalDate.now();
+    LocalDate lastWeek = today.minusWeeks(1);  // Subtract one week from today
+    return lastWeek.toString();  // Returns date in YYYY-MM-DD format
+}
+
 
 public void displayData() {
     try {
@@ -66,32 +72,44 @@ public void displayData() {
             "SELECT sales.sale_id AS Sale_Id, product_table.prod_name AS Product_Name, " +
             "product_table.category AS Category, product_table.price AS Price, " +
             "sales.quantity_sold AS Quantity_Sold, sales.date AS Date, sales.time AS Time, " +
-            "(product_table.price * sales.quantity_sold) AS Total " +
+            "(product_table.price * sales.quantity_sold) AS Total, product_table.expire AS Expire " +
             "FROM sales " +
             "JOIN product_table ON sales.prod_id = product_table.prod_id " +
-            "WHERE sales.date = '" + todayDate + "' " + // Filter for today's sales
+            "WHERE sales.date = '" + todayDate + "' " +
             "ORDER BY sales.quantity_sold DESC"
         );
 
-        // Custom table model
+        // Add 'Price' and 'Total' columns to the table model
         DefaultTableModel model = new DefaultTableModel(new String[]{
-            "Sale Id", "Product Name", "Category", "Quantity Sold", "Date"
+            "Sale Id", "Product Name", "Category", "Price", "Quantity Sold", "Total", "Date"
         }, 0);
+
+        double totalSales = 0; // Accumulate daily total
 
         // Populate the table with data
         while (rs.next()) {
+            double rowTotal = rs.getDouble("Total"); // Get row total
+            totalSales += rowTotal; // Add to the daily total
+
             model.addRow(new Object[]{
                 rs.getString("Sale_Id"),
                 rs.getString("Product_Name"),
                 rs.getString("Category"),
+                rs.getDouble("Price"),
                 rs.getInt("Quantity_Sold"),
+                String.format("₱%.2f", rowTotal), // Format total as currency
                 rs.getString("Date"),
             });
         }
+
         sales_list.setModel(model);
 
-        // Hide specific columns (optional)
+        // Hide specific columns if necessary (optional)
         hideColumn(sales_list, 0); // Example: Hide "Sale Id" column (index 0)
+        hideColumn(sales_list, 3);
+        hideColumn(sales_list, 5);
+        // Display daily total sales below the table
+        dailySale.setText("₱" + String.format("%.2f", totalSales));
 
         rs.close();
     } catch (SQLException ex) {
@@ -111,39 +129,61 @@ private void hideColumn(JTable table, int columnIndex) {
 public void productSold() {
     try {
         dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData("SELECT COUNT(*) AS NROWS FROM sales");
+
+        LocalDate today = LocalDate.now();
+        String todayDate = Date.valueOf(today).toString();
+
+        ResultSet rs = dbc.getData(
+            "SELECT COUNT(*) AS NROWS FROM sales WHERE date = '" + todayDate + "'"
+        );
+
         int rowCount = 0;
         if (rs.next()) {
             rowCount = rs.getInt("NROWS");
         }
+        
         product.setText("" + rowCount + " ");
     } catch (SQLException ex) {
         System.out.println("Errors: " + ex.getMessage());
     }
 }
 
-public void totalSales() {
+
+public void weeklySales() {
     try {
         dbConnector dbc = new dbConnector();
+        String currentDate = getCurrentDate();  // Get today's date (YYYY-MM-DD format)
+        String lastWeekDate = getLastWeekDate();  // Calculate the date 7 days ago
+
+        // Query for weekly sales total
         ResultSet rs = dbc.getData(
             "SELECT SUM(product_table.price * sales.quantity_sold) AS TotalSales " +
             "FROM sales " +
-            "JOIN product_table ON sales.prod_id = product_table.prod_id"
+            "JOIN product_table ON sales.prod_id = product_table.prod_id " +
+            "WHERE sales.date BETWEEN '" + lastWeekDate + "' AND '" + currentDate + "'"
         );
-        double totalSales = 0;
+
+        double totalWeeklySales = 0;
         if (rs.next()) {
-            totalSales = rs.getDouble("TotalSales");
+            totalWeeklySales = rs.getDouble("TotalSales");
         }
-        totalSale.setText("₱" + String.format("%.2f", totalSales));
+
+        // Update weekly total sales JLabel
+        totalSale.setText("₱" + String.format("%.2f", totalWeeklySales));
+        System.out.println("₱" + totalWeeklySales);  // Debug output to verify the total
+
+        rs.close();
     } catch (SQLException ex) {
-        System.out.println("Errors: " + ex.getMessage());
+        System.out.println("Error in weeklySales: " + ex.getMessage());
     }
 }
 
 public void dailySales() {
     try {
         dbConnector dbc = new dbConnector();
-        String currentDate = getCurrentDate();
+        String currentDate = getCurrentDate();  // Get today's date (YYYY-MM-DD format)
+
+        // Query for daily sales total
         ResultSet rs = dbc.getData(
             "SELECT SUM(product_table.price * sales.quantity_sold) AS TotalSales " +
             "FROM sales " +
@@ -151,15 +191,21 @@ public void dailySales() {
             "WHERE sales.date = '" + currentDate + "'"
         );
 
-        double totalSales = 0;
+        double totalDailySales = 0;
         if (rs.next()) {
-            totalSales = rs.getDouble("TotalSales");
+            totalDailySales = rs.getDouble("TotalSales");
         }
-        dailySale.setText("₱" + String.format("%.2f", totalSales));
+
+        // Update daily total sales JLabel
+        dailySale.setText("₱" + String.format("%.2f", totalDailySales));
+        System.out.println("₱" + totalDailySales);  // Debug output to verify the total
+
+        rs.close();
     } catch (SQLException ex) {
-        System.out.println("Errors: " + ex.getMessage());
+        System.out.println("Error in dailySales: " + ex.getMessage());
     }
 }
+
 
 
     
@@ -189,6 +235,8 @@ public void dailySales() {
         time = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         sale_id = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        expire = new javax.swing.JLabel();
         exportData = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -306,6 +354,12 @@ public void dailySales() {
         sale_id.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         sale_id.setText("Sale Id");
 
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jLabel26.setText("Expire Date");
+
+        expire.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        expire.setText("Expire Date");
+
         javax.swing.GroupLayout viewpanelLayout = new javax.swing.GroupLayout(viewpanel);
         viewpanel.setLayout(viewpanelLayout);
         viewpanelLayout.setHorizontalGroup(
@@ -324,7 +378,8 @@ public void dailySales() {
                             .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel25))
+                            .addComponent(jLabel25)
+                            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(63, 63, 63)
                         .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sale_id)
@@ -334,14 +389,15 @@ public void dailySales() {
                             .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(quansold, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(quansold, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(expire, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 125, Short.MAX_VALUE))
         );
         viewpanelLayout.setVerticalGroup(
             viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(viewpanelLayout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25)
                     .addComponent(sale_id))
@@ -354,13 +410,7 @@ public void dailySales() {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel19)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel20))
+                        .addComponent(jLabel26))
                     .addGroup(viewpanelLayout.createSequentialGroup()
                         .addComponent(prodname)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -368,16 +418,28 @@ public void dailySales() {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(quansold)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(price)
+                        .addComponent(expire)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(price)
+                    .addComponent(jLabel17))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(viewpanelLayout.createSequentialGroup()
+                        .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel19))
+                    .addGroup(viewpanelLayout.createSequentialGroup()
                         .addComponent(total)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(date)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(time)))
-                .addGap(27, 27, 27)
+                        .addComponent(date)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel20)
+                    .addComponent(time))
+                .addGap(18, 18, 18)
                 .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addGap(26, 26, 26))
         );
 
         exportData.setBackground(new java.awt.Color(255, 255, 255));
@@ -442,7 +504,7 @@ public void dailySales() {
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Top Sales");
+        jLabel2.setText("Sales Reports");
         panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
 
         jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 200, 40));
@@ -493,7 +555,7 @@ public void dailySales() {
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Sales Reports");
+        jLabel5.setText("Transaction");
         panel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
 
         jPanel1.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
@@ -505,7 +567,7 @@ public void dailySales() {
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel1.setText("DASHBOARD");
+        jLabel1.setText("TRANSACTION");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         totalSale.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -517,14 +579,14 @@ public void dailySales() {
         jLabel9.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 128, 0));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Total Sales");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 130, 30));
+        jLabel9.setText("Weekly Sales");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, 160, 30));
 
         jLabel10.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 128, 0));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("Product");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 130, 30));
+        jLabel10.setText("Product Sold");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 160, 30));
 
         product.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         product.setForeground(new java.awt.Color(0, 128, 0));
@@ -542,7 +604,7 @@ public void dailySales() {
         jLabel13.setForeground(new java.awt.Color(0, 128, 0));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Daily Sales");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 80, 130, 30));
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 80, 130, 30));
 
         label.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         label.setForeground(new java.awt.Color(102, 102, 102));
@@ -569,7 +631,7 @@ public void dailySales() {
 
         searchBar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         searchBar.setForeground(new java.awt.Color(102, 102, 102));
-        searchBar.setText("Search");
+        searchBar.setText(" Search date");
         searchBar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -610,7 +672,7 @@ public void dailySales() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked
-        Analytics a = new Analytics();
+        salesreport a = new salesreport();
         a.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_panel1MouseClicked
@@ -644,7 +706,7 @@ public void dailySales() {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void searchBarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBarFocusGained
-        if (searchBar.getText().equals("Search")){
+        if (searchBar.getText().equals(" Search date")){
             searchBar.setText("");
             searchBar.setForeground(new Color(153,153,153));
         }
@@ -652,7 +714,7 @@ public void dailySales() {
 
     private void searchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBarFocusLost
         if (searchBar.getText().equals("")){
-            searchBar.setText("Search");
+            searchBar.setText(" Search date");
             searchBar.setForeground(new Color(153,153,153));
         }
     }//GEN-LAST:event_searchBarFocusLost
@@ -867,7 +929,8 @@ try {
         "product_table.price AS price, " +
         "(product_table.price * sales.quantity_sold) AS total, " +
         "sales.date AS date, " +
-        "sales.time AS time " +
+        "sales.time AS time, " +
+        "product_table.expire AS expire " +  // Include expire field in the query
         "FROM sales " +
         "JOIN product_table ON sales.prod_id = product_table.prod_id " +
         "WHERE sales.sale_id = '" + sales_list.getValueAt(sales_list.getSelectedRow(), 0).toString() + "'"
@@ -885,6 +948,14 @@ try {
         psd.total.setText(rs.getString("total"));
         psd.date.setText(rs.getString("date"));
         psd.time.setText(rs.getString("time"));
+
+        // Handle expiration date
+        String expireDate = rs.getString("expire");
+        if ("9999-12-31".equals(expireDate)) {
+            psd.expire.setText("No Expire"); // Set 'No Expire' if expiration date is 9999-12-31
+        } else {
+            psd.expire.setText(expireDate); // Otherwise, display the actual expiration date
+        }
 
         // Use PanelPrinter to print or export the populated panel
         PanelPrinter pPrint = new PanelPrinter(psd.page); // Assuming `page` is a JPanel in PrintSalesDetails
@@ -906,8 +977,7 @@ if (selectedRow == -1) {
     return;
 }
 
-
- String saleId = sales_list.getValueAt(sales_list.getSelectedRow(), 0).toString(); // Assuming column 0 holds `sale_id`
+String saleId = sales_list.getValueAt(sales_list.getSelectedRow(), 0).toString(); // Assuming column 0 holds `sale_id`
 
 try {
     dbConnector dbc = new dbConnector();
@@ -915,7 +985,7 @@ try {
     // Debugging: Print the retrieved saleId to verify correctness
     System.out.println("Selected Sale ID: " + saleId);
 
-    // Fetch details for the selected sale record
+    // Fetch details for the selected sale record, including the 'expire' field
     ResultSet rs = dbc.getData(
         "SELECT sales.sale_id AS saleId, " +
         "product_table.prod_name AS prodname, " +
@@ -923,7 +993,8 @@ try {
         "product_table.price AS price, " +
         "(sales.quantity_sold * product_table.price) AS total, " +
         "sales.date AS date, " +
-        "sales.time AS time " +
+        "sales.time AS time, " +
+        "product_table.expire AS expire " +  // Add expire field here
         "FROM sales " +
         "JOIN product_table ON sales.prod_id = product_table.prod_id " +
         "WHERE sales.sale_id = '" + saleId + "'"
@@ -939,6 +1010,14 @@ try {
         total.setText(rs.getString("total"));
         date.setText(rs.getString("date"));
         time.setText(rs.getString("time"));
+
+        // Get the expire date and handle "9999-12-31" as "No Expire"
+        String expireDate = rs.getString("expire");
+        if ("9999-12-31".equals(expireDate)) {
+            expire.setText("No Expire");
+        } else {
+            expire.setText(expireDate);  // Set the actual expire date if it's different
+        }
 
         // Show the viewpanel in a dialog
         Object[] options = {};
@@ -966,17 +1045,17 @@ try {
     }//GEN-LAST:event_exportActionPerformed
 
     private void panel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseClicked
-        salereport r = new salereport();
+        transaction r = new transaction();
         r.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_panel2MouseClicked
 
     private void panel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseEntered
-        // TODO add your handling code here:
+        panel2.setBackground(new Color(204,204,204));
     }//GEN-LAST:event_panel2MouseEntered
 
     private void panel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseExited
-        // TODO add your handling code here:
+        panel2.setBackground(new Color(89,196,19));
     }//GEN-LAST:event_panel2MouseExited
 
     /**
@@ -996,21 +1075,23 @@ try {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(salereport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(transaction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(salereport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(transaction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(salereport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(transaction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(salereport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(transaction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new salereport().setVisible(true);
+                new transaction().setVisible(true);
             }
         });
     }
@@ -1019,6 +1100,7 @@ try {
     private javax.swing.JLabel cat;
     private javax.swing.JLabel dailySale;
     private javax.swing.JLabel date;
+    private javax.swing.JLabel expire;
     private javax.swing.JButton export;
     private javax.swing.JPanel exportData;
     private javax.swing.JLabel jLabel1;
@@ -1038,6 +1120,7 @@ try {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

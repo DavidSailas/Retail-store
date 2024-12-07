@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 04, 2024 at 02:02 PM
+-- Generation Time: Dec 07, 2024 at 09:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,24 +33,26 @@ CREATE TABLE `product_table` (
   `category` varchar(100) NOT NULL,
   `price` double NOT NULL,
   `quantity` int(100) NOT NULL,
-  `prod_status` varchar(100) NOT NULL
+  `prod_status` varchar(100) NOT NULL,
+  `expire` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product_table`
 --
 
-INSERT INTO `product_table` (`prod_id`, `prod_name`, `category`, `price`, `quantity`, `prod_status`) VALUES
-(1, 'Royal', 'Drinks', 15, 15, 'Available'),
-(2, 'Fita', 'Snacks', 9, 10, 'Available'),
-(3, 'Fudgee bar', 'Snacks', 9, 0, 'Available'),
-(4, 'Fish Cracker', 'Crackers', 10, 10, 'Available'),
-(5, 'Sky Flakes', 'Snacks', 9, 9, 'Available'),
-(6, 'Coke', 'Drinks', 15, 11, 'Available'),
-(7, 'Sprite', 'Drinks', 15, 12, 'Available'),
-(8, 'Oishi', 'Crackers', 9, 10, 'Available'),
-(9, 'Corned Beef', 'Canned goods', 35, 5, 'Available'),
-(10, 'Sanmarino Big', 'Canned goods', 45, 4, 'Available');
+INSERT INTO `product_table` (`prod_id`, `prod_name`, `category`, `price`, `quantity`, `prod_status`, `expire`) VALUES
+(1, 'Royal', 'Drinks', 15, 14, 'Available', '2025-09-15'),
+(2, 'Fita', 'Snacks', 9, 10, 'Available', '2025-05-10'),
+(3, 'Fudgee bar', 'Snacks', 9, 0, 'Out of stock', '2025-08-15'),
+(4, 'Fish Cracker', 'Crackers', 10, 10, 'Available', '2025-03-25'),
+(5, 'Sky Flakes', 'Snacks', 9, 9, 'Available', '2025-06-30'),
+(6, 'Coke', 'Drinks', 15, 11, 'Available', '2025-12-01'),
+(7, 'Sprite', 'Drinks', 15, 12, 'Available', '2025-12-01'),
+(8, 'Oishi', 'Crackers', 9, 10, 'Available', '2025-07-20'),
+(9, 'Corned Beef', 'Canned goods', 35, 4, 'Available', '2026-01-05'),
+(10, 'Sanmarino Big', 'Canned goods', 45, 4, 'Available', '2025-11-10'),
+(11, 'Salt', 'Condiments', 5, 9, 'Available', '9999-12-31');
 
 -- --------------------------------------------------------
 
@@ -80,7 +82,10 @@ INSERT INTO `sales` (`sale_id`, `prod_id`, `quantity_sold`, `date`, `time`) VALU
 (7, 6, 3, '2024-12-04', '02:37:01'),
 (8, 10, 2, '2024-12-04', '02:40:55'),
 (9, 7, 3, '2024-12-04', '02:41:27'),
-(10, 6, 6, '2024-12-04', '02:41:52');
+(10, 6, 6, '2024-12-04', '02:41:52'),
+(11, 11, 1, '2024-12-07', '09:26:29'),
+(12, 1, 1, '2024-12-07', '09:34:11'),
+(13, 9, 1, '2024-12-07', '09:54:00');
 
 -- --------------------------------------------------------
 
@@ -139,13 +144,13 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `product_table`
 --
 ALTER TABLE `product_table`
-  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `sale_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `sale_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `user_table`

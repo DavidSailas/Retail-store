@@ -263,7 +263,7 @@ public class payment extends javax.swing.JFrame {
     
     private void printButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printButtonMouseClicked
 
-dbConnector dbc = new dbConnector();
+        dbConnector dbc = new dbConnector();
 userDashboard sell = new userDashboard();
 
 try {
@@ -301,10 +301,16 @@ try {
 
                         // Notify user of successful purchase
                         change.setText(String.format("₱%.2f", changeAmount)); // Display change
-                        JOptionPane.showMessageDialog(null, "Purchase successful!\nTotal Amount: ₱" + String.format("%.2f", totalAmount) +
-                                "\nChange: ₱" + String.format("%.2f", changeAmount) +
-                                "\nDate: " + currentDate +
-                                "\nTime: " + currentTime);
+                        JOptionPane.showMessageDialog(
+                            null,
+                            "<html><h2 style='color: green;'>Purchase Successful!</h2>" +
+                                    "<p>Total Amount: <b>₱" + String.format("%.2f", totalAmount) + "</b></p>" +
+                                    "<p>Change: <b>₱" + String.format("%.2f", changeAmount) + "</b></p>" +
+                                    "<p>Date: " + currentDate + "</p>" +
+                                    "<p>Time: " + currentTime + "</p></html>",
+                            "Transaction Complete",
+                            JOptionPane.INFORMATION_MESSAGE
+                        );
 
                         sell.displayData(); // Refresh user dashboard
 
@@ -313,26 +319,68 @@ try {
                         this.dispose();
                     } else {
                         // Notify insufficient cash
-                        JOptionPane.showMessageDialog(null, "Insufficient cash. You need ₱" + String.format("%.2f", -changeAmount) + " more.");
+                        JOptionPane.showMessageDialog(
+                            null,
+                            "<html><h2 style='color: red;'>Insufficient Cash!</h2>" +
+                                    "<p>You need <b>₱" + String.format("%.2f", -changeAmount) + "</b> more.</p></html>",
+                            "Transaction Error",
+                            JOptionPane.ERROR_MESSAGE
+                        );
                     }
                 } else {
                     // Notify insufficient stock
-                    JOptionPane.showMessageDialog(null, "Insufficient stock. Only " + availableQuantity + " items available.");
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "<html><h2 style='color: red;'>Insufficient Stock!</h2>" +
+                                "<p>Only <b>" + availableQuantity + "</b> items available.</p></html>",
+                        "Stock Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Invalid quantity entered!");
+                JOptionPane.showMessageDialog(
+                    null,
+                    "<html><h2 style='color: red;'>Invalid Quantity!</h2>" +
+                            "<p>Please enter a quantity greater than 0.</p></html>",
+                    "Input Error",
+                    JOptionPane.WARNING_MESSAGE
+                );
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Please enter a quantity to purchase.");
+            JOptionPane.showMessageDialog(
+                null,
+                "<html><h2 style='color: red;'>Missing Quantity!</h2>" +
+                        "<p>Please enter a quantity to purchase.</p></html>",
+                "Input Error",
+                JOptionPane.WARNING_MESSAGE
+            );
         }
     } else {
-        JOptionPane.showMessageDialog(null, "Product not found!");
+        JOptionPane.showMessageDialog(
+            null,
+            "<html><h2 style='color: red;'>Product Not Found!</h2>" +
+                    "<p>The product ID you entered does not exist.</p></html>",
+            "Database Error",
+            JOptionPane.ERROR_MESSAGE
+        );
     }
     rs.close();
 } catch (NumberFormatException ex) {
-    JOptionPane.showMessageDialog(null, "Invalid input. Please enter valid numbers for cash and quantity.");
+    JOptionPane.showMessageDialog(
+        null,
+        "<html><h2 style='color: red;'>Invalid Input!</h2>" +
+                "<p>Please enter valid numbers for cash and quantity.</p></html>",
+        "Input Error",
+        JOptionPane.WARNING_MESSAGE
+    );
 } catch (SQLException ex) {
-    JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage());
+    JOptionPane.showMessageDialog(
+        null,
+        "<html><h2 style='color: red;'>Database Error!</h2>" +
+                "<p>" + ex.getMessage() + "</p></html>",
+        "Database Error",
+        JOptionPane.ERROR_MESSAGE
+    );
 }
 
         
@@ -384,20 +432,36 @@ try {
 
     private void quantityKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantityKeyReleased
 
-           int q = Integer.parseInt(quantity.getText());
-        
-      if (q == 0) {
-    JOptionPane.showMessageDialog(null, "Quantity cannot be 0");
-} else {
-    try {
-        double p = Double.parseDouble(price.getText());
-
-        double t = p * q;
-        
-        total.setText(String.format("%.2f", t));
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Please enter valid numbers for quantity and price.");
+try {
+    // Check if the quantity field is empty
+    String quantityText = quantity.getText().trim();
+    if (quantityText.isEmpty()) {
+        total.setText(""); // Clear the total if quantity is empty
+        return; // Exit the method
     }
+
+    // Parse the quantity
+    int q = Integer.parseInt(quantityText);
+
+    // Validate the quantity
+    if (q == 0) {
+        JOptionPane.showMessageDialog(null, "Quantity cannot be 0");
+    } else {
+        // Parse the price and calculate the total
+        String priceText = price.getText().trim();
+        if (priceText.isEmpty()) {
+            total.setText(""); // Clear the total if price is empty
+            return; // Exit the method
+        }
+
+        double p = Double.parseDouble(priceText);
+        double t = p * q;
+
+        // Set the total
+        total.setText(String.format("%.2f", t));
+    }
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(null, "Please enter valid numbers for quantity and price.");
 }
 
           

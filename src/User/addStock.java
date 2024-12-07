@@ -3,6 +3,7 @@ package User;
 
 import config.dbConnector;
 import java.awt.Color;
+import java.sql.Date;
 import javax.swing.JOptionPane;
 
 public class addStock extends javax.swing.JFrame {
@@ -31,6 +32,8 @@ public class addStock extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         cancel = new panelRoundComponents.PanelRound();
         jLabel7 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        expire = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -145,6 +148,14 @@ public class addStock extends javax.swing.JFrame {
 
         jPanel1.add(cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 310, 70, -1));
 
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel17.setText("Exipre Date");
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 170, 100, -1));
+
+        expire.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        expire.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        jPanel1.add(expire, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 190, 160, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,22 +194,48 @@ public class addStock extends javax.swing.JFrame {
     }//GEN-LAST:event_productNameActionPerformed
 
     private void submitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseClicked
-        dbConnector dbc = new dbConnector();
-        if (productName.getText().isEmpty() || quant.getText().isEmpty() || price.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "All fields are required!");
+
+    dbConnector dbc = new dbConnector();
+
+    // Check if any required field is empty
+    if (productName.getText().isEmpty() || quant.getText().isEmpty() || price.getText().isEmpty() || expire.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "All fields are required!");
+    } else {
+        // Get the expire value
+        String expireDate = expire.getText();
+        
+        // Check if expire is "0" (No expiration) or handle it as a placeholder date if empty
+        if (expireDate.equals("0")) {
+            expireDate = "'9999-12-31'";  // Use a placeholder date for products that don't expire
+        } else if (expireDate.isEmpty()) {
+            expireDate = "'9999-12-31'";  // Use a placeholder date if empty (you can also handle this differently)
         } else {
-            if (dbc.insertData("INSERT INTO product_table (prod_name, category, price, quantity, prod_status)"
-                + "VALUES('" + productName.getText() + "','" + category.getSelectedItem() + "','"+ price.getText()+"','"+ quant.getText() + "', 'Available')")) {
-                
-                
+            // Optionally, validate if expireDate is in the correct date format (YYYY-MM-DD)
+            try {
+                // Check if the expire date is valid (you can customize this check further if needed)
+                Date.valueOf(expireDate); // Throws exception if invalid date format
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "Invalid date format. Please use YYYY-MM-DD.");
+                return; // Exit the method if the date format is incorrect
+            }
         }
-        else {
-            JOptionPane.showMessageDialog(null, "Connection Error!");
+
+        // Proceed with the insert query
+        String query = "INSERT INTO product_table (prod_name, category, price, quantity, expire, prod_status) " +
+            "VALUES('" + productName.getText() + "','" + category.getSelectedItem() + "','" + price.getText() + "','" +
+            quant.getText() + "'," + expireDate + ", 'Available')";
+
+        if (dbc.insertData(query)) {
+            // Successful insert, proceed to next step
+            JOptionPane.showMessageDialog(null, "Product added successfully!");
+            userDashboard ud = new userDashboard();
+            ud.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to add product.");
         }
-        userDashboard ud = new userDashboard();
-        ud.setVisible(true);
-        this.dispose();
-        }
+    }
+        
     }//GEN-LAST:event_submitButtonMouseClicked
 
     private void submitButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMousePressed
@@ -262,10 +299,12 @@ public class addStock extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private panelRoundComponents.PanelRound cancel;
     private javax.swing.JComboBox<String> category;
+    private javax.swing.JTextField expire;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
