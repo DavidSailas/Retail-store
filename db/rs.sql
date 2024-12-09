@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2024 at 11:36 AM
+-- Generation Time: Dec 09, 2024 at 08:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -107,16 +107,18 @@ CREATE TABLE `user_table` (
   `contact` varchar(100) NOT NULL,
   `status` varchar(100) NOT NULL,
   `type` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL
+  `email` varchar(100) NOT NULL,
+  `image` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_table`
 --
 
-INSERT INTO `user_table` (`id`, `fname`, `lname`, `uname`, `pass`, `contact`, `status`, `type`, `email`) VALUES
-(1, 'david', 'villondo', 'admin', '7c222fb2927d828af22f592134e8932480637c0d', '09123456789', 'Active', 'Admin', 'david'),
-(2, 'sailas', 'romano', 'user', '7c222fb2927d828af22f592134e8932480637c0d', '09987654321', 'Active', 'User', 'sailas');
+INSERT INTO `user_table` (`id`, `fname`, `lname`, `uname`, `pass`, `contact`, `status`, `type`, `email`, `image`) VALUES
+(1, 'david', 'villondo', 'admin', '7c222fb2927d828af22f592134e8932480637c0d', '09123456789', 'Active', 'Admin', 'david', 'u_default'),
+(2, 'sailas', 'romano', 'user', '7c222fb2927d828af22f592134e8932480637c0d', '09987654321', 'Active', 'User', 'sailas', 'u_default'),
+(3, 'ashlyn', 'batol', 'admin1', 'fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff12265', '', 'Pending', 'Admin', 'ash', 'u_default');
 
 --
 -- Indexes for dumped tables
@@ -161,7 +163,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

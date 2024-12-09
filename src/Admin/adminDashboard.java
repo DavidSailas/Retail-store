@@ -256,6 +256,9 @@ public void loadOutOfStock() {
         jLabel9 = new javax.swing.JLabel();
         panel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
+        panel3 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -399,11 +402,13 @@ public void loadOutOfStock() {
         panel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Sales Reports");
-        panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/file-circle-info.png"))); // NOI18N
+        jLabel2.setText(" Sales Reports");
+        panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 210, -1));
 
-        jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 200, 40));
+        jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 200, 40));
 
         panel.setBackground(new java.awt.Color(89, 196, 19));
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -420,13 +425,16 @@ public void loadOutOfStock() {
         panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Dashboard");
-        panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 200, -1));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/house-chimney.png"))); // NOI18N
+        jLabel3.setText(" Dashboard");
+        panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 190, -1));
 
-        jPanel1.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 200, 40));
+        jPanel1.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 200, 40));
 
         jLabel9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Log out");
         jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -450,11 +458,41 @@ public void loadOutOfStock() {
         panel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel11.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("Transaction");
-        panel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/assessment.png"))); // NOI18N
+        jLabel11.setText(" Transaction");
+        panel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 190, -1));
 
         jPanel1.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
+
+        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Posify");
+        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        panel3.setBackground(new java.awt.Color(89, 196, 19));
+        panel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel3MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel3MouseExited(evt);
+            }
+        });
+        panel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/users.png"))); // NOI18N
+        jLabel4.setText(" Users");
+        panel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 150, -1));
+
+        jPanel1.add(panel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 200, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
@@ -466,53 +504,6 @@ public void loadOutOfStock() {
         loadOutOfStock();
         label.setText("Out of stock's");
     }//GEN-LAST:event_jLabel6MouseClicked
-
-    private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked
-        salesreport a = new salesreport();
-        a.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_panel1MouseClicked
-
-    private void panel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseEntered
-        panel1.setBackground(new Color(204,204,204));
-    }//GEN-LAST:event_panel1MouseEntered
-
-    private void panel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseExited
-        panel1.setBackground(new Color(89,196,19));
-    }//GEN-LAST:event_panel1MouseExited
-
-    private void panelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseClicked
-        adminDashboard ad = new adminDashboard();
-        ad.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_panelMouseClicked
-
-    private void panelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseEntered
-        panel.setBackground(new Color(204,204,204));
-    }//GEN-LAST:event_panelMouseEntered
-
-    private void panelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseExited
-        panel.setBackground(new Color(89,196,19));
-    }//GEN-LAST:event_panelMouseExited
-
-    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        Loginfrom lf = new Loginfrom();
-        lf.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel9MouseClicked
-
-    private void panel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseClicked
-        transaction r = new transaction();
-        r.setVisible(true);
-        this.dispose();    }//GEN-LAST:event_panel2MouseClicked
-
-    private void panel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseEntered
-        panel2.setBackground(new Color(204,204,204));
-    }//GEN-LAST:event_panel2MouseEntered
-
-    private void panel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseExited
-        panel2.setBackground(new Color(89,196,19));
-    }//GEN-LAST:event_panel2MouseExited
 
     private void productsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productsMousePressed
 
@@ -600,6 +591,67 @@ public void loadOutOfStock() {
 }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked
+        salesreport a = new salesreport();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_panel1MouseClicked
+
+    private void panel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseEntered
+        panel1.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panel1MouseEntered
+
+    private void panel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseExited
+        panel1.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panel1MouseExited
+
+    private void panelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseClicked
+        adminDashboard ad = new adminDashboard();
+        ad.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_panelMouseClicked
+
+    private void panelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseEntered
+        panel.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panelMouseEntered
+
+    private void panelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseExited
+        panel.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panelMouseExited
+
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+        Loginfrom lf = new Loginfrom();
+        lf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel9MouseClicked
+
+    private void panel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseClicked
+        transaction r = new transaction();
+        r.setVisible(true);
+    }//GEN-LAST:event_panel2MouseClicked
+
+    private void panel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseEntered
+        panel2.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panel2MouseEntered
+
+    private void panel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseExited
+        panel2.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panel2MouseExited
+
+    private void panel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel3MouseClicked
+        users u = new users();
+        u.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_panel3MouseClicked
+
+    private void panel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel3MouseEntered
+        panel3.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panel3MouseEntered
+
+    private void panel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel3MouseExited
+        panel3.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panel3MouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -645,6 +697,7 @@ public void loadOutOfStock() {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -659,7 +712,9 @@ public void loadOutOfStock() {
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panel1;
     private javax.swing.JPanel panel2;
+    private javax.swing.JPanel panel3;
     private javax.swing.JLabel productCount;
     private javax.swing.JTable products;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

@@ -160,7 +160,6 @@ public void displayData() {
     }
 }
 
-
         
         private void loadStockData() {
     try {
@@ -200,10 +199,26 @@ public void displayData() {
         panel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         stock = new javax.swing.JTable();
+        label = new javax.swing.JLabel();
+        searchBar = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        pid = new javax.swing.JTextField();
+        category = new javax.swing.JComboBox<>();
+        productName = new javax.swing.JTextField();
+        price = new javax.swing.JTextField();
+        quantity = new javax.swing.JTextField();
+        expire = new javax.swing.JTextField();
         deleteButton = new panelRoundComponents.PanelRound();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -213,20 +228,6 @@ public void displayData() {
         updateButton = new panelRoundComponents.PanelRound();
         jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        label = new javax.swing.JLabel();
-        pid = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        productName = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        price = new javax.swing.JTextField();
-        quantity = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        category = new javax.swing.JComboBox<>();
-        searchBar = new javax.swing.JTextField();
-        jLabel17 = new javax.swing.JLabel();
-        expire = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -250,9 +251,11 @@ public void displayData() {
         panel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Counter");
-        panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/selling.png"))); // NOI18N
+        jLabel2.setText(" Counter");
+        panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 180, -1));
 
         jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
 
@@ -271,13 +274,16 @@ public void displayData() {
         panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Inventory");
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/boxes (1).png"))); // NOI18N
+        jLabel3.setText(" Inventory");
         panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 200, -1));
 
         jPanel1.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 200, 40));
 
         jLabel11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Log out");
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -285,6 +291,11 @@ public void displayData() {
             }
         });
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, -1, -1));
+
+        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Posify");
+        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
@@ -311,7 +322,121 @@ public void displayData() {
         });
         jScrollPane1.setViewportView(stock);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(195, 159, 580, 330));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 89, 390, 390));
+
+        label.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        label.setForeground(new java.awt.Color(102, 102, 102));
+        label.setText("Product's");
+        jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 60, 90, -1));
+
+        searchBar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        searchBar.setForeground(new java.awt.Color(102, 102, 102));
+        searchBar.setText(" Search");
+        searchBar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                searchBarFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                searchBarFocusLost(evt);
+            }
+        });
+        searchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBarActionPerformed(evt);
+            }
+        });
+        searchBar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchBarKeyReleased(evt);
+            }
+        });
+        jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, 210, -1));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Product Details", javax.swing.border.TitledBorder.LEADING, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 18))); // NOI18N
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel12.setText("Product Code:");
+        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 100, -1));
+
+        jLabel17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel17.setText("Product Name:");
+        jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
+
+        jLabel13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel13.setText("Expire Date:");
+        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, -1, -1));
+
+        jLabel14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setText("Category:");
+        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel16.setText("Price:");
+        jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
+
+        jLabel15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel15.setText("Quantity:");
+        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+
+        pid.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        pid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        pid.setEnabled(false);
+        pid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pidActionPerformed(evt);
+            }
+        });
+        jPanel3.add(pid, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, 190, -1));
+
+        category.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        category.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Snacks", "Drinks", "Canned goods", "Crackers", "Poultry products", "Beverage", "Condiments", "Dairy", "Grains ", "Bread", "Oil ", "Fat" }));
+        category.setSelectedIndex(-1);
+        category.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoryActionPerformed(evt);
+            }
+        });
+        jPanel3.add(category, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, 190, -1));
+
+        productName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        productName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        productName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productNameActionPerformed(evt);
+            }
+        });
+        jPanel3.add(productName, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 130, 190, -1));
+
+        price.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        price.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        price.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                priceActionPerformed(evt);
+            }
+        });
+        jPanel3.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 210, 190, -1));
+
+        quantity.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        quantity.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        jPanel3.add(quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 170, 190, -1));
+
+        expire.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        expire.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
+        expire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expireActionPerformed(evt);
+            }
+        });
+        jPanel3.add(expire, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, 190, -1));
 
         deleteButton.setBackground(new java.awt.Color(252, 61, 57));
         deleteButton.setRoundBottomLeft(10);
@@ -338,9 +463,9 @@ public void displayData() {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8-delete-18.png"))); // NOI18N
         jLabel4.setText("DELETE");
-        deleteButton.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 100, 40));
+        deleteButton.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 80, 40));
 
-        jPanel2.add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 60, 120, 40));
+        jPanel3.add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 310, 100, 40));
 
         addproduct.setBackground(new java.awt.Color(91, 164, 252));
         addproduct.setRoundBottomLeft(10);
@@ -367,9 +492,9 @@ public void displayData() {
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8-add-18.png"))); // NOI18N
         jLabel10.setText("PRODUCT");
-        addproduct.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 1, 100, 40));
+        addproduct.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 1, 80, 40));
 
-        jPanel2.add(addproduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 60, 120, 40));
+        jPanel3.add(addproduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 100, 40));
 
         updateButton.setBackground(new java.awt.Color(83, 215, 105));
         updateButton.setRoundBottomLeft(10);
@@ -396,103 +521,11 @@ public void displayData() {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8-update-18.png"))); // NOI18N
         jLabel8.setText("UPDATE");
-        updateButton.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 100, 40));
+        updateButton.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 80, 40));
 
-        jPanel2.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 120, 40));
+        jPanel3.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 100, 40));
 
-        label.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        label.setForeground(new java.awt.Color(102, 102, 102));
-        label.setText("Product's");
-        jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 130, 100, -1));
-
-        pid.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        pid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
-        pid.setEnabled(false);
-        pid.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pidActionPerformed(evt);
-            }
-        });
-        jPanel2.add(pid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 90, -1));
-
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel12.setText("Product Code");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 90, -1));
-
-        productName.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        productName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
-        productName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productNameActionPerformed(evt);
-            }
-        });
-        jPanel2.add(productName, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 140, -1));
-
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel13.setText("Expire Date");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
-
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel16.setText("Price");
-        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, -1, -1));
-
-        price.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        price.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
-        jPanel2.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 90, -1));
-
-        quantity.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        quantity.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
-        jPanel2.add(quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 90, -1));
-
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel15.setText("Quantity");
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, -1, -1));
-
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel14.setText("Category");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, -1, -1));
-
-        category.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        category.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Snacks", "Drinks", "Canned goods", "Crackers", "Poultry products", "Beverage", "Condiments", "Dairy", "Grains ", "Bread", "Oil ", "Fat" }));
-        category.setSelectedIndex(-1);
-        category.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                categoryActionPerformed(evt);
-            }
-        });
-        jPanel2.add(category, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 140, -1));
-
-        searchBar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        searchBar.setForeground(new java.awt.Color(102, 102, 102));
-        searchBar.setText(" Search");
-        searchBar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                searchBarFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                searchBarFocusLost(evt);
-            }
-        });
-        searchBar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchBarActionPerformed(evt);
-            }
-        });
-        searchBar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                searchBarKeyReleased(evt);
-            }
-        });
-        jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, 210, -1));
-
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel17.setText("Product Name");
-        jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, -1));
-
-        expire.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        expire.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
-        jPanel2.add(expire, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 140, -1));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 360, 390));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
@@ -670,6 +703,10 @@ try {
         "Product Name", "Product Status", "Category", "Expire Date", "Price"
     }, 0);
 
+    // Get the current date
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String currentDate = dateFormat.format(new Date());
+
     // Populate the table with data
     while (rs.next()) {
         String productName = rs.getString("prod_name");
@@ -684,9 +721,20 @@ try {
             productStatus = "Out of stock";
         }
 
-        // Check if the expire date is '9999-12-31' and replace it with 'No Expire'
+        // Check if the expire date is '0001-12-31' and replace it with 'No Expiry'
         if ("0001-12-31".equals(expireDate)) {
             expireDate = "No Expiry Date";
+        }
+
+        // Check if the expire date is before the current date and skip expired products
+        try {
+            Date expire = dateFormat.parse(expireDate);
+            Date current = dateFormat.parse(currentDate);
+            if (expire.before(current)) {
+                continue; // Skip expired products
+            }
+        } catch (Exception e) {
+            System.out.println("Error parsing date: " + e.getMessage());
         }
 
         // Add data to the model
@@ -715,7 +763,7 @@ try {
                 } else if (status.equals("Out of stock")) {
                     comp.setForeground(Color.RED); // Red for out-of-stock products
                 } else {
-                    comp.setForeground(Color.BLACK); // Default white if status is unknown
+                    comp.setForeground(Color.BLACK); // Default color if status is unknown
                 }
             }
             return comp;
@@ -778,6 +826,14 @@ try {
         // TODO add your handling code here:
     }//GEN-LAST:event_productNameActionPerformed
 
+    private void priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_priceActionPerformed
+
+    private void expireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expireActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_expireActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -836,6 +892,7 @@ try {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label;
     private javax.swing.JPanel panel;
@@ -846,6 +903,7 @@ try {
     private javax.swing.JTextField quantity;
     private javax.swing.JTextField searchBar;
     private javax.swing.JTable stock;
+    private javax.swing.JLabel title;
     private panelRoundComponents.PanelRound updateButton;
     // End of variables declaration//GEN-END:variables
 }

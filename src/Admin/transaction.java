@@ -13,8 +13,15 @@ import com.itextpdf.text.pdf.PdfWriter;
 import config.PanelPrinter;
 import config.dbConnector;
 import form.Loginfrom;
+import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Image;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.Window;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.Date;
@@ -23,6 +30,8 @@ import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -245,14 +254,6 @@ public void dailySales() {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         pdf = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        panel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        panel = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        panel2 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         totalSale = new javax.swing.JLabel();
@@ -266,6 +267,15 @@ public void dailySales() {
         sales_list = new javax.swing.JTable();
         searchBar = new javax.swing.JTextField();
         export = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        panel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        panel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        panel2 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
 
         view.setText("View");
         view.addActionListener(new java.awt.event.ActionListener() {
@@ -276,8 +286,10 @@ public void dailySales() {
         popUp.add(view);
 
         viewpanel.setBackground(new java.awt.Color(255, 255, 255));
-        viewpanel.setMinimumSize(new java.awt.Dimension(400, 400));
-        viewpanel.setPreferredSize(new java.awt.Dimension(400, 400));
+        viewpanel.setMaximumSize(new java.awt.Dimension(450, 500));
+        viewpanel.setMinimumSize(new java.awt.Dimension(450, 500));
+        viewpanel.setPreferredSize(new java.awt.Dimension(450, 500));
+        viewpanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         print.setBackground(new java.awt.Color(89, 196, 19));
         print.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
@@ -288,172 +300,112 @@ public void dailySales() {
                 printActionPerformed(evt);
             }
         });
+        viewpanel.add(print, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 450, 180, 30));
 
         jPanel4.setBackground(new java.awt.Color(89, 196, 19));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("  VIEW DETAILS");
+        jLabel12.setText("  TRANSACTION DETAILS");
+        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 448, 50));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-        );
+        viewpanel.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 50));
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel14.setText("Category");
+        jLabel14.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setText("Category:");
+        viewpanel.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 90, -1));
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel15.setText("Product Name");
+        jLabel15.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel15.setText("Product Name:");
+        viewpanel.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(102, 102, 102));
         jLabel16.setText("Quantity Sold");
+        viewpanel.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 120, -1));
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel17.setText("Price");
+        jLabel17.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel17.setText("Price:");
+        viewpanel.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 90, -1));
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel18.setText("Total");
+        jLabel18.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel18.setText("Total:");
+        viewpanel.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 90, -1));
 
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel19.setText("Date");
+        jLabel19.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel19.setText("Date:");
+        viewpanel.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 90, -1));
 
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel20.setText("Time");
+        jLabel20.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel20.setText("Time:");
+        viewpanel.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 90, -1));
 
-        prodname.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        prodname.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         prodname.setText("Product Name");
+        viewpanel.add(prodname, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, 170, -1));
 
-        cat.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        cat.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         cat.setText("Category");
+        viewpanel.add(cat, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 120, 170, -1));
 
-        quansold.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        quansold.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         quansold.setText("Quantity Sold");
+        viewpanel.add(quansold, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 170, -1));
 
-        price.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        price.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         price.setText("Price");
+        viewpanel.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 280, 170, -1));
 
-        total.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        total.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         total.setText("Total");
+        viewpanel.add(total, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 320, 170, -1));
 
-        date.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        date.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         date.setText("Date");
+        viewpanel.add(date, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 360, 170, -1));
 
-        time.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        time.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         time.setText("Time");
+        viewpanel.add(time, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, 170, -1));
 
-        jLabel25.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel25.setText("Sale Id");
+        jLabel25.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel25.setText("Sale Id:");
+        viewpanel.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
-        sale_id.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        sale_id.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         sale_id.setText("Sale Id");
+        viewpanel.add(sale_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 170, -1));
 
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel26.setText("Expire Date");
+        jLabel26.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel26.setText("Expire Date:");
+        viewpanel.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 110, -1));
 
-        expire.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        expire.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         expire.setText("Expire Date");
-
-        javax.swing.GroupLayout viewpanelLayout = new javax.swing.GroupLayout(viewpanel);
-        viewpanel.setLayout(viewpanelLayout);
-        viewpanelLayout.setHorizontalGroup(
-            viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(viewpanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(viewpanelLayout.createSequentialGroup()
-                        .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel25)
-                            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(63, 63, 63)
-                        .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sale_id)
-                            .addComponent(prodname)
-                            .addComponent(cat, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(quansold, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(expire, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 125, Short.MAX_VALUE))
-        );
-        viewpanelLayout.setVerticalGroup(
-            viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(viewpanelLayout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel25)
-                    .addComponent(sale_id))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(viewpanelLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel26))
-                    .addGroup(viewpanelLayout.createSequentialGroup()
-                        .addComponent(prodname)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cat)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(quansold)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(expire)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(price)
-                    .addComponent(jLabel17))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(viewpanelLayout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel19))
-                    .addGroup(viewpanelLayout.createSequentialGroup()
-                        .addComponent(total)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(date)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(viewpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel20)
-                    .addComponent(time))
-                .addGap(18, 18, 18)
-                .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
-        );
+        viewpanel.add(expire, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 240, 170, -1));
 
         exportData.setBackground(new java.awt.Color(255, 255, 255));
         exportData.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         exportData.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 320, 10));
 
-        jPanel7.setBackground(new java.awt.Color(0, 92, 229));
+        jPanel7.setBackground(new java.awt.Color(89, 196, 19));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel22.setBackground(new java.awt.Color(0, 92, 229));
+        jLabel22.setBackground(new java.awt.Color(89, 196, 19));
         jLabel22.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText(" System Users Data");
+        jLabel22.setText("Generate Report");
         jPanel7.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 60));
 
         exportData.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 60));
@@ -470,7 +422,7 @@ public void dailySales() {
         jLabel24.setText("File name:");
         exportData.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, -1, 20));
 
-        pdf.setBackground(new java.awt.Color(0, 51, 184));
+        pdf.setBackground(new java.awt.Color(89, 196, 19));
         pdf.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         pdf.setForeground(new java.awt.Color(255, 255, 255));
         pdf.setText(" PDF");
@@ -483,84 +435,6 @@ public void dailySales() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel1.setBackground(new java.awt.Color(89, 196, 19));
-        jPanel1.setPreferredSize(new java.awt.Dimension(200, 450));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panel1.setBackground(new java.awt.Color(89, 196, 19));
-        panel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panel1MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                panel1MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                panel1MouseExited(evt);
-            }
-        });
-        panel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Sales Reports");
-        panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
-
-        jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 200, 40));
-
-        panel.setBackground(new java.awt.Color(89, 196, 19));
-        panel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                panelMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                panelMouseExited(evt);
-            }
-        });
-        panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Dashboard");
-        panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 200, -1));
-
-        jPanel1.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 200, 40));
-
-        jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel4.setText("Log out");
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel4MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, -1, -1));
-
-        panel2.setBackground(new java.awt.Color(89, 196, 19));
-        panel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panel2MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                panel2MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                panel2MouseExited(evt);
-            }
-        });
-        panel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Transaction");
-        panel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
-
-        jPanel1.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -667,43 +541,99 @@ public void dailySales() {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
+        jPanel1.setBackground(new java.awt.Color(89, 196, 19));
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 450));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panel1.setBackground(new java.awt.Color(89, 196, 19));
+        panel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel1MouseExited(evt);
+            }
+        });
+        panel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/file-circle-info.png"))); // NOI18N
+        jLabel2.setText(" Sales Reports");
+        panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 210, -1));
+
+        jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 200, 40));
+
+        panel.setBackground(new java.awt.Color(89, 196, 19));
+        panel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panelMouseExited(evt);
+            }
+        });
+        panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/house-chimney (1).png"))); // NOI18N
+        jLabel3.setText(" Dashboard");
+        panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 190, -1));
+
+        jPanel1.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 200, 40));
+
+        jLabel11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Log out");
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel11MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, -1, -1));
+
+        panel2.setBackground(new java.awt.Color(89, 196, 19));
+        panel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel2MouseExited(evt);
+            }
+        });
+        panel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel27.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/assessment (1).png"))); // NOI18N
+        jLabel27.setText(" Transaction");
+        panel2.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 190, -1));
+
+        jPanel1.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
+
+        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Posify");
+        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked
-        salesreport a = new salesreport();
-        a.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_panel1MouseClicked
-
-    private void panel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseEntered
-        panel1.setBackground(new Color(204,204,204));
-    }//GEN-LAST:event_panel1MouseEntered
-
-    private void panel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseExited
-        panel1.setBackground(new Color(89,196,19));
-    }//GEN-LAST:event_panel1MouseExited
-
-    private void panelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseClicked
-        adminDashboard ad = new adminDashboard();
-        ad.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_panelMouseClicked
-
-    private void panelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseEntered
-        panel.setBackground(new Color(204,204,204));
-    }//GEN-LAST:event_panelMouseEntered
-
-    private void panelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseExited
-        panel.setBackground(new Color(89,196,19));
-    }//GEN-LAST:event_panelMouseExited
-
-    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        Loginfrom lf = new Loginfrom();
-        lf.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel4MouseClicked
 
     private void searchBarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBarFocusGained
         if (searchBar.getText().equals(" Search date")){
@@ -798,6 +728,7 @@ try {
 
     private void pdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfActionPerformed
 
+
 if (nameField.getText().isEmpty()) {
     JOptionPane.showMessageDialog(null, "Please name the PDF first to generate.");
     return;
@@ -805,6 +736,7 @@ if (nameField.getText().isEmpty()) {
 
 String name = nameField.getText() + ".pdf";
 String location = System.getProperty("user.home") + "/Documents/";
+String fullPath = location + name;
 
 try {
     dbConnector dbc = new dbConnector();
@@ -817,153 +749,194 @@ try {
             "ORDER BY sales.quantity_sold DESC";
     ResultSet resultSet = dbc.getData(query);
 
-// Initialize the document and table
-com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A5.rotate());
-PdfWriter.getInstance(document, new FileOutputStream(location + name));
-document.open();
+    // Initialize the document and table
+    com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A5.rotate());
+    PdfWriter.getInstance(document, new FileOutputStream(fullPath));
+    document.open();
 
-// Create a font for the header
-Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
-Font cellFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
+    // Create a font for the header
+    Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
+    Font cellFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
 
-// Create a table with 7 columns
-PdfPTable pdfPTable = new PdfPTable(7);
-pdfPTable.setWidthPercentage(100); // Make table width span the entire page
-pdfPTable.setSpacingBefore(10f);
-pdfPTable.setSpacingAfter(10f);
+    // Create a table with 7 columns
+    PdfPTable pdfPTable = new PdfPTable(7);
+    pdfPTable.setWidthPercentage(100);
+    pdfPTable.setSpacingBefore(10f);
+    pdfPTable.setSpacingAfter(10f);
 
-// Set column widths
-float[] columnWidths = {1.5f, 3f, 3f, 2f, 2f, 2.5f, 2.5f};
-pdfPTable.setWidths(columnWidths);
+    // Set column widths
+    float[] columnWidths = {1.5f, 3f, 3f, 2f, 2f, 2.5f, 2.5f};
+    pdfPTable.setWidths(columnWidths);
 
-// Create header cells
-PdfPCell headerCell = new PdfPCell();
-headerCell.setBackgroundColor(BaseColor.DARK_GRAY);
-headerCell.setPadding(5);
-headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-// Add table headers with styling
-String[] headers = {"Sale ID", "Product Name", "Quantity Sold", "Price", "Total", "Date", "Time"};
-for (String header : headers) {
-    headerCell.setPhrase(new Phrase(header, headerFont));
-    pdfPTable.addCell(headerCell);
-}
-
-// Add rows to the table
-if (resultSet.next()) {
-    do {
-        // Sale ID
-        PdfPCell saleIdCell = new PdfPCell(new Phrase(resultSet.getString("Sale_Id"), cellFont));
-        saleIdCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        saleIdCell.setPadding(5);
-        pdfPTable.addCell(saleIdCell);
-
-        // Product Name
-        PdfPCell productNameCell = new PdfPCell(new Phrase(resultSet.getString("Product_Name"), cellFont));
-        productNameCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        productNameCell.setPadding(5);
-        pdfPTable.addCell(productNameCell);
-
-        // Quantity Sold
-        PdfPCell quantityCell = new PdfPCell(new Phrase(resultSet.getString("Quantity_Sold"), cellFont));
-        quantityCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        quantityCell.setPadding(5);
-        pdfPTable.addCell(quantityCell);
-
-        // Price
-        PdfPCell priceCell = new PdfPCell(new Phrase(resultSet.getString("Price"), cellFont));
-        priceCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        priceCell.setPadding(5);
-        pdfPTable.addCell(priceCell);
-
-        // Total
-        PdfPCell totalCell = new PdfPCell(new Phrase(resultSet.getString("Total"), cellFont));
-        totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        totalCell.setPadding(5);
-        pdfPTable.addCell(totalCell);
-
-        // Date
-        PdfPCell dateCell = new PdfPCell(new Phrase(resultSet.getString("Date"), cellFont));
-        dateCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        dateCell.setPadding(5);
-        pdfPTable.addCell(dateCell);
-
-        // Time
-        PdfPCell timeCell = new PdfPCell(new Phrase(resultSet.getString("Time"), cellFont));
-        timeCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        timeCell.setPadding(5);
-        pdfPTable.addCell(timeCell);
-    } while (resultSet.next());
-}
-
-// Add the table to the document
-document.add(pdfPTable);
-document.close();
-
-
-    Window window = SwingUtilities.getWindowAncestor(exportData);
-    if (window != null) {
-        window.dispose();
+    // Add table headers and rows
+    String[] headers = {"Sale ID", "Product Name", "Quantity Sold", "Price", "Total", "Date", "Time"};
+    for (String header : headers) {
+        PdfPCell headerCell = new PdfPCell(new Phrase(header, headerFont));
+        headerCell.setBackgroundColor(new BaseColor(89, 196, 19)); 
+        headerCell.setPadding(5);
+        headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        pdfPTable.addCell(headerCell);
     }
-    JOptionPane.showMessageDialog(null, "Successfully Generated");
+
+    if (resultSet.next()) {
+        do {
+            pdfPTable.addCell(new PdfPCell(new Phrase(resultSet.getString("Sale_Id"), cellFont)));
+            pdfPTable.addCell(new PdfPCell(new Phrase(resultSet.getString("Product_Name"), cellFont)));
+            pdfPTable.addCell(new PdfPCell(new Phrase(resultSet.getString("Quantity_Sold"), cellFont)));
+            pdfPTable.addCell(new PdfPCell(new Phrase(resultSet.getString("Price"), cellFont)));
+            pdfPTable.addCell(new PdfPCell(new Phrase(resultSet.getString("Total"), cellFont)));
+            pdfPTable.addCell(new PdfPCell(new Phrase(resultSet.getString("Date"), cellFont)));
+            pdfPTable.addCell(new PdfPCell(new Phrase(resultSet.getString("Time"), cellFont)));
+        } while (resultSet.next());
+    }
+
+    document.add(pdfPTable);
+    document.close();
+
+    // Show notification and open file in Chrome or default browser on click
+    if (SystemTray.isSupported()) {
+        SystemTray tray = SystemTray.getSystemTray();
+        Image image = Toolkit.getDefaultToolkit().getImage("icon.png"); // Add an icon if available
+        TrayIcon trayIcon = new TrayIcon(image, "PDF Notification");
+        trayIcon.setImageAutoSize(true);
+        tray.add(trayIcon);
+
+        // Add action listener to open the file in Chrome or the default browser
+        trayIcon.addActionListener(e -> {
+            try {
+                File file = new File(fullPath);
+                if (file.exists()) {
+                    // Open the PDF in the default web browser (e.g., Chrome)
+                    Desktop.getDesktop().browse(file.toURI());
+                } else {
+                    System.err.println("File does not exist.");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                System.err.println("Error opening file: " + ex.getMessage());
+            }
+        });
+
+        trayIcon.displayMessage("PDF Generated",
+                "File saved to: " + fullPath + "\nClick here to view in browser.",
+                TrayIcon.MessageType.INFO);
+
+        // Remove tray icon after 10 seconds
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                tray.remove(trayIcon);
+            }
+        }, 10000); // 10 seconds
+    } else {
+        System.out.println("System tray not supported!");
+    }
+
     nameField.setText("");
 } catch (DocumentException | FileNotFoundException e) {
-    System.err.println("Document Error: " + e);
+    e.printStackTrace();
+    System.err.println("Document Error: " + e.getMessage());
 } catch (SQLException ex) {
-    System.out.println("SQL Error: " + ex);
-}
+    ex.printStackTrace();
+    System.err.println("SQL Error: " + ex.getMessage());
+}       catch (AWTException ex) {
+            Logger.getLogger(transaction.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         
     }//GEN-LAST:event_pdfActionPerformed
 
     private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
 
-JPanel myPanel = new JPanel();
+    JPanel myPanel = new JPanel();
 
-try {
-    dbConnector dbc = new dbConnector();
-    ResultSet rs = dbc.getData(
-        "SELECT product_table.prod_name AS prodname, " +
-        "product_table.category AS cat, " +
-        "sales.quantity_sold AS quansold, " +
-        "product_table.price AS price, " +
-        "(product_table.price * sales.quantity_sold) AS total, " +
-        "sales.date AS date, " +
-        "sales.time AS time, " +
-        "product_table.expire AS expire " +  // Include expire field in the query
-        "FROM sales " +
-        "JOIN product_table ON sales.prod_id = product_table.prod_id " +
-        "WHERE sales.sale_id = '" + sales_list.getValueAt(sales_list.getSelectedRow(), 0).toString() + "'"
-    );
+    try {
+        dbConnector dbc = new dbConnector();
+        ResultSet rs = dbc.getData(
+            "SELECT product_table.prod_name AS prodname, " +
+            "product_table.category AS cat, " +
+            "sales.quantity_sold AS quansold, " +
+            "product_table.price AS price, " +
+            "(product_table.price * sales.quantity_sold) AS total, " +
+            "sales.date AS date, " +
+            "sales.time AS time, " +
+            "product_table.expire AS expire " +
+            "FROM sales " +
+            "JOIN product_table ON sales.prod_id = product_table.prod_id " +
+            "WHERE sales.sale_id = '" + sales_list.getValueAt(sales_list.getSelectedRow(), 0).toString() + "'"
+        );
 
-    if (rs.next()) {
-        // Create a PrintSalesDetails instance
-        PrintSalesDetails psd = new PrintSalesDetails();
+        if (rs.next()) {
+            // Create a PrintSalesDetails instance
+            PrintSalesDetails psd = new PrintSalesDetails();
 
-        // Populate the fields in the print panel
-        psd.prodname.setText(rs.getString("prodname"));
-        psd.cat.setText(rs.getString("cat"));
-        psd.quansold.setText(rs.getString("quansold"));
-        psd.price.setText(rs.getString("price"));
-        psd.total.setText(rs.getString("total"));
-        psd.date.setText(rs.getString("date"));
-        psd.time.setText(rs.getString("time"));
+            // Populate the fields in the print panel
+            psd.prodname.setText(rs.getString("prodname"));
+            psd.cat.setText(rs.getString("cat"));
+            psd.quansold.setText(rs.getString("quansold"));
+            psd.price.setText(rs.getString("price"));
+            psd.total.setText(rs.getString("total"));
+            psd.date.setText(rs.getString("date"));
+            psd.time.setText(rs.getString("time"));
 
-        // Handle expiration date
-        String expireDate = rs.getString("expire");
-        if ("0001-12-31".equals(expireDate)) {
-            psd.expire.setText("No Expiry Date"); // Set 'No Expire' if expiration date is 9999-12-31
-        } else {
-            psd.expire.setText(expireDate); // Otherwise, display the actual expiration date
+            // Handle expiration date
+            String expireDate = rs.getString("expire");
+            if ("0001-12-31".equals(expireDate)) {
+                psd.expire.setText("No Expiry Date"); // Set 'No Expire' if expiration date is 9999-12-31
+            } else {
+                psd.expire.setText(expireDate); // Otherwise, display the actual expiration date
+            }
+
+            // Use PanelPrinter to print or export the populated panel
+            PanelPrinter pPrint = new PanelPrinter(psd.page); // Assuming `page` is a JPanel in PrintSalesDetails
+            pPrint.printPanel();
+
+            // Notify user via system tray after printing
+            if (SystemTray.isSupported()) {
+                SystemTray tray = SystemTray.getSystemTray();
+                Image image = Toolkit.getDefaultToolkit().getImage("icon.png"); // Add an icon if available
+                TrayIcon trayIcon = new TrayIcon(image, "Print Notification");
+                trayIcon.setImageAutoSize(true);
+                tray.add(trayIcon);
+
+                // Add action listener to open the file in Chrome or the default browser
+                trayIcon.addActionListener(e -> {
+                    try {
+                        // Replace with your file location, for example:
+                        String filePath = "path/to/your/file.pdf";
+                        File file = new File(filePath);
+                        if (file.exists()) {
+                            // Open the PDF in the default web browser (e.g., Chrome)
+                            Desktop.getDesktop().browse(file.toURI());
+                        } else {
+                            System.err.println("File does not exist.");
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.err.println("Error opening file: " + ex.getMessage());
+                    }
+                });
+
+                trayIcon.displayMessage("Print Completed",
+                        "Click here to view the file.",
+                        TrayIcon.MessageType.INFO);
+
+                // Remove tray icon after 10 seconds
+                new java.util.Timer().schedule(new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        tray.remove(trayIcon);
+                    }
+                }, 10000); // 10 seconds
+            } else {
+                System.out.println("System tray not supported!");
+            }
         }
-
-        // Use PanelPrinter to print or export the populated panel
-        PanelPrinter pPrint = new PanelPrinter(psd.page); // Assuming `page` is a JPanel in PrintSalesDetails
-        pPrint.printPanel();
-    }
-} catch (SQLException ex) {
-    System.out.println("Error: " + ex.getMessage());
-}
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }   catch (AWTException ex) {
+            Logger.getLogger(transaction.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
             
     }//GEN-LAST:event_printActionPerformed
@@ -1044,10 +1017,43 @@ try {
             null, options, null);
     }//GEN-LAST:event_exportActionPerformed
 
+    private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked
+        salesreport a = new salesreport();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_panel1MouseClicked
+
+    private void panel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseEntered
+        panel1.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panel1MouseEntered
+
+    private void panel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseExited
+        panel1.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panel1MouseExited
+
+    private void panelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseClicked
+        adminDashboard ad = new adminDashboard();
+        ad.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_panelMouseClicked
+
+    private void panelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseEntered
+        panel.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panelMouseEntered
+
+    private void panelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseExited
+        panel.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panelMouseExited
+
+    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
+        Loginfrom lf = new Loginfrom();
+        lf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel11MouseClicked
+
     private void panel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseClicked
         transaction r = new transaction();
         r.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_panel2MouseClicked
 
     private void panel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseEntered
@@ -1105,6 +1111,7 @@ try {
     private javax.swing.JPanel exportData;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -1121,9 +1128,8 @@ try {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -1146,6 +1152,7 @@ try {
     private javax.swing.JTable sales_list;
     private javax.swing.JTextField searchBar;
     private javax.swing.JLabel time;
+    private javax.swing.JLabel title;
     private javax.swing.JLabel total;
     private javax.swing.JLabel totalSale;
     private javax.swing.JMenuItem view;

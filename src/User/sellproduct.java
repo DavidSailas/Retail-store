@@ -8,6 +8,8 @@ import java.awt.Component;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -28,9 +30,9 @@ public void displayData() {
     try {
         dbConnector dbc = new dbConnector();
 
-        // Fetch data from the database, including prod_id and quantity
+        // Fetch data from the database, including prod_id, quantity, and expire
         ResultSet rs = dbc.getData(
-            "SELECT prod_id, prod_name, prod_status, category, price, quantity " +
+            "SELECT prod_id, prod_name, prod_status, category, price, quantity, expire " +
             "FROM product_table"
         );
 
@@ -38,6 +40,10 @@ public void displayData() {
         DefaultTableModel model = new DefaultTableModel(new String[]{
             "Product ID", "Product Name", "Product Status", "Category", "Price"
         }, 0);
+
+        // Get the current date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = dateFormat.format(new Date());
 
         // Populate the model with data
         while (rs.next()) {
@@ -47,10 +53,24 @@ public void displayData() {
             String category = rs.getString("category");
             double price = rs.getDouble("price");
             int quantity = rs.getInt("quantity");
+            String expireDate = rs.getString("expire");
 
-            // Check if the quantity is 0, and change the product status to "Out of stock"
+            // If the quantity is 0, set the product status to "Out of stock"
             if (quantity == 0) {
                 productStatus = "Out of stock";
+            }
+
+            // Check the expiration date
+            if (!"0001-12-31".equals(expireDate)) { // Exclude non-expiring products
+                try {
+                    Date expire = dateFormat.parse(expireDate);
+                    Date current = dateFormat.parse(currentDate);
+                    if (expire.before(current)) {
+                        continue; // Skip expired products
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error parsing date: " + e.getMessage());
+                }
             }
 
             model.addRow(new Object[]{
@@ -97,16 +117,11 @@ public void displayData() {
 
 
 
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        panel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        panel = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -115,66 +130,16 @@ public void displayData() {
         searchBar = new javax.swing.JTextField();
         buyButton = new panelRoundComponents.PanelRound();
         jLabel6 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        panel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        panel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel1.setBackground(new java.awt.Color(89, 196, 19));
-        jPanel1.setPreferredSize(new java.awt.Dimension(200, 450));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panel1.setBackground(new java.awt.Color(89, 196, 19));
-        panel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panel1MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                panel1MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                panel1MouseExited(evt);
-            }
-        });
-        panel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Counter");
-        panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 200, -1));
-
-        jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
-
-        panel.setBackground(new java.awt.Color(89, 196, 19));
-        panel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                panelMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                panelMouseExited(evt);
-            }
-        });
-        panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Inventory");
-        panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 200, -1));
-
-        jPanel1.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 200, 40));
-
-        jLabel11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel11.setText("Log out");
-        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel11MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, -1, -1));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -263,6 +228,73 @@ public void displayData() {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
+        jPanel1.setBackground(new java.awt.Color(89, 196, 19));
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 450));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panel1.setBackground(new java.awt.Color(89, 196, 19));
+        panel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel1MouseExited(evt);
+            }
+        });
+        panel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/selling (1).png"))); // NOI18N
+        jLabel2.setText(" Counter");
+        panel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 180, -1));
+
+        jPanel1.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
+
+        panel.setBackground(new java.awt.Color(89, 196, 19));
+        panel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panelMouseExited(evt);
+            }
+        });
+        panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/boxes.png"))); // NOI18N
+        jLabel3.setText(" Inventory");
+        panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 200, -1));
+
+        jPanel1.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 200, 40));
+
+        jLabel11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Log out");
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel11MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, -1, -1));
+
+        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Posify");
+        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -297,17 +329,21 @@ try {
     String searchText = searchBar.getText().trim();
     ResultSet rs;
 
-    // Modify the query to select the quantity column as well
+    // Modify the query to select the expire date column as well
     if (searchText.isEmpty()) {
-        rs = dbc.getData("SELECT prod_name, prod_status, category, price, quantity FROM product_table");
+        rs = dbc.getData("SELECT prod_name, prod_status, category, price, quantity, expire FROM product_table");
     } else {
-        rs = dbc.getData("SELECT prod_name, prod_status, category, price, quantity FROM product_table WHERE prod_name LIKE '%" + searchText + "%'");
+        rs = dbc.getData("SELECT prod_name, prod_status, category, price, quantity, expire FROM product_table WHERE prod_name LIKE '%" + searchText + "%'");
     }
 
     // Set up the table model with the necessary columns
     DefaultTableModel model = new DefaultTableModel(new String[]{
         "Product Name", "Product Status", "Category", "Price"
     }, 0);
+
+    // Get the current date
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String currentDate = dateFormat.format(new Date());
 
     // Populate the model with data from the result set
     while (rs.next()) {
@@ -316,12 +352,29 @@ try {
         String category = rs.getString("category");
         double price = rs.getDouble("price");
         int quantity = rs.getInt("quantity"); // Fetch quantity from the database
+        String expireDate = rs.getString("expire");
 
         // If the quantity is 0, set the product status to "Out of stock"
         if (quantity == 0) {
             productStatus = "Out of stock";
         }
 
+        // Check if the expire date is before the current date, if it's '0001-12-31' replace it with a default non-expiry value
+        if ("0001-12-31".equals(expireDate)) {
+            expireDate = "No Expiry Date";
+        } else {
+            try {
+                Date expire = dateFormat.parse(expireDate);
+                Date current = dateFormat.parse(currentDate);
+                if (expire.before(current)) {
+                    continue; // Skip expired products
+                }
+            } catch (Exception e) {
+                System.out.println("Error parsing date: " + e.getMessage());
+            }
+        }
+
+        // Add the data to the model
         model.addRow(new Object[]{
             productName,
             productStatus,
@@ -413,6 +466,10 @@ if (rowIndex < 0) {
         buyButton.setBackground(new Color(83,215,105));
     }//GEN-LAST:event_buyButtonMouseReleased
 
+    private void buyButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buyButtonMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buyButtonMouseEntered
+
     private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked
         sellproduct r = new sellproduct();
         r.setVisible(true);
@@ -446,10 +503,6 @@ if (rowIndex < 0) {
         lf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel11MouseClicked
-
-    private void buyButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buyButtonMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buyButtonMouseEntered
 
     /**
      * @param args the command line arguments
@@ -501,5 +554,6 @@ if (rowIndex < 0) {
     private javax.swing.JPanel panel1;
     private javax.swing.JTextField searchBar;
     private javax.swing.JTable stock;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

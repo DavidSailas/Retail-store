@@ -27,8 +27,6 @@ public class PrintSalesDetails extends javax.swing.JFrame {
     private void initComponents() {
 
         page = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -47,178 +45,128 @@ public class PrintSalesDetails extends javax.swing.JFrame {
         sale_id = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         expire = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(89, 196, 19));
+        setMaximumSize(new java.awt.Dimension(550, 650));
+        setMinimumSize(new java.awt.Dimension(550, 650));
+        setPreferredSize(new java.awt.Dimension(550, 650));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         page.setBackground(new java.awt.Color(255, 255, 255));
-        page.setMinimumSize(new java.awt.Dimension(400, 400));
+        page.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(89, 196, 19), 2, true));
+        page.setMaximumSize(new java.awt.Dimension(500, 600));
+        page.setMinimumSize(new java.awt.Dimension(500, 600));
+        page.setPreferredSize(new java.awt.Dimension(500, 600));
+        page.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel4.setBackground(new java.awt.Color(89, 196, 19));
+        jLabel14.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setText("Category:");
+        page.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 90, -1));
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("  VIEW DETAILS");
+        jLabel15.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel15.setText("Product Name:");
+        page.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, -1, -1));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-        );
+        jLabel16.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel16.setText("Quantity Sold:");
+        page.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 130, -1));
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel14.setText("Category");
+        jLabel17.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel17.setText("Price:");
+        page.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, 90, -1));
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel15.setText("Product Name");
+        jLabel18.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel18.setText("Total:");
+        page.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 90, -1));
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel16.setText("Quantity Sold");
+        jLabel19.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel19.setText("Date:");
+        page.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 490, 90, -1));
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel17.setText("Price");
+        jLabel20.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel20.setText("Time:");
+        page.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, 90, -1));
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel18.setText("Total");
-
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel19.setText("Date");
-
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel20.setText("Time");
-
-        prodname.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        prodname.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         prodname.setText("Product Name");
+        page.add(prodname, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 230, 170, -1));
 
-        cat.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        cat.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         cat.setText("Category");
+        page.add(cat, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, 170, -1));
 
-        quansold.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        quansold.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         quansold.setText("Quantity Sold");
+        page.add(quansold, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 270, 170, -1));
 
-        price.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        price.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         price.setText("Price");
+        page.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, 170, -1));
 
-        total.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        total.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         total.setText("Total");
+        page.add(total, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 170, -1));
 
-        date.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        date.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         date.setText("Date");
+        page.add(date, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 490, 170, -1));
 
-        time.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        time.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         time.setText("Time");
+        page.add(time, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 530, 170, -1));
 
-        jLabel25.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel25.setText("Sale Id");
+        jLabel25.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel25.setText("Sale Id:");
+        page.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, -1, -1));
 
-        sale_id.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        sale_id.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         sale_id.setText("Sale Id");
+        page.add(sale_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 170, -1));
 
-        jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel21.setText("Expire Date");
+        jLabel21.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel21.setText("Expire Date:");
+        page.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 110, -1));
 
-        expire.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        expire.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         expire.setText("Expire Date");
+        page.add(expire, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 310, 170, -1));
 
-        javax.swing.GroupLayout pageLayout = new javax.swing.GroupLayout(page);
-        page.setLayout(pageLayout);
-        pageLayout.setHorizontalGroup(
-            pageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pageLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(63, 63, 63)
-                .addGroup(pageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sale_id)
-                    .addComponent(prodname)
-                    .addComponent(cat, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(quansold, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(expire, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 125, Short.MAX_VALUE))
-        );
-        pageLayout.setVerticalGroup(
-            pageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pageLayout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addGroup(pageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel25)
-                    .addComponent(sale_id))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pageLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel19)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel20))
-                    .addGroup(pageLayout.createSequentialGroup()
-                        .addComponent(prodname)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cat)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(quansold)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(expire)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(price)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(total)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(date)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(time)))
-                .addGap(85, 85, 85))
-        );
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(89, 196, 19));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("Posify");
+        page.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 500, 40));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 432, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("TRANSACTION DETAILS");
+        page.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 500, 40));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(89, 196, 19));
+        jLabel1.setText("_______________________________________________________");
+        page.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(89, 196, 19));
+        jLabel2.setText("_______________________________________________________");
+        page.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
+
+        getContentPane().add(page, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 25, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -262,17 +210,19 @@ public class PrintSalesDetails extends javax.swing.JFrame {
     public javax.swing.JLabel cat;
     public javax.swing.JLabel date;
     public javax.swing.JLabel expire;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JPanel jPanel4;
     public javax.swing.JPanel page;
     public javax.swing.JLabel price;
     public javax.swing.JLabel prodname;
