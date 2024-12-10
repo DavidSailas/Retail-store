@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2024 at 08:14 PM
+-- Generation Time: Dec 10, 2024 at 05:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,21 +42,44 @@ CREATE TABLE `product_table` (
 --
 
 INSERT INTO `product_table` (`prod_id`, `prod_name`, `category`, `price`, `quantity`, `prod_status`, `expire`) VALUES
-(1, 'Royal', 'Drinks', 15, 14, 'Available', '2025-09-15'),
+(1, 'Royal', 'Drinks & Beverages', 15, 20, 'Available', '2025-09-15'),
 (2, 'Fita', 'Snacks', 9, 10, 'Available', '2025-05-10'),
 (3, 'Fudgee bar', 'Snacks', 9, 0, 'Out of stock', '2025-08-15'),
-(4, 'Fish Cracker', 'Crackers', 10, 10, 'Available', '2025-03-25'),
+(4, 'Fish Cracker', 'Snacks', 10, 10, 'Available', '2025-03-25'),
 (5, 'Sky Flakes', 'Snacks', 9, 9, 'Available', '2024-12-07'),
-(6, 'Coke', 'Drinks', 15, 11, 'Available', '2025-12-01'),
-(7, 'Sprite', 'Drinks', 15, 12, 'Available', '2025-12-01'),
-(8, 'Oishi', 'Crackers', 9, 10, 'Available', '2025-07-20'),
-(9, 'Corned Beef', 'Canned goods', 35, 0, 'Out of stock', '2026-01-05'),
-(10, 'Sanmarino Big', 'Canned goods', 45, 4, 'Available', '2025-11-10'),
-(11, 'Salt', 'Condiments', 5, 9, 'Available', '0001-12-31'),
+(6, 'Coke', 'Drinks & Beverages', 15, 11, 'Available', '2025-12-01'),
+(7, 'Sprite', 'Drinks & Beverages', 15, 12, 'Available', '2025-12-01'),
+(8, 'Oishi', 'Snacks', 9, 10, 'Available', '2025-07-20'),
+(9, 'Corned Beef', 'Canned Goods', 35, 0, 'Out of stock', '2026-01-05'),
+(10, 'Sanmarino Big', 'Canned Goods', 45, 6, 'Available', '2025-11-10'),
+(11, 'Salt', 'Condiments & Seasonings', 5, 9, 'Available', '0001-12-31'),
 (12, 'Oil', 'Oil', 5, 5, 'Available', '2024-12-06'),
-(13, 'Vinegar', 'Condiments', 5, 5, 'Available', '0001-12-31'),
-(14, 'Sugar', 'Condiments', 20, 10, 'Available', '0001-12-31'),
-(15, 'KitKat', 'Dairy', 40, 5, 'Available', '2024-12-10');
+(13, 'Vinegar', 'Condiments & Seasonings', 5, 5, 'Available', '0001-12-31'),
+(14, 'Sugar', 'Condiments & Seasonings', 20, 10, 'Available', '0001-12-31'),
+(15, 'KitKat', 'Confectionery', 40, 5, 'Available', '2024-12-10'),
+(16, 'Bingo', 'Snacks', 9, 10, 'Available', '2025-12-09'),
+(17, 'Paper', 'Stationery & School Supplies', 25, 10, 'Available', '0001-12-31'),
+(18, 'Daiper Small', 'Hygiene Products', 12, 20, 'Available', '0001-12-31'),
+(19, 'Biogesic', 'Medicinal Products', 8, 15, 'Available', '2025-03-10'),
+(20, 'Neosip', 'Medicinal Products', 9, 15, 'Available', '2025-05-20'),
+(21, 'Surf Powder', 'Household Items', 9, 10, 'Available', '2025-06-30'),
+(22, 'Lighter', 'Household Items', 10, 5, 'Available', '0001-12-31'),
+(23, 'Shampoo', 'Personal Care Products', 8, 15, 'Available', '2025-12-31'),
+(24, 'Rice 5Kg', 'Grains', 250, 10, 'Available', '0001-12-31'),
+(25, 'Rice 1Kg', 'Grains', 50, 20, 'Available', '0001-12-31'),
+(26, 'Instant Noodles ', 'Instant Meals', 40, 5, 'Available', '2025-07-01'),
+(27, 'Cigarettes 1pack', 'Cigarettes & Tobacco', 140, 20, 'Available', '0001-12-31'),
+(28, 'Cigarettes', 'Cigarettes & Tobacco', 7, 40, 'Available', '0001-12-31'),
+(29, 'Condensed Milk', 'Cooking Essentials', 40, 5, 'Available', '2025-11-10'),
+(30, 'Soy Sauce Big', 'Condiments & Seasonings', 25, 5, 'Available', '2025-06-20'),
+(31, 'Canned Sardines', 'Canned Goods', 20, 6, 'Available', '2025-05-10'),
+(32, 'Canned Tuna', 'Canned Goods', 30, 7, 'Available', '2025-04-15'),
+(33, 'Presto', 'Snacks', 9, 6, 'Available', '2025-02-10'),
+(34, 'Bearch Tree', 'Dairy Products', 10, 15, 'Available', '2025-03-17'),
+(35, 'Egg', 'Poultry Products', 10, 100, 'Available', '0001-12-31'),
+(36, 'Swak', 'Dairy Products', 10, 6, 'Available', '2025-02-18'),
+(37, 'Greatest White', 'Dairy Products', 12, 13, 'Available', '2025-07-16'),
+(41, 'Hotdog', 'Poultry Products', 65, 10, 'Available', '2025-05-03');
 
 -- --------------------------------------------------------
 
@@ -116,9 +139,11 @@ CREATE TABLE `user_table` (
 --
 
 INSERT INTO `user_table` (`id`, `fname`, `lname`, `uname`, `pass`, `contact`, `status`, `type`, `email`, `image`) VALUES
-(1, 'david', 'villondo', 'admin', '7c222fb2927d828af22f592134e8932480637c0d', '09123456789', 'Active', 'Admin', 'david', 'u_default'),
-(2, 'sailas', 'romano', 'user', '7c222fb2927d828af22f592134e8932480637c0d', '09987654321', 'Active', 'User', 'sailas', 'u_default'),
-(3, 'ashlyn', 'batol', 'admin1', 'fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff12265', '', 'Pending', 'Admin', 'ash', 'u_default');
+(1, 'david', 'villondo', 'admin', '7c222fb2927d828af22f592134e8932480637c0d', '09123456789', 'Active', 'Admin', 'david', '/u_default/blank_pfp.jpg'),
+(2, 'sailas', 'romano', 'user', '7c222fb2927d828af22f592134e8932480637c0d', '09987654321', 'Active', 'User', 'sailas', '/u_default/blank_pfp.jpg'),
+(3, 'ashlyn', 'batol', 'admin1', '7c222fb2927d828af22f592134e8932480637c0d', '', 'Pending', 'Admin', 'ash', '/u_default/blank_pfp.jpg'),
+(4, 'sample', 'sample', 'sample', 'fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff12265', '', 'Archived', 'User', 'sample', '/u_default/blank_pfp.jpg'),
+(5, 'test', 'test', 'test', '7c222fb2927d828af22f592134e8932480637c0d', '09123789456', 'Archived', 'User', 'test', '/u_default/blank_pfp.jpg');
 
 --
 -- Indexes for dumped tables
@@ -151,7 +176,7 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `product_table`
 --
 ALTER TABLE `product_table`
-  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `sales`
@@ -163,7 +188,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

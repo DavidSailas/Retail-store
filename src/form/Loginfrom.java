@@ -104,6 +104,7 @@ public class Loginfrom extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
@@ -286,28 +287,65 @@ public class Loginfrom extends javax.swing.JFrame {
         password.setEchoChar('*');
     }//GEN-LAST:event_showMouseClicked
 
+
+    
     private void logInButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logInButtonMouseClicked
-        if (loginAcc(username.getText(), hashing(password.getText()))){
-            if (!status.equalsIgnoreCase("Active")){
-                JOptionPane.showMessageDialog(null, "Your account is In-Active, Please contact the Administrator!");
-            } else {
-                if (type.equals("Admin")){
-                    JOptionPane.showMessageDialog(null, "Log in successfully");
-                    adminDashboard admin = new adminDashboard();
-                    admin.setVisible(true);
-                    this.dispose();
-                } else if (type.equals("User")){
-                    JOptionPane.showMessageDialog(null, "Log in successfully");
-                    userDashboard user = new userDashboard();
-                    user.setVisible(true);
-                    this.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Account does not exist!", "Notice", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+
+if (loginAcc(username.getText(), hashing(password.getText()))) {
+    if (!status.equalsIgnoreCase("Active")) {
+        JOptionPane.showMessageDialog(
+            null,
+            "<html><b>Your account is In-Active</b><br>Please contact the Administrator!</html>",
+            "Account Status",
+            JOptionPane.WARNING_MESSAGE
+        );
+    } else {
+        if (type.equals("Admin")) {
+            JOptionPane.showMessageDialog(
+                null,
+                "<html><font color='blue'><b>Log in successfully!</b></font></html>",
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+            adminDashboard admin = new adminDashboard();
+            admin.setVisible(true);
+            this.dispose();
+        } else if (type.equals("User")) {
+            JOptionPane.showMessageDialog(
+                null,
+                "<html><font color='blue'><b>Log in successfully!</b></font></html>",
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // Create an instance of userDashboard
+            userDashboard user = new userDashboard();
+            user.setVisible(true);
+
+            // Reset flags before displaying data
+            user.resetFlags(); // Reset the flags to ensure notifications show properly
+
+            // Display data with the low stock message
+            user.displayData();
+            this.dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Log in failed");
+            JOptionPane.showMessageDialog(
+                null,
+                "<html><b>Account does not exist!</b></html>",
+                "Notice",
+                JOptionPane.ERROR_MESSAGE
+            );
         }
+    }
+} else {
+    JOptionPane.showMessageDialog(
+        null,
+        "<html><font color='red'><b>Log in failed!</b></font></html>",
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+    );
+}
+        
     }//GEN-LAST:event_logInButtonMouseClicked
 
     private void logInButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logInButtonMouseEntered

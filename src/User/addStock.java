@@ -4,6 +4,10 @@ package User;
 import config.dbConnector;
 import java.awt.Color;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 
@@ -42,19 +46,22 @@ public class addStock extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setBackground(new java.awt.Color(128, 128, 128));
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(128, 128, 128));
-        jLabel6.setText("Product Details");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(89, 196, 19));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Add Product");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 470, -1));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel1.setText("Product Name");
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel1.setText("Product Name:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
 
-        productName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        productName.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         productName.setForeground(new java.awt.Color(130, 130, 130));
         productName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
         productName.setPreferredSize(new java.awt.Dimension(6, 30));
@@ -73,28 +80,31 @@ public class addStock extends javax.swing.JFrame {
         });
         jPanel1.add(productName, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 160, -1));
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel16.setText("Price");
+        jLabel16.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel16.setText("Price:");
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 100, -1));
 
-        price.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        price.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         price.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
         jPanel1.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 160, 30));
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel15.setText("Quantity");
+        jLabel15.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel15.setText("Quantity:");
         jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 120, -1));
 
-        quant.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        quant.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         quant.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
         jPanel1.add(quant, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 160, 30));
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel14.setText("Category");
+        jLabel14.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setText("Category:");
         jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, -1, -1));
 
-        category.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        category.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Snacks", "Drinks", "Canned goods", "Crackers", "Poultry products", "Beverage", "Condiments", "Dairy", "Grains ", "Bread", "Oil ", "Fat" }));
+        category.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        category.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Snacks", "Drinks & Beverages", "Canned Goods", "Crackers & Bread", "Poultry Products", "Condiments & Seasonings", "Dairy Products", "Grains", "Cooking Essentials", "Personal Care Products", "Hygiene Products", "Household Items", "Stationery & School Supplies", "Footwear & Accessories", "Cigarettes & Tobacco", "Instant Meals", "Baby Products", "Confectionery", "Miscellaneous", "Medicinal Products" }));
         category.setSelectedIndex(-1);
         jPanel1.add(category, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, 190, 30));
 
@@ -152,8 +162,9 @@ public class addStock extends javax.swing.JFrame {
 
         jPanel1.add(cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 310, 70, -1));
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel17.setText("Exipre Date");
+        jLabel17.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel17.setText("Exipre Date:");
         jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 170, 100, -1));
 
         expire.setBackground(new java.awt.Color(255, 255, 255));
@@ -218,9 +229,9 @@ public class addStock extends javax.swing.JFrame {
         // TODO addStock your handling code here:
     }//GEN-LAST:event_productNameActionPerformed
 
+    
     private void submitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseClicked
-
-
+                                         
 dbConnector dbc = new dbConnector();
 
 // Check if any required field is empty
@@ -242,25 +253,57 @@ if (productName.getText().isEmpty() || quant.getText().isEmpty() || price.getTex
         }
     }
 
-    // Proceed with the insert query
-    String query = "INSERT INTO product_table (prod_name, category, price, quantity, expire, prod_status) " +
-                   "VALUES('" + productName.getText() + "','" + category.getSelectedItem() + "','" + price.getText() + "','" +
-                   quant.getText() + "','" + expireDate + "', 'Available')";
+    // Query to check if the product already exists in the database
+    String checkQuery = "SELECT expire FROM product_table WHERE prod_name = ?";
+    try (PreparedStatement stmt = dbc.connect.prepareStatement(checkQuery)) {
+        stmt.setString(1, productName.getText());
+        ResultSet rs = stmt.executeQuery();
 
-    // Perform the database insert operation
-    if (dbc.insertData(query)) {
-        // Successful insert
-        JOptionPane.showMessageDialog(null, "Product added successfully!");
-        userDashboard ud = new userDashboard();
-        ud.setVisible(true);
-        this.dispose();
-    } else {
-        // Insert failed
-        JOptionPane.showMessageDialog(null, "Failed to add product.");
+        if (rs.next()) {
+            String existingExpireDate = rs.getString("expire");
+
+            // If the product exists and is not expired
+            if (!"0001-12-31".equals(existingExpireDate)) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis()); // Get current date as java.sql.Date
+                java.sql.Date expireDateFromDB = new java.sql.Date(dateFormat.parse(existingExpireDate).getTime());
+
+                // Check if the product is expired
+                if (expireDateFromDB.after(currentDate)) {
+                    // Product is still valid and cannot be added
+                    JOptionPane.showMessageDialog(null, "This product already exists in the inventory and cannot be added again.");
+                    return; // Exit if product is not expired
+                }
+            }
+        }
+
+        // Proceed with the insert query (if the product is expired or does not exist)
+        String query = "INSERT INTO product_table (prod_name, category, price, quantity, expire, prod_status) " +
+                       "VALUES('" + productName.getText() + "','" + category.getSelectedItem() + "','" + price.getText() + "','" +
+                       quant.getText() + "','" + expireDate + "', 'Available')";
+
+        // Perform the database insert operation
+        if (dbc.insertData(query)) {
+            // Successfully added product
+            JOptionPane.showMessageDialog(null, "Product added successfully!");
+
+            // Now, navigate to the userDashboard and show mainPanel
+            userDashboard ud = new userDashboard();  // Create an instance of userDashboard JFrame
+            ud.setVisible(true);  // Show userDashboard JFrame
+
+            // Hide the current addStock form
+            this.dispose();  // Close the addStock JFrame
+        } else {
+            // Insert failed
+            JOptionPane.showMessageDialog(null, "Failed to add product.");
+        }
+
+    } catch (SQLException | ParseException e) {
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
     }
 }
 
-
+    
     }//GEN-LAST:event_submitButtonMouseClicked
 
     private void submitButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMousePressed

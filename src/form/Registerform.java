@@ -106,10 +106,10 @@ public class Registerform extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 450));
-        setPreferredSize(new java.awt.Dimension(1000, 450));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         jPanel1.setMaximumSize(new java.awt.Dimension(1000, 450));
         jPanel1.setMinimumSize(new java.awt.Dimension(1000, 450));
         jPanel1.setPreferredSize(new java.awt.Dimension(1000, 450));
@@ -352,26 +352,36 @@ public class Registerform extends javax.swing.JFrame {
 dbConnector dbc = new dbConnector();
 String userType = "User"; // Directly set type to "user"
 
+// Check if any required fields are empty
 if (fname.getText().isEmpty() || lname.getText().isEmpty() || email.getText().isEmpty() || phoneNumber.getText().isEmpty() || username.getText().isEmpty() || password.getText().isEmpty()) {
-    JOptionPane.showMessageDialog(null, "All fields are required!");
+    // Styled error message with a red color for emphasis
+    JOptionPane.showMessageDialog(null, "<html><b style='color:red;'>Please fill in all the fields. All fields are required!</b></html>", "Input Error", JOptionPane.ERROR_MESSAGE);
 } else if (password.getText().length() < 8) {
-    JOptionPane.showMessageDialog(null, "Password must be 8 characters or more.");
+    // Styled warning message with an orange color for caution
+    JOptionPane.showMessageDialog(null, "<html><b style='color:orange;'>Password must be at least 8 characters long.</b></html>", "Password Error", JOptionPane.WARNING_MESSAGE);
 } else if (isDuplicate()) {
-    System.out.println("Duplicate");
+    // Styled warning message with an orange color for duplicate entry
+    JOptionPane.showMessageDialog(null, "<html><b style='color:orange;'>This username or email is already in use. Please choose another.</b></html>", "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
 } else {
-    // Use userType directly in the SQL query
-    if (dbc.insertData("INSERT INTO user_table(fname, lname, email, uname, pass, contact, type, status) "
+    // Assuming the image is in the resources folder or directly in the project structure
+    String imagePath = "/u_default/blank_pfp.jpg"; // Correct path to the image
+    
+    // Insert the new user into the database
+    if (dbc.insertData("INSERT INTO user_table(fname, lname, email, uname, pass, contact, type, status, image) "
             + "VALUES('" + fname.getText() + "','" + lname.getText() + "','" + email.getText() + "','" 
             + username.getText() + "','" + hashing(password.getText()) + "','" + phoneNumber.getText() 
-            + "','" + userType + "','Pending')")) {
-        JOptionPane.showMessageDialog(null, "Inserted Successfully.");
+            + "','" + userType + "','Pending', '" + imagePath + "')")) {
+        // Styled success message with green color for a positive outcome
+        JOptionPane.showMessageDialog(null, "<html><b style='color:green;'>Registration successful! You can now log in.</b></html>", "Success", JOptionPane.INFORMATION_MESSAGE);
         Loginfrom lf = new Loginfrom();
         lf.setVisible(true);
         this.dispose();
     } else {
-        JOptionPane.showMessageDialog(null, "Connection Error!");
+        // Styled error message with a red color for error in database connection
+        JOptionPane.showMessageDialog(null, "<html><b style='color:red;'>Error connecting to the database. Please try again later.</b></html>", "Connection Error", JOptionPane.ERROR_MESSAGE);
     }
 }
+
 
         
     }//GEN-LAST:event_RegisterButtonMouseClicked

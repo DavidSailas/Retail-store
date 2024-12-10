@@ -130,6 +130,8 @@ public void displayData() {
         searchBar = new javax.swing.JTextField();
         buyButton = new panelRoundComponents.PanelRound();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        label1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         panel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -142,12 +144,15 @@ public void displayData() {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
+        jPanel2.setMinimumSize(new java.awt.Dimension(785, 480));
+        jPanel2.setPreferredSize(new java.awt.Dimension(785, 480));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel1.setForeground(new java.awt.Color(153, 153, 153));
         jLabel1.setText("COUNTER");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         stock.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -164,12 +169,12 @@ public void displayData() {
         });
         jScrollPane1.setViewportView(stock);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 750, 340));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 760, 310));
 
         label.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         label.setForeground(new java.awt.Color(102, 102, 102));
         label.setText("Available Product's");
-        jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 180, -1));
+        jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 180, -1));
 
         searchBar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         searchBar.setForeground(new java.awt.Color(102, 102, 102));
@@ -193,7 +198,7 @@ public void displayData() {
                 searchBarKeyReleased(evt);
             }
         });
-        jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 280, -1));
+        jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 60, 280, -1));
 
         buyButton.setBackground(new java.awt.Color(83, 215, 105));
         buyButton.setRoundBottomLeft(10);
@@ -225,6 +230,16 @@ public void displayData() {
         buyButton.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 0, 90, 40));
 
         jPanel2.add(buyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 450, 120, 40));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(89, 196, 19));
+        jLabel7.setText("_____________________________________________________________________");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 760, -1));
+
+        label1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        label1.setForeground(new java.awt.Color(102, 102, 102));
+        label1.setText("Search:");
+        jPanel2.add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 60, 60, 20));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
@@ -417,7 +432,7 @@ try {
 
     private void buyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buyButtonMouseClicked
 
-        dbConnector dbc = new dbConnector();
+dbConnector dbc = new dbConnector();
 payment pay = new payment();
 
 int rowIndex = stock.getSelectedRow();
@@ -445,7 +460,8 @@ if (rowIndex < 0) {
                 pay.availstock.setText(String.valueOf(availableStock)); // JTextField for available stock
                 pay.price.setText(String.format("%.2f", productPrice)); // JTextField for price
             } else {
-                JOptionPane.showMessageDialog(null, "Insufficient stock for the selected product.");
+                // Notify that the product is out of stock
+                JOptionPane.showMessageDialog(null, "The selected product is out of stock.");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Product not found!");
@@ -546,10 +562,12 @@ if (rowIndex < 0) {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label;
+    private javax.swing.JLabel label1;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panel1;
     private javax.swing.JTextField searchBar;

@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -184,6 +186,29 @@ public boolean upCheck() {
     }
     return false;
 }
+
+    public static String hashing(String Password){
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA");
+            
+            messageDigest.update(Password.getBytes());
+            
+            byte[] resultByteArray = messageDigest.digest();
+            
+            StringBuilder sb = new StringBuilder();
+            
+            for (byte b : resultByteArray){
+                sb.append(String.format("%02x", b));
+            }
+            
+            return sb.toString();
+            
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(userAEU.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -230,22 +255,21 @@ public boolean upCheck() {
         jLabel26 = new javax.swing.JLabel();
 
         confirmarchive.setBackground(new java.awt.Color(255, 255, 255));
+        confirmarchive.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         confirmarchive.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         ACCOUNT_NAME.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        ACCOUNT_NAME.setForeground(new java.awt.Color(0, 0, 102));
         ACCOUNT_NAME.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ACCOUNT_NAME.setText("SAMPLE");
         confirmarchive.add(ACCOUNT_NAME, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 420, 30));
 
         jLabel21.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(0, 0, 102));
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel21.setText("Are you sure you want to archive user?");
         confirmarchive.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 420, 20));
 
-        noBT.setBackground(new java.awt.Color(0, 51, 184));
-        noBT.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        noBT.setBackground(new java.awt.Color(252, 61, 57));
+        noBT.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         noBT.setForeground(new java.awt.Color(255, 255, 255));
         noBT.setText("NO");
         noBT.setBorderPainted(false);
@@ -264,8 +288,8 @@ public boolean upCheck() {
         });
         confirmarchive.add(noBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 80, -1));
 
-        yesBT1.setBackground(new java.awt.Color(0, 51, 184));
-        yesBT1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        yesBT1.setBackground(new java.awt.Color(91, 164, 252));
+        yesBT1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         yesBT1.setForeground(new java.awt.Color(255, 255, 255));
         yesBT1.setText("YES");
         yesBT1.setBorderPainted(false);
@@ -284,13 +308,13 @@ public boolean upCheck() {
         });
         confirmarchive.add(yesBT1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, 80, -1));
 
-        jPanel3.setBackground(new java.awt.Color(0, 92, 229));
+        jPanel3.setBackground(new java.awt.Color(89, 196, 19));
 
         jLabel15.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel15.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText(" NOTICE ");
+        jLabel15.setText(" NOTICE !");
         jLabel15.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 0, new java.awt.Color(255, 255, 255)));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -316,11 +340,11 @@ public boolean upCheck() {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel5.setBackground(new java.awt.Color(89, 196, 19));
-        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jPanel5.setMinimumSize(new java.awt.Dimension(500, 450));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -415,6 +439,7 @@ public boolean upCheck() {
 
         u_pass.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         u_pass.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        u_pass.setEnabled(false);
         u_pass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 u_passActionPerformed(evt);
@@ -582,12 +607,11 @@ public boolean upCheck() {
 Session sess = Session.getInstance();
 int adminID = sess.getUid();
 
-PasswordHasher pH = new PasswordHasher();
-String password = pH.hashPassword(u_pass.getText());
 
 // Check if required fields are filled
 if (u_fname.getText().isEmpty() || u_lname.getText().isEmpty() || u_email.getText().isEmpty()
-        || u_uname.getText().isEmpty() || u_type.getSelectedIndex() == -1 || u_stats.getSelectedIndex() == -1) {
+        || u_uname.getText().isEmpty() || u_pass.getText().isEmpty()
+        || u_type.getSelectedIndex() == -1 || u_stats.getSelectedIndex() == -1) {
     JOptionPane.showMessageDialog(null, "All fields are required!");
 } else if (u_pass.getText().length() < 8) {
     JOptionPane.showMessageDialog(null, "Password should be at least 8 characters!");
@@ -598,12 +622,12 @@ if (u_fname.getText().isEmpty() || u_lname.getText().isEmpty() || u_email.getTex
     dbConnector dbc = new dbConnector();
 
     // Determine the image path: uploaded file or default image
-    String imageDestination = (selectedFile != null) ? destination : "u_default";
+    String imageDestination = (selectedFile != null) ? destination : "/u_default/blank_pfp.jpg";
 
     // SQL Insert
     if (dbc.insertData("INSERT INTO user_table (fname, lname, email, uname, pass, type, status, image, contact) " +
             "VALUES ('" + u_fname.getText() + "','" + u_lname.getText() + "','" + u_email.getText() + "','" +
-            u_uname.getText() + "','" + password + "','" + u_type.getSelectedItem() + "','" + 
+            u_uname.getText() + "','" + hashing(u_pass.getText()) + "','" + u_type.getSelectedItem() + "','" + 
             u_stats.getSelectedItem() + "','" + imageDestination + "', '')")) {
         try {
             ResultSet resultSet = dbc.getData("SELECT id FROM user_table WHERE uname = '" + u_uname.getText() + "'");
@@ -839,7 +863,7 @@ if (u_fname.getText().isEmpty() || u_lname.getText().isEmpty() || u_email.getTex
     public javax.swing.JButton addProfile;
     private javax.swing.JButton cancle;
     private javax.swing.JPanel confirmarchive;
-    private javax.swing.JButton delete;
+    public javax.swing.JButton delete;
     public javax.swing.JLabel image;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;

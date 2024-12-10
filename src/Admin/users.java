@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Admin;
 
 import config.PanelPrinter;
@@ -33,15 +29,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-/**
- *
- * @author PC
- */
+
 public class users extends javax.swing.JFrame {
 
-    /**
-     * Creates new form users
-     */
+  
     public users() {
         initComponents();
         displayData();
@@ -208,6 +199,9 @@ private void hideColumn(JTable table, int columnIndex) {
         searchBar = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        label1 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         panel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -237,6 +231,9 @@ private void hideColumn(JTable table, int columnIndex) {
         popUp.add(edit);
 
         viewpanel.setBackground(new java.awt.Color(255, 255, 255));
+        viewpanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
+        viewpanel.setMinimumSize(new java.awt.Dimension(500, 400));
+        viewpanel.setPreferredSize(new java.awt.Dimension(500, 400));
         viewpanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -288,7 +285,7 @@ private void hideColumn(JTable table, int columnIndex) {
         stats.setText("sample");
         viewpanel.add(stats, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 190, -1, -1));
 
-        print.setBackground(new java.awt.Color(89, 196, 19));
+        print.setBackground(new java.awt.Color(83, 215, 105));
         print.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         print.setForeground(new java.awt.Color(255, 255, 255));
         print.setText(" EXPORT");
@@ -336,6 +333,7 @@ private void hideColumn(JTable table, int columnIndex) {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         userTbl.setModel(new javax.swing.table.DefaultTableModel(
@@ -353,7 +351,7 @@ private void hideColumn(JTable table, int columnIndex) {
         });
         jScrollPane1.setViewportView(userTbl);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 133, 730, 340));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 123, 750, 320));
 
         searchBar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         searchBar.setForeground(new java.awt.Color(102, 102, 102));
@@ -377,23 +375,46 @@ private void hideColumn(JTable table, int columnIndex) {
                 searchBarKeyReleased(evt);
             }
         });
-        jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, 210, -1));
+        jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 70, 210, -1));
 
+        jButton1.setBackground(new java.awt.Color(252, 61, 57));
+        jButton1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/box (1).png"))); // NOI18N
         jButton1.setText("Archived");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 100, -1, -1));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 460, 120, 30));
 
+        jButton2.setBackground(new java.awt.Color(91, 164, 252));
+        jButton2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8-add-18.png"))); // NOI18N
         jButton2.setText("Add User");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 100, -1, -1));
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 460, 120, 30));
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(89, 196, 19));
+        jLabel13.setText("_____________________________________________________________________");
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 760, -1));
+
+        label1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        label1.setForeground(new java.awt.Color(102, 102, 102));
+        label1.setText("Search:");
+        jPanel2.add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 70, 60, 20));
+
+        jLabel14.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel14.setText("USER MANAGEMENT");
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
@@ -680,6 +701,7 @@ private void hideColumn(JTable table, int columnIndex) {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         userAEU ur = new userAEU();
         ur.update.setEnabled(false);
+        ur.delete.setEnabled(false);
         ur.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -861,6 +883,8 @@ private void hideColumn(JTable table, int columnIndex) {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -873,6 +897,7 @@ private void hideColumn(JTable table, int columnIndex) {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel label1;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panel1;
     private javax.swing.JPanel panel2;

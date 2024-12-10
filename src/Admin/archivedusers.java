@@ -7,6 +7,7 @@ package Admin;
 
 import config.dbConnector;
 import config.Session;
+import form.Loginfrom;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Window;
@@ -42,14 +43,16 @@ public class archivedusers extends javax.swing.JFrame {
 public void displayData() {
     try {
         dbConnector connector = new dbConnector();
+        // Query to get only 'Archived' records
         ResultSet rs = connector.getData("SELECT id, fname, lname, status FROM user_table WHERE status = 'Archived'");
-        
+
+        // Create a model for the table with the required columns
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(new String[]{"ID", "First Name", "Last Name", "Status"});
         model.setRowCount(0); // Clear any existing rows
-        
+
+        // Process the result set and populate the table model
         while (rs.next()) {
-            // Add row data from the result set
             model.addRow(new Object[]{
                 rs.getString("id"),
                 rs.getString("fname"),
@@ -58,29 +61,31 @@ public void displayData() {
             });
         }
 
+        // Set the model to the JTable
         archiveTbl.setModel(model);
 
         // Hide the "ID" column using the helper method
         hideColumn(archiveTbl, 0);
 
-        // Apply custom cell renderer for the "Status" column
+        // Apply custom cell renderer for the "Status" column to color "Archived" entries
         archiveTbl.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (value != null && value.toString().equals("Archived")) {
-                    setForeground(Color.RED);
+                    c.setForeground(Color.RED); // Set the color to red for "Archived" status
                 } else {
-                    setForeground(table.getForeground()); // Default color
+                    c.setForeground(table.getForeground()); // Default color
                 }
                 return c;
             }
         });
 
-        // Set custom column headers
+        // Repaint the table header to apply changes
         JTableHeader th = archiveTbl.getTableHeader();
         th.repaint();
 
+        // Close the result set
         rs.close();
     } catch (SQLException ex) {
         System.out.println("Errors: " + ex.getMessage());
@@ -117,7 +122,8 @@ private void hideColumn(JTable table, int columnIndex) {
         stats = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
+        back1 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         confirmunarchive = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         noBT = new javax.swing.JButton();
@@ -126,11 +132,24 @@ private void hideColumn(JTable table, int columnIndex) {
         jLabel15 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        cancle = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         archiveTbl = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        panel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        panel = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        back = new javax.swing.JLabel();
+        panel2 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
+        panel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        label1 = new javax.swing.JLabel();
+        searchBar = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
 
         view.setText("View");
         view.addActionListener(new java.awt.event.ActionListener() {
@@ -149,96 +168,94 @@ private void hideColumn(JTable table, int columnIndex) {
         popUp.add(unarchive);
 
         viewpanel.setBackground(new java.awt.Color(255, 255, 255));
-        viewpanel.setMinimumSize(new java.awt.Dimension(420, 300));
-        viewpanel.setPreferredSize(new java.awt.Dimension(420, 300));
+        viewpanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(83, 215, 105), 2));
+        viewpanel.setMinimumSize(new java.awt.Dimension(350, 450));
+        viewpanel.setPreferredSize(new java.awt.Dimension(350, 450));
         viewpanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(0, 0, 102));
+        jLabel12.setForeground(new java.awt.Color(153, 153, 153));
         jLabel12.setText("Id:");
-        viewpanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, -1, -1));
+        viewpanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, -1, -1));
 
         u_id.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        u_id.setForeground(new java.awt.Color(0, 0, 102));
         u_id.setText("sample");
-        viewpanel.add(u_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, -1, -1));
+        viewpanel.add(u_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 230, -1, -1));
 
         fullname2.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        fullname2.setForeground(new java.awt.Color(0, 0, 102));
         fullname2.setText("Fullname");
-        viewpanel.add(fullname2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, -1, -1));
+        viewpanel.add(fullname2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 260, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 102));
+        jLabel6.setForeground(new java.awt.Color(153, 153, 153));
         jLabel6.setText("Username:");
-        viewpanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 160, -1, -1));
+        viewpanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 320, -1, -1));
 
         username.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        username.setForeground(new java.awt.Color(0, 0, 102));
         username.setText("sample");
-        viewpanel.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, -1, -1));
+        viewpanel.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 102));
+        jLabel7.setForeground(new java.awt.Color(153, 153, 153));
         jLabel7.setText("Email:");
-        viewpanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, -1, -1));
+        viewpanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, -1, -1));
 
         umail.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        umail.setForeground(new java.awt.Color(0, 0, 102));
         umail.setText("sample");
-        viewpanel.add(umail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, -1, -1));
+        viewpanel.add(umail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 410, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 102));
+        jLabel8.setForeground(new java.awt.Color(153, 153, 153));
         jLabel8.setText("Type:");
-        viewpanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, -1, -1));
+        viewpanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 320, -1, -1));
 
         type.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        type.setForeground(new java.awt.Color(0, 0, 102));
         type.setText("sample");
-        viewpanel.add(type, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, -1, -1));
+        viewpanel.add(type, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 340, -1, -1));
 
         jLabel13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(0, 0, 102));
+        jLabel13.setForeground(new java.awt.Color(153, 153, 153));
         jLabel13.setText("Status:");
-        viewpanel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, -1, -1));
+        viewpanel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 390, -1, -1));
 
         stats.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        stats.setForeground(new java.awt.Color(0, 0, 102));
         stats.setText("sample");
-        viewpanel.add(stats, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 240, -1, -1));
+        viewpanel.add(stats, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 410, -1, -1));
 
-        jPanel4.setBackground(new java.awt.Color(0, 92, 229));
+        jPanel4.setBackground(new java.awt.Color(89, 196, 19));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Details");
-        jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 0, 320, 45));
+        jLabel1.setText("User Details");
+        jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 0, 250, 50));
 
-        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Admin_icon/undo.png"))); // NOI18N
-        jLabel26.addMouseListener(new java.awt.event.MouseAdapter() {
+        back1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left.png"))); // NOI18N
+        back1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel26MouseClicked(evt);
+                back1MouseClicked(evt);
             }
         });
-        jPanel4.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 2, 40, 40));
+        jPanel4.add(back1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, 50));
 
-        viewpanel.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 502, -1));
+        viewpanel.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, -1));
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/circle-user (1).png"))); // NOI18N
+        viewpanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, -1, -1));
 
         confirmunarchive.setBackground(new java.awt.Color(255, 255, 255));
+        confirmunarchive.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(83, 215, 105), 2));
         confirmunarchive.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel21.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(0, 0, 102));
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel21.setText("Are you sure you want to unarchive user?");
         confirmunarchive.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 420, 20));
 
-        noBT.setBackground(new java.awt.Color(0, 51, 184));
-        noBT.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        noBT.setBackground(new java.awt.Color(252, 61, 57));
+        noBT.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         noBT.setForeground(new java.awt.Color(255, 255, 255));
         noBT.setText("NO");
         noBT.setBorderPainted(false);
@@ -257,8 +274,8 @@ private void hideColumn(JTable table, int columnIndex) {
         });
         confirmunarchive.add(noBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 80, -1));
 
-        yesBT1.setBackground(new java.awt.Color(0, 51, 184));
-        yesBT1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        yesBT1.setBackground(new java.awt.Color(91, 164, 252));
+        yesBT1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         yesBT1.setForeground(new java.awt.Color(255, 255, 255));
         yesBT1.setText("YES");
         yesBT1.setBorderPainted(false);
@@ -277,13 +294,13 @@ private void hideColumn(JTable table, int columnIndex) {
         });
         confirmunarchive.add(yesBT1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, 80, -1));
 
-        jPanel3.setBackground(new java.awt.Color(0, 92, 229));
+        jPanel3.setBackground(new java.awt.Color(89, 196, 19));
 
         jLabel15.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel15.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText(" NOTICE ");
+        jLabel15.setText(" NOTICE !");
         jLabel15.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 0, new java.awt.Color(255, 255, 255)));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -306,8 +323,23 @@ private void hideColumn(JTable table, int columnIndex) {
         setMinimumSize(new java.awt.Dimension(500, 500));
         setUndecorated(true);
 
-        jPanel1.setMinimumSize(new java.awt.Dimension(500, 500));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
+        jPanel1.setMinimumSize(new java.awt.Dimension(1000, 500));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 500));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        cancle.setBackground(new java.awt.Color(255, 168, 32));
+        cancle.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        cancle.setForeground(new java.awt.Color(255, 255, 255));
+        cancle.setText("CANCEL");
+        cancle.setPreferredSize(new java.awt.Dimension(60, 30));
+        cancle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancleActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cancle, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 450, 100, -1));
 
         archiveTbl.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         archiveTbl.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -317,28 +349,159 @@ private void hideColumn(JTable table, int columnIndex) {
         });
         jScrollPane1.setViewportView(archiveTbl);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 460, 390));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 120, 750, 320));
 
-        jPanel2.setBackground(new java.awt.Color(89, 196, 19));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel5.setBackground(new java.awt.Color(89, 196, 19));
+        jPanel5.setPreferredSize(new java.awt.Dimension(200, 450));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel9.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Archived");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(52, 10, 400, -1));
-
-        back.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Admin_icon/undo.png"))); // NOI18N
-        back.setText("Back");
-        back.addMouseListener(new java.awt.event.MouseAdapter() {
+        panel1.setBackground(new java.awt.Color(89, 196, 19));
+        panel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                backMouseClicked(evt);
+                panel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel1MouseExited(evt);
             }
         });
-        jPanel2.add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 50));
+        panel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 50));
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/file-circle-info.png"))); // NOI18N
+        jLabel3.setText(" Sales Reports");
+        panel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 210, -1));
+
+        jPanel5.add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 200, 40));
+
+        panel.setBackground(new java.awt.Color(89, 196, 19));
+        panel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panelMouseExited(evt);
+            }
+        });
+        panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/house-chimney (1).png"))); // NOI18N
+        jLabel4.setText(" Dashboard");
+        panel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 190, -1));
+
+        jPanel5.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 200, 40));
+
+        jLabel9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Log out");
+        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel9MouseClicked(evt);
+            }
+        });
+        jPanel5.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 470, -1, -1));
+
+        panel2.setBackground(new java.awt.Color(89, 196, 19));
+        panel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel2MouseExited(evt);
+            }
+        });
+        panel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/assessment.png"))); // NOI18N
+        jLabel11.setText(" Transaction");
+        panel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 10, 190, -1));
+
+        jPanel5.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
+
+        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Posify");
+        jPanel5.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        panel3.setBackground(new java.awt.Color(89, 196, 19));
+        panel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel3MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel3MouseExited(evt);
+            }
+        });
+        panel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/users (1).png"))); // NOI18N
+        jLabel5.setText(" Users");
+        panel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 150, -1));
+
+        jPanel5.add(panel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 200, 40));
+
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
+
+        jLabel14.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel14.setText("ARCHIVED USERS");
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, -1, -1));
+
+        label1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        label1.setForeground(new java.awt.Color(102, 102, 102));
+        label1.setText("Search:");
+        jPanel1.add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 70, 60, 20));
+
+        searchBar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        searchBar.setForeground(new java.awt.Color(102, 102, 102));
+        searchBar.setText(" Search");
+        searchBar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                searchBarFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                searchBarFocusLost(evt);
+            }
+        });
+        searchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBarActionPerformed(evt);
+            }
+        });
+        searchBar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchBarKeyReleased(evt);
+            }
+        });
+        jPanel1.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 70, 210, -1));
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(89, 196, 19));
+        jLabel16.setText("_____________________________________________________________________");
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, 760, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -418,20 +581,6 @@ try {
     
     }//GEN-LAST:event_unarchiveActionPerformed
 
-    private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
-        users u = new users();
-        u.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_backMouseClicked
-
-    private void jLabel26MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel26MouseClicked
-        archivedusers au = new archivedusers();
-        Window window = SwingUtilities.getWindowAncestor(viewpanel);
-        window.dispose();
-        au.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel26MouseClicked
-
     private void noBTMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noBTMouseEntered
 
     }//GEN-LAST:event_noBTMouseEntered
@@ -502,6 +651,166 @@ if (rowIndex < 0) {
 
     }//GEN-LAST:event_yesBT1ActionPerformed
 
+    private void back1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_back1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_back1MouseClicked
+
+    private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked
+        salesreport a = new salesreport();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_panel1MouseClicked
+
+    private void panel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseEntered
+        panel1.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panel1MouseEntered
+
+    private void panel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseExited
+        panel1.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panel1MouseExited
+
+    private void panelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseClicked
+        adminDashboard ad = new adminDashboard();
+        ad.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_panelMouseClicked
+
+    private void panelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseEntered
+        panel.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panelMouseEntered
+
+    private void panelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseExited
+        panel.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panelMouseExited
+
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+        Loginfrom lf = new Loginfrom();
+        lf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel9MouseClicked
+
+    private void panel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseClicked
+        transaction r = new transaction();
+        r.setVisible(true);
+    }//GEN-LAST:event_panel2MouseClicked
+
+    private void panel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseEntered
+        panel2.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panel2MouseEntered
+
+    private void panel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel2MouseExited
+        panel2.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panel2MouseExited
+
+    private void panel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel3MouseClicked
+        users u = new users();
+        u.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_panel3MouseClicked
+
+    private void panel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel3MouseEntered
+        panel3.setBackground(new Color(204,204,204));
+    }//GEN-LAST:event_panel3MouseEntered
+
+    private void panel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel3MouseExited
+        panel3.setBackground(new Color(89,196,19));
+    }//GEN-LAST:event_panel3MouseExited
+
+    private void searchBarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBarFocusGained
+        if (searchBar.getText().equals(" Search")){
+            searchBar.setText("");
+            searchBar.setForeground(new Color(153,153,153));
+        }
+    }//GEN-LAST:event_searchBarFocusGained
+
+    private void searchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchBarFocusLost
+        if (searchBar.getText().equals("")){
+            searchBar.setText(" Search");
+            searchBar.setForeground(new Color(153,153,153));
+        }
+    }//GEN-LAST:event_searchBarFocusLost
+
+    private void searchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchBarActionPerformed
+
+    private void searchBarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyReleased
+
+try {
+    dbConnector dbc = new dbConnector();
+    String searchText = searchBar.getText().trim();
+    ResultSet rs;
+
+    // Check if the search text is empty
+    if (searchText.isEmpty()) {
+        // Display all archived users
+        rs = dbc.getData(
+            "SELECT CONCAT(fname, ' ', lname) AS Name, uname AS Username, status AS Status " +
+            "FROM user_table " +
+            "WHERE status = 'Archived'"
+        );
+    } else {
+        // Search by name (first name or last name) for archived users
+        String query = "SELECT CONCAT(fname, ' ', lname) AS Name, uname AS Username, status AS Status " +
+        "FROM user_table " +
+        "WHERE status = 'Archived' AND (fname LIKE ? OR lname LIKE ?)";
+        PreparedStatement stmt = dbc.connect.prepareStatement(query);
+        String searchPattern = "%" + searchText + "%";
+        stmt.setString(1, searchPattern); // Match first name
+        stmt.setString(2, searchPattern); // Match last name
+        rs = stmt.executeQuery();
+    }
+
+    // Create the table model with the required columns
+    DefaultTableModel model = new DefaultTableModel(new String[]{
+        "Name", "Username", "Status"
+    }, 0);
+
+    // Populate the table with data
+    while (rs.next()) {
+        model.addRow(new Object[]{
+            rs.getString("Name"),
+            rs.getString("Username"),
+            rs.getString("Status")
+        });
+    }
+
+    // Set the model for the archive table
+    archiveTbl.setModel(model);
+
+    // Apply custom cell renderer to the Status column to color "Archived" entries
+    archiveTbl.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            if (value != null && value.toString().equals("Archived")) {
+                comp.setForeground(Color.RED); // Red for archived status
+            } else {
+                comp.setForeground(table.getForeground()); // Default color
+            }
+            return comp;
+        }
+    });
+
+    // Refresh the table header
+    JTableHeader th = archiveTbl.getTableHeader();
+    th.repaint();
+
+    // Close the result set
+    rs.close();
+} catch (SQLException ex) {
+    System.out.println("Errors: " + ex.getMessage());
+}
+
+    }//GEN-LAST:event_searchBarKeyReleased
+
+    private void cancleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancleActionPerformed
+        users u = new users();
+        u.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_cancleActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -541,28 +850,42 @@ if (rowIndex < 0) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable archiveTbl;
-    private javax.swing.JLabel back;
+    private javax.swing.JLabel back1;
+    private javax.swing.JButton cancle;
     private javax.swing.JPanel confirmunarchive;
     private javax.swing.JLabel fullname2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel label1;
     private javax.swing.JButton noBT;
+    private javax.swing.JPanel panel;
+    private javax.swing.JPanel panel1;
+    private javax.swing.JPanel panel2;
+    private javax.swing.JPanel panel3;
     private javax.swing.JPopupMenu popUp;
+    private javax.swing.JTextField searchBar;
     private javax.swing.JLabel stats;
+    private javax.swing.JLabel title;
     private javax.swing.JLabel type;
     private javax.swing.JLabel u_id;
     private javax.swing.JLabel umail;

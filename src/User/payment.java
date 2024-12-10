@@ -62,7 +62,7 @@ public class payment extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(248, 248, 248));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         jPanel1.setMinimumSize(new java.awt.Dimension(440, 500));
         jPanel1.setPreferredSize(new java.awt.Dimension(451, 500));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -150,6 +150,7 @@ public class payment extends javax.swing.JFrame {
         jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 430, -1, -1));
 
         jLabel18.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(102, 102, 102));
         jLabel18.setText("Payment:");
         jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, -1, 28));
 
@@ -176,16 +177,18 @@ public class payment extends javax.swing.JFrame {
         jPanel1.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, 195, 37));
 
         jLabel23.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(102, 102, 102));
         jLabel23.setText("Change:");
         jPanel1.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 350, -1, 28));
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(89, 196, 19));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Cash payment");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 24, 429, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 24, 420, -1));
 
         jLabel24.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(102, 102, 102));
         jLabel24.setText("Total:");
         jPanel1.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 300, -1, 28));
 
@@ -214,10 +217,12 @@ public class payment extends javax.swing.JFrame {
         jPanel1.add(quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 195, 35));
 
         jLabel15.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
         jLabel15.setText("Quantity:");
         jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(102, 102, 102));
         jLabel16.setText("Available Stock:");
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
@@ -232,6 +237,7 @@ public class payment extends javax.swing.JFrame {
         jPanel1.add(availstock, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 195, 35));
 
         jLabel20.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(102, 102, 102));
         jLabel20.setText("Price:");
         jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, -1, 28));
 
