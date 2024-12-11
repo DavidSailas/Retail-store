@@ -14,8 +14,10 @@ import config.PanelPrinter;
 import config.dbConnector;
 import form.Loginfrom;
 import java.awt.AWTException;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
@@ -35,6 +37,14 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 
 
@@ -47,6 +57,7 @@ public class transaction extends javax.swing.JFrame {
         productSold();
         weeklySales();
         dailySales();
+       
     }
 
 
@@ -207,6 +218,7 @@ public void dailySales() {
         System.out.println("Error in dailySales: " + ex.getMessage());
     }
 }
+
 
 
 

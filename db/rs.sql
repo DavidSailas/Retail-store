@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2024 at 05:10 PM
+-- Generation Time: Dec 11, 2024 at 11:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,31 +42,31 @@ CREATE TABLE `product_table` (
 --
 
 INSERT INTO `product_table` (`prod_id`, `prod_name`, `category`, `price`, `quantity`, `prod_status`, `expire`) VALUES
-(1, 'Royal', 'Drinks & Beverages', 15, 20, 'Available', '2025-09-15'),
+(1, 'Royal', 'Drinks & Beverages', 15, 18, 'Available', '2025-09-15'),
 (2, 'Fita', 'Snacks', 9, 10, 'Available', '2025-05-10'),
-(3, 'Fudgee bar', 'Snacks', 9, 0, 'Out of stock', '2025-08-15'),
+(3, 'Fudgee bar', 'Snacks', 9, 6, 'Available', '2025-08-15'),
 (4, 'Fish Cracker', 'Snacks', 10, 10, 'Available', '2025-03-25'),
 (5, 'Sky Flakes', 'Snacks', 9, 9, 'Available', '2024-12-07'),
-(6, 'Coke', 'Drinks & Beverages', 15, 11, 'Available', '2025-12-01'),
+(6, 'Coke', 'Drinks & Beverages', 15, 10, 'Available', '2025-12-01'),
 (7, 'Sprite', 'Drinks & Beverages', 15, 12, 'Available', '2025-12-01'),
 (8, 'Oishi', 'Snacks', 9, 10, 'Available', '2025-07-20'),
 (9, 'Corned Beef', 'Canned Goods', 35, 0, 'Out of stock', '2026-01-05'),
-(10, 'Sanmarino Big', 'Canned Goods', 45, 6, 'Available', '2025-11-10'),
-(11, 'Salt', 'Condiments & Seasonings', 5, 9, 'Available', '0001-12-31'),
+(10, 'Sanmarino Big', 'Canned Goods', 45, 0, 'Out of stock', '2025-11-10'),
+(11, 'Salt', 'Condiments & Seasonings', 5, 8, 'Available', '0001-12-31'),
 (12, 'Oil', 'Oil', 5, 5, 'Available', '2024-12-06'),
 (13, 'Vinegar', 'Condiments & Seasonings', 5, 5, 'Available', '0001-12-31'),
 (14, 'Sugar', 'Condiments & Seasonings', 20, 10, 'Available', '0001-12-31'),
-(15, 'KitKat', 'Confectionery', 40, 5, 'Available', '2024-12-10'),
-(16, 'Bingo', 'Snacks', 9, 10, 'Available', '2025-12-09'),
+(15, 'KitKat', 'Confectionery', 40, 0, 'Out of stock', '2024-12-10'),
+(16, 'Bingo', 'Snacks', 9, 8, 'Available', '2025-12-09'),
 (17, 'Paper', 'Stationery & School Supplies', 25, 10, 'Available', '0001-12-31'),
-(18, 'Daiper Small', 'Hygiene Products', 12, 20, 'Available', '0001-12-31'),
+(18, 'Daiper Small', 'Hygiene Products', 12, 19, 'Available', '0001-12-31'),
 (19, 'Biogesic', 'Medicinal Products', 8, 15, 'Available', '2025-03-10'),
 (20, 'Neosip', 'Medicinal Products', 9, 15, 'Available', '2025-05-20'),
 (21, 'Surf Powder', 'Household Items', 9, 10, 'Available', '2025-06-30'),
 (22, 'Lighter', 'Household Items', 10, 5, 'Available', '0001-12-31'),
 (23, 'Shampoo', 'Personal Care Products', 8, 15, 'Available', '2025-12-31'),
-(24, 'Rice 5Kg', 'Grains', 250, 10, 'Available', '0001-12-31'),
-(25, 'Rice 1Kg', 'Grains', 50, 20, 'Available', '0001-12-31'),
+(24, 'Rice 5Kg', 'Grains', 250, 9, 'Available', '0001-12-31'),
+(25, 'Rice 1Kg', 'Grains', 50, 16, 'Available', '0001-12-31'),
 (26, 'Instant Noodles ', 'Instant Meals', 40, 5, 'Available', '2025-07-01'),
 (27, 'Cigarettes 1pack', 'Cigarettes & Tobacco', 140, 20, 'Available', '0001-12-31'),
 (28, 'Cigarettes', 'Cigarettes & Tobacco', 7, 40, 'Available', '0001-12-31'),
@@ -76,10 +76,12 @@ INSERT INTO `product_table` (`prod_id`, `prod_name`, `category`, `price`, `quant
 (32, 'Canned Tuna', 'Canned Goods', 30, 7, 'Available', '2025-04-15'),
 (33, 'Presto', 'Snacks', 9, 6, 'Available', '2025-02-10'),
 (34, 'Bearch Tree', 'Dairy Products', 10, 15, 'Available', '2025-03-17'),
-(35, 'Egg', 'Poultry Products', 10, 100, 'Available', '0001-12-31'),
-(36, 'Swak', 'Dairy Products', 10, 6, 'Available', '2025-02-18'),
-(37, 'Greatest White', 'Dairy Products', 12, 13, 'Available', '2025-07-16'),
-(41, 'Hotdog', 'Poultry Products', 65, 10, 'Available', '2025-05-03');
+(35, 'Egg', 'Poultry Products', 10, 90, 'Available', '0001-12-31'),
+(36, 'Swak', 'Dairy Products', 10, 0, 'Out of stock', '2025-02-18'),
+(37, 'Greatest White', 'Dairy Products', 12, 11, 'Available', '2025-07-16'),
+(41, 'Hotdog', 'Poultry Products', 65, 10, 'Available', '2025-05-03'),
+(45, 'Rice Lami', 'Grains', 60, 95, 'Available', '0001-12-31'),
+(46, 'Whisper With Wings', 'Hygiene Products', 9, 10, 'Available', '0001-12-31');
 
 -- --------------------------------------------------------
 
@@ -113,7 +115,22 @@ INSERT INTO `sales` (`sale_id`, `prod_id`, `quantity_sold`, `date`, `time`) VALU
 (11, 11, 1, '2024-12-07', '09:26:29'),
 (12, 1, 1, '2024-12-07', '09:34:11'),
 (13, 9, 1, '2024-12-07', '09:54:00'),
-(14, 9, 4, '2024-12-07', '11:59:04');
+(14, 9, 4, '2024-12-07', '11:59:04'),
+(15, 1, 1, '2024-12-10', '21:15:29'),
+(16, 15, 5, '2024-12-10', '21:19:39'),
+(17, 10, 6, '2024-12-10', '21:21:05'),
+(18, 3, 15, '2024-12-10', '23:10:46'),
+(19, 1, 1, '2024-12-10', '23:11:40'),
+(20, 35, 10, '2024-12-11', '00:03:21'),
+(21, 11, 1, '2024-12-11', '00:03:44'),
+(22, 36, 6, '2024-12-11', '00:04:03'),
+(23, 25, 4, '2024-12-11', '00:04:30'),
+(24, 45, 5, '2024-12-11', '00:06:16'),
+(25, 16, 2, '2024-12-11', '00:07:05'),
+(26, 18, 1, '2024-12-11', '00:07:17'),
+(27, 37, 2, '2024-12-11', '00:12:11'),
+(28, 24, 1, '2024-12-11', '00:13:14'),
+(29, 6, 1, '2024-12-11', '00:13:32');
 
 -- --------------------------------------------------------
 
@@ -176,13 +193,13 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `product_table`
 --
 ALTER TABLE `product_table`
-  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `prod_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `sale_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `sale_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `user_table`

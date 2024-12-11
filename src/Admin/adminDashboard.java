@@ -66,7 +66,10 @@ public void availableStocks() {
 public void Table() {
     try {
         dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData("SELECT prod_name, quantity, expire, category, price FROM product_table WHERE quantity > 0");
+
+        // SQL query to fetch products that are not expired and include those with 'No Expiry Date'
+        String query = "SELECT prod_name, quantity, expire, category, price FROM product_table WHERE quantity > 0 AND (expire > CURDATE() OR expire = '0001-12-31')";
+        ResultSet rs = dbc.getData(query);
 
         // Set up the table model with custom columns
         DefaultTableModel model = new DefaultTableModel(new String[]{
@@ -128,7 +131,7 @@ public void Table() {
                 return c;
             }
         });
-
+        label.setText("Products");
         rs.close(); // Close ResultSet
     } catch (SQLException ex) {
         System.out.println("Errors: " + ex.getMessage());
@@ -155,7 +158,13 @@ public void outOfStocks() {
 public void loadOutOfStock() {
     try {
         dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData("SELECT prod_name, quantity, expire, category FROM product_table WHERE quantity <= 0");
+        
+        // Query to exclude products expiring within 7 days, even if quantity is 0
+        String query = "SELECT prod_name, quantity, expire, category " +
+                       "FROM product_table " +
+                       "WHERE quantity <= 0 AND (expire IS NULL OR expire > CURDATE() + INTERVAL 7 DAY)";
+        
+        ResultSet rs = dbc.getData(query);
 
         // Set up the table model with custom columns
         DefaultTableModel model = new DefaultTableModel(new String[]{
@@ -225,6 +234,7 @@ public void loadOutOfStock() {
         System.out.println("Errors: " + ex.getMessage());
     }
 }
+
 
 
     @SuppressWarnings("unchecked")
@@ -358,7 +368,7 @@ public void loadOutOfStock() {
         label.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         label.setForeground(new java.awt.Color(102, 102, 102));
         label.setText("Reports");
-        jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 340, -1));
+        jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 410, -1));
 
         jButton1.setBackground(new java.awt.Color(83, 215, 105));
         jButton1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -515,23 +525,21 @@ public void loadOutOfStock() {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
         try {
-        dbConnector dbc = new dbConnector();
+    dbConnector dbc = new dbConnector();
 
-        // SQL query to fetch expired and soon-to-expire products, ordered by expiration date
-        String query = "SELECT prod_name, quantity, expire, category, price " +
-               "FROM product_table " +
-               "WHERE quantity > 0 " +
-               "AND expire <= CURDATE() + INTERVAL 7 DAY " +
-               "AND expire <> '0001-12-31' " + // Exclude specific invalid date
-               "ORDER BY expire ASC";
+    // SQL query to include only expired or soon-to-expire products (7 days or less)
+    String query = "SELECT prod_name, quantity, expire, category, price " +
+                   "FROM product_table " +
+                   "WHERE expire <= CURDATE() + INTERVAL 7 DAY " + // Products with 7 days or less
+                   "AND expire <> '0001-12-31' " + // Exclude specific invalid date
+                   "ORDER BY expire ASC";
 
+    ResultSet rs = dbc.getData(query);
 
-
-        ResultSet rs = dbc.getData(query);
-
-        // Set up the table model with custom columns
-         DefaultTableModel model = new DefaultTableModel(new String[]{
+    // Set up the table model with custom columns
+    DefaultTableModel model = new DefaultTableModel(new String[]{
         "Category", "Product Name", "Price", "Stocks", "Expire Date"
     }, 0);
 
@@ -586,10 +594,12 @@ public void loadOutOfStock() {
         }
     });
 
+    label.setText("Soon-to-Expire and Expired Products");
     rs.close();
 } catch (SQLException ex) {
     System.out.println("Errors: " + ex.getMessage());
 }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void panel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel1MouseClicked

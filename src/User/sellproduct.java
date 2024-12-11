@@ -73,8 +73,9 @@ public void displayData() {
                 }
             }
 
+            // Add row to model
             model.addRow(new Object[]{
-                prodId,
+                prodId, // this will be hidden in the table
                 productName,
                 productStatus,
                 category,
@@ -82,6 +83,7 @@ public void displayData() {
             });
         }
 
+        // Set the table model
         stock.setModel(model);
 
         // Hide the Product ID column
@@ -114,8 +116,6 @@ public void displayData() {
         System.out.println("Errors: " + ex.getMessage());
     }
 }
-
-
 
 
     @SuppressWarnings("unchecked")
@@ -344,16 +344,16 @@ try {
     String searchText = searchBar.getText().trim();
     ResultSet rs;
 
-    // Modify the query to select the expire date column as well
+    // Modify the query to select the prod_id as well
     if (searchText.isEmpty()) {
-        rs = dbc.getData("SELECT prod_name, prod_status, category, price, quantity, expire FROM product_table");
+        rs = dbc.getData("SELECT prod_id, prod_name, prod_status, category, price, quantity, expire FROM product_table");
     } else {
-        rs = dbc.getData("SELECT prod_name, prod_status, category, price, quantity, expire FROM product_table WHERE prod_name LIKE '%" + searchText + "%'");
+        rs = dbc.getData("SELECT prod_id, prod_name, prod_status, category, price, quantity, expire FROM product_table WHERE prod_name LIKE '%" + searchText + "%'");
     }
 
-    // Set up the table model with the necessary columns
+    // Set up the table model with an additional column for prod_id (hidden later)
     DefaultTableModel model = new DefaultTableModel(new String[]{
-        "Product Name", "Product Status", "Category", "Price"
+        "Product ID", "Product Name", "Product Status", "Category", "Price"
     }, 0);
 
     // Get the current date
@@ -362,6 +362,7 @@ try {
 
     // Populate the model with data from the result set
     while (rs.next()) {
+        String prodId = rs.getString("prod_id"); // Fetch prod_id
         String productName = rs.getString("prod_name");
         String productStatus = rs.getString("prod_status");
         String category = rs.getString("category");
@@ -389,8 +390,9 @@ try {
             }
         }
 
-        // Add the data to the model
+        // Add the data to the model (including prod_id in the data but hidden later)
         model.addRow(new Object[]{
+            prodId,  // Product ID (this will be hidden in the table view)
             productName,
             productStatus,
             category,
@@ -401,8 +403,13 @@ try {
     // Set the table model
     stock.setModel(model);
 
+    // Hide the Product ID column (index 0)
+    stock.getColumnModel().getColumn(0).setMinWidth(0);
+    stock.getColumnModel().getColumn(0).setMaxWidth(0);
+    stock.getColumnModel().getColumn(0).setWidth(0);
+
     // Custom cell renderer for product status (coloring based on status)
-    stock.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+    stock.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -426,6 +433,7 @@ try {
 } catch (SQLException ex) {
     System.out.println("Errors: " + ex.getMessage());
 }
+
 
         
     }//GEN-LAST:event_searchBarKeyReleased

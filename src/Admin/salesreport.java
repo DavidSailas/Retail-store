@@ -1,23 +1,43 @@
 
 package Admin;
 
+import static User.payment.getCurrentDate;
 import config.dbConnector;
 import form.Loginfrom;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.List;
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.data.category.DefaultCategoryDataset;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import org.jfree.chart.axis.CategoryTick;
+import org.jfree.chart.labels.CategoryToolTipGenerator;
+import org.jfree.data.category.CategoryDataset;
 
 
 public class salesreport extends javax.swing.JFrame {
 
 
-    public salesreport() {
-        initComponents();
-        displayData();
-    }
+public salesreport() {
+    initComponents();
+    displayData();
+    displayBarChart();
+    displayDailySalesBarChart();
+}
 
 public void displayData() {
     try {
@@ -67,9 +87,248 @@ public void displayData() {
     }
 }
 
+public void displayBarChart() {
+    try {
+        // Get today's date
+        LocalDate today = LocalDate.now();
+        String todayDate = Date.valueOf(today).toString();
 
+        dbConnector dbc = new dbConnector();
+        
+        // Query to get total sales for each product for today
+        ResultSet rs = dbc.getData(
+            "SELECT p.prod_name AS ProductName, " +
+            "SUM(p.price * s.quantity_sold) AS TotalSales " +
+            "FROM sales s " +
+            "JOIN product_table p ON s.prod_id = p.prod_id " +
+            "WHERE s.Date = '" + todayDate + "' " +
+            "GROUP BY p.prod_name " +
+            "ORDER BY TotalSales DESC"
+        );
 
- 
+        // Create a dataset for the bar chart
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        // Populate the dataset with data from the result set
+        while (rs.next()) {
+            String productName = rs.getString("ProductName");
+            double totalSales = rs.getDouble("TotalSales");
+            dataset.addValue(totalSales, "Total Sales", productName);
+        }
+
+        // If no data is found for today's sales, add a default value
+        if (dataset.getRowCount() == 0) {
+            dataset.addValue(0, "Total Sales", "No Sales Today");
+        }
+
+        // Create the bar chart using the dataset
+        JFreeChart barChart = ChartFactory.createBarChart(
+            "Earnings Statistics",  
+            null,  
+            null,  
+            dataset,  // Dataset for the chart
+            PlotOrientation.VERTICAL,
+            false,  // No legend
+            true,   // Tooltips enabled
+            false   // URLs disabled
+        );
+
+        // Customize the chart appearance
+        CategoryPlot categoryPlot = barChart.getCategoryPlot();
+        categoryPlot.setBackgroundPaint(Color.WHITE); // Set background color
+        categoryPlot.setOutlineVisible(false); // Remove outline
+        categoryPlot.setDomainGridlinesVisible(false); // Hide X-axis gridlines
+        categoryPlot.setRangeGridlinesVisible(false);  // Hide Y-axis gridlines
+
+        // Customize the renderer (bar color)
+        BarRenderer renderer = (BarRenderer) categoryPlot.getRenderer();
+        renderer.setSeriesPaint(0, new Color(0, 255, 0)); // Green bars
+        renderer.setBarPainter(new StandardBarPainter()); // Solid bars, no gradient
+        renderer.setShadowVisible(false); // No shadow effect
+
+        // Create a ChartPanel to hold the chart
+        ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new Dimension(600, 400)); // Set panel size
+
+        // Clear and add the chart to the "barChart" panel
+        barChartPanel.removeAll();  // Clear existing content in the panel
+        barChartPanel.setLayout(new BorderLayout());
+        barChartPanel.add(chartPanel, BorderLayout.CENTER); // Add the chart to the panel
+        barChartPanel.validate(); // Revalidate the panel to apply changes
+        barChartPanel.repaint(); // Repaint the panel to refresh the display
+
+        rs.close();
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+}
+
+public void displayDataWithoutTable() {
+    try {
+        // Get today's date
+        LocalDate today = LocalDate.now();
+        String todayDate = Date.valueOf(today).toString();
+
+        dbConnector dbc = new dbConnector();
+
+        // Query to get sales data for today
+        ResultSet rs = dbc.getData(
+            "SELECT sales.sale_id AS Sale_Id, product_table.prod_name AS Product_Name, " +
+            "product_table.category AS Category, product_table.price AS Price, " +
+            "sales.quantity_sold AS Quantity_Sold, sales.date AS Date, " +
+            "(product_table.price * sales.quantity_sold) AS Total " +
+            "FROM sales " +
+            "JOIN product_table ON sales.prod_id = product_table.prod_id " +
+            "WHERE sales.date = '" + todayDate + "' " +
+            "ORDER BY sales.quantity_sold DESC"
+        );
+
+        double totalSales = 0; // Accumulate daily total
+
+        // Iterate through the result set and process the data
+        System.out.println("Today's Sales Data:");
+        while (rs.next()) {
+            int saleId = rs.getInt("Sale_Id");
+            String productName = rs.getString("Product_Name");
+            String category = rs.getString("Category");
+            double price = rs.getDouble("Price");
+            int quantitySold = rs.getInt("Quantity_Sold");
+            double rowTotal = rs.getDouble("Total"); // Total sales for the row
+            totalSales += rowTotal;
+
+            // Log the data to the console
+            System.out.printf("Sale ID: %d | Product: %s | Category: %s | Price: ₱%.2f | Quantity: %d | Total: ₱%.2f%n",
+                    saleId, productName, category, price, quantitySold, rowTotal);
+        }
+
+        // Display the total sales for today
+        System.out.println("Total Daily Sales: ₱" + String.format("%.2f", totalSales));
+
+        rs.close();
+    } catch (SQLException ex) {
+        System.out.println("Error in displayDataWithoutTable: " + ex.getMessage());
+    }
+}
+
+public void dailySales() {
+    try {
+        dbConnector dbc = new dbConnector();
+        String currentDate = getCurrentDate();  // Get today's date (YYYY-MM-DD format)
+
+        // Query for daily sales total
+        ResultSet rs = dbc.getData(
+            "SELECT SUM(product_table.price * sales.quantity_sold) AS TotalSales " +
+            "FROM sales " +
+            "JOIN product_table ON sales.prod_id = product_table.prod_id " +
+            "WHERE sales.date = '" + currentDate + "'"
+        );
+
+        double totalDailySales = 0;
+        if (rs.next()) {
+            totalDailySales = rs.getDouble("TotalSales");
+        }
+
+        rs.close();
+    } catch (SQLException ex) {
+        System.out.println("Error in dailySales: " + ex.getMessage());
+    }
+}
+
+public void displayDailySalesBarChart() {
+    try {
+        dbConnector dbc = new dbConnector();
+
+        // Query to get daily sales grouped by date
+        ResultSet rs = dbc.getData(
+            "SELECT sales.date AS SaleDate, SUM(product_table.price * sales.quantity_sold) AS TotalSales " +
+            "FROM sales " +
+            "JOIN product_table ON sales.prod_id = product_table.prod_id " +
+            "GROUP BY sales.date " +
+            "ORDER BY sales.date ASC"
+        );
+
+        // Create a dataset for the bar chart
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        ArrayList<String> formattedLabels = new ArrayList<>(); // Store formatted labels
+
+        // Populate the dataset with daily sales data and formatted labels
+        while (rs.next()) {
+            String saleDate = rs.getString("SaleDate");
+            double totalSales = rs.getDouble("TotalSales");
+            dataset.addValue(totalSales, "Daily Sales", saleDate);
+
+            // Split the date and format it
+            String[] dateParts = saleDate.split("-");
+            String day = dateParts[2];  // Day part
+            String month = getMonthName(Integer.parseInt(dateParts[1])); // Month part (converted to string)
+
+            // Create custom label with Month and Day
+            formattedLabels.add(month + " " + day);  // Format as "Dec 10"
+        }
+
+        // Create the bar chart
+        JFreeChart barChart = ChartFactory.createBarChart(
+            "Daily Sales",      // Chart title
+            null,               // X-axis label
+            null,  // Y-axis label
+            dataset,            // Dataset
+            PlotOrientation.VERTICAL,
+            false,              // No legend
+            true,               // Tooltips enabled
+            false               // URLs disabled
+        );
+
+        // Customize the chart appearance
+        CategoryPlot categoryPlot = barChart.getCategoryPlot();
+        categoryPlot.setBackgroundPaint(Color.WHITE); // Set background color
+        categoryPlot.setOutlineVisible(false);        // Remove outline
+        categoryPlot.setDomainGridlinesVisible(false); // Hide X-axis gridlines
+        categoryPlot.setRangeGridlinesVisible(true);  // Show Y-axis gridlines
+
+        // Customize the renderer (bar color)
+        BarRenderer renderer = (BarRenderer) categoryPlot.getRenderer();
+        renderer.setSeriesPaint(0, new Color(89, 196, 19)); // Green bar
+        renderer.setBarPainter(new StandardBarPainter()); // Solid bars
+        renderer.setShadowVisible(false);                // No shadow effect
+
+        // Set tooltips for the bars using CategoryToolTipGenerator
+        renderer.setToolTipGenerator(new CategoryToolTipGenerator() {
+            @Override
+            public String generateToolTip(CategoryDataset dataset, int row, int column) {
+                // Use the formatted label for tooltips
+                return formattedLabels.get(column);
+            }
+        });
+
+        // Set customized labels using CategoryAxis tick labels
+        CategoryAxis domainAxis = categoryPlot.getDomainAxis();
+
+        // Update the labels manually using the formatted labels
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45); // Rotate labels for better readability
+
+        // Add the chart to a panel
+        ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new Dimension(800, 600)); // Set panel size
+
+        // Add the chart panel to the "dailyBarChart" panel
+        dailyBarChart.removeAll();  // Remove existing components if any
+        dailyBarChart.setLayout(new BorderLayout());
+        dailyBarChart.add(chartPanel, BorderLayout.CENTER);  // Add the chart to the panel
+        dailyBarChart.validate();
+        dailyBarChart.repaint(); // Update the display to show the chart
+
+        rs.close();
+    } catch (SQLException ex) {
+        System.out.println("Error in displayDailySalesBarChart: " + ex.getMessage());
+    }
+}
+
+private String getMonthName(int month) {
+    String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    return months[month - 1];
+}
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -80,6 +339,8 @@ public void displayData() {
         jPanel2 = new javax.swing.JPanel();
         label = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        dailyBarChart = new javax.swing.JPanel();
+        barChartPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         panel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -105,7 +366,7 @@ public void displayData() {
         ));
         jScrollPane1.setViewportView(topsales);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 107, 740, 370));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 307, 740, 170));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
@@ -114,12 +375,22 @@ public void displayData() {
         label.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         label.setForeground(new java.awt.Color(102, 102, 102));
         label.setText("Top Sale's");
-        jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 110, -1));
+        jPanel2.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 110, -1));
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(153, 153, 153));
         jLabel1.setText("Sales Reports");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        dailyBarChart.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19)));
+        dailyBarChart.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        dailyBarChart.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.add(dailyBarChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 60, 360, 210));
+
+        barChartPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19)));
+        barChartPanel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        barChartPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.add(barChartPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 360, 210));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 800, 500));
 
@@ -341,7 +612,9 @@ public void displayData() {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel barChartPanel;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JPanel dailyBarChart;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;

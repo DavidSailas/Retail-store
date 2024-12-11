@@ -269,21 +269,21 @@ public class payment extends javax.swing.JFrame {
     
     private void printButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printButtonMouseClicked
 
-        dbConnector dbc = new dbConnector();
+dbConnector dbc = new dbConnector();
 userDashboard sell = new userDashboard();
 
 try {
-    double cashAmount = Double.parseDouble(cash.getText()); // Amount provided by the user
+    double cashAmount = Double.parseDouble(cash.getText().trim()); // Amount provided by the user
 
     // Fetch product details
-    ResultSet rs = dbc.getData("SELECT quantity, price FROM product_table WHERE prod_id = '" + pid.getText() + "'");
+    ResultSet rs = dbc.getData("SELECT quantity, price FROM product_table WHERE prod_id = '" + pid.getText().trim() + "'");
     if (rs.next()) {
         int availableQuantity = rs.getInt("quantity"); // Quantity available in stock
         double productPrice = rs.getDouble("price"); // Price per item
 
         // Validate user-entered quantity
         if (!quantity.getText().isEmpty()) {
-            int desiredQuantity = Integer.parseInt(quantity.getText()); // Quantity user wants to buy
+            int desiredQuantity = Integer.parseInt(quantity.getText().trim()); // Quantity user wants to buy
 
             if (desiredQuantity > 0) {
                 if (availableQuantity >= desiredQuantity) {
@@ -295,7 +295,9 @@ try {
                     if (changeAmount >= 0) {
                         // Update the database
                         int newQuantity = availableQuantity - desiredQuantity;
-                        dbc.updateData("UPDATE product_table SET quantity = " + newQuantity + " WHERE prod_id = '" + pid.getText() + "'");
+                        dbc.updateData("UPDATE product_table SET quantity = " + newQuantity + 
+                                       (newQuantity == 0 ? ", prod_status = 'Out of stock'" : "") + 
+                                       " WHERE prod_id = '" + pid.getText().trim() + "'");
 
                         // Get current date and time
                         LocalDateTime now = LocalDateTime.now();
@@ -303,7 +305,9 @@ try {
                         String currentTime = now.format(DateTimeFormatter.ofPattern("HH:mm:ss")); // Time part
 
                         // Insert into sales table with both date and time
-                        dbc.updateData("INSERT INTO sales (prod_id, quantity_sold, Date, time) VALUES ('" + pid.getText() + "', " + desiredQuantity + ", '" + currentDate + "', '" + currentTime + "')");
+                        dbc.updateData("INSERT INTO sales (prod_id, quantity_sold, Date, time) VALUES ('" + 
+                                        pid.getText().trim() + "', " + desiredQuantity + 
+                                        ", '" + currentDate + "', '" + currentTime + "')");
 
                         // Notify user of successful purchase
                         change.setText(String.format("₱%.2f", changeAmount)); // Display change

@@ -277,13 +277,23 @@ if (productName.getText().isEmpty() || quant.getText().isEmpty() || price.getTex
             }
         }
 
+        // Determine the product status based on quantity
+        int quantity = Integer.parseInt(quant.getText());
+        String status = (quantity > 0) ? "Available" : "Out of stock";
+
         // Proceed with the insert query (if the product is expired or does not exist)
         String query = "INSERT INTO product_table (prod_name, category, price, quantity, expire, prod_status) " +
-                       "VALUES('" + productName.getText() + "','" + category.getSelectedItem() + "','" + price.getText() + "','" +
-                       quant.getText() + "','" + expireDate + "', 'Available')";
+                       "VALUES(?, ?, ?, ?, ?, ?)";
+        PreparedStatement pstmt = dbc.connect.prepareStatement(query);
+        pstmt.setString(1, productName.getText());
+        pstmt.setString(2, (String) category.getSelectedItem());
+        pstmt.setDouble(3, Double.parseDouble(price.getText()));
+        pstmt.setInt(4, quantity);
+        pstmt.setString(5, expireDate);
+        pstmt.setString(6, status);
 
-        // Perform the database insert operation
-        if (dbc.insertData(query)) {
+        int rowsInserted = pstmt.executeUpdate();
+        if (rowsInserted > 0) {
             // Successfully added product
             JOptionPane.showMessageDialog(null, "Product added successfully!");
 
