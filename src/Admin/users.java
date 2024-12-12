@@ -210,9 +210,10 @@ private void hideColumn(JTable table, int columnIndex) {
         jLabel9 = new javax.swing.JLabel();
         panel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        title = new javax.swing.JLabel();
         panel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        title = new javax.swing.JLabel();
 
         view.setText("View");
         view.addActionListener(new java.awt.event.ActionListener() {
@@ -285,7 +286,7 @@ private void hideColumn(JTable table, int columnIndex) {
         stats.setText("sample");
         viewpanel.add(stats, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 190, -1, -1));
 
-        print.setBackground(new java.awt.Color(83, 215, 105));
+        print.setBackground(new java.awt.Color(255, 24, 9));
         print.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         print.setForeground(new java.awt.Color(255, 255, 255));
         print.setText(" EXPORT");
@@ -330,6 +331,7 @@ private void hideColumn(JTable table, int columnIndex) {
         viewpanel.add(contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 240, -1, -1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -501,11 +503,6 @@ private void hideColumn(JTable table, int columnIndex) {
 
         jPanel1.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
 
-        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Posify");
-        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-
         panel3.setBackground(new java.awt.Color(89, 196, 19));
         panel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -528,6 +525,18 @@ private void hideColumn(JTable table, int columnIndex) {
         panel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 150, -1));
 
         jPanel1.add(panel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 200, 40));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        title.setForeground(new java.awt.Color(0, 102, 0));
+        title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/IMPos (2).png"))); // NOI18N
+        title.setText("IMPos");
+        jPanel3.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 40));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 200, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
@@ -796,39 +805,57 @@ private void hideColumn(JTable table, int columnIndex) {
 
     private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
 
-        JPanel myPanel = new JPanel();
+try {
+    dbConnector dbc = new dbConnector();
+    ResultSet rs = dbc.getData("SELECT * FROM user_table WHERE id = '" + u_id.getText() + "'");
 
-        try {
-            dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT * FROM user_table WHERE id = '" + u_id.getText() + "'");
+    if (rs.next()) {
+        PrintUserDets pud = new PrintUserDets();
+        String imagePath = rs.getString("image");
 
-            if (rs.next()) {
-                PrintUserDets pud = new PrintUserDets();
-                String imagePath = rs.getString("image");
+        ImageIcon originalIcon = new ImageIcon(imagePath);
+        ImageIcon resizedIcon = resizeImage(originalIcon, 170, 170);
 
-                ImageIcon originalIcon = new ImageIcon(imagePath);
+        pud.image.setIcon(resizedIcon);
+        pud.uid.setText(rs.getString("id"));
+        pud.fullname.setText(rs.getString("fname") + " " + rs.getString("lname"));
+        pud.username.setText(rs.getString("uname"));
+        pud.umail.setText(rs.getString("email"));
+        pud.type.setText(rs.getString("type"));
 
-                ImageIcon resizedIcon = resizeImage(originalIcon, 170, 170);
+        String as = rs.getString("status");
+        stats.setText("" + as);
 
-                pud.image.setIcon(resizedIcon);
+        PanelPrinter pPrint = new PanelPrinter(pud.page);
+        pPrint.printPanel();
 
-                pud.uid.setText(rs.getString("id"));
-                pud.fullname.setText(rs.getString("fname") + " " + rs.getString("lname"));
-                pud.username.setText(rs.getString("uname"));
-                pud.umail.setText(rs.getString("email"));
-                pud.type.setText(rs.getString("type"));
+        // Show success notification
+        JOptionPane.showMessageDialog(null, 
+            "User details retrieved successfully and saved as PDF!", 
+            "Success", 
+            JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        // Show warning notification if user is not found
+        JOptionPane.showMessageDialog(null, 
+            "No user found with the provided ID.", 
+            "User Not Found", 
+            JOptionPane.WARNING_MESSAGE);
+    }
+} catch (SQLException ex) {
+    // Show error notification in case of SQL exception
+    JOptionPane.showMessageDialog(null, 
+        "An error occurred while accessing the database: " + ex.getMessage(), 
+        "Database Error", 
+        JOptionPane.ERROR_MESSAGE);
+} catch (Exception ex) {
+    // Show error notification for any other unexpected exception
+    JOptionPane.showMessageDialog(null, 
+        "An unexpected error occurred: " + ex.getMessage(), 
+        "Error", 
+        JOptionPane.ERROR_MESSAGE);
+}
 
-                String as = rs.getString("status");
-
-                stats.setText(""+as);
-
-                PanelPrinter pPrint = new PanelPrinter(pud.page);
-                pPrint.printPanel();
-            }
-
-        }catch(SQLException ex){
-            System.out.println(""+ex);
-        }
+        
     }//GEN-LAST:event_printActionPerformed
 
     private void userTblMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userTblMousePressed
@@ -895,6 +922,7 @@ private void hideColumn(JTable table, int columnIndex) {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label1;

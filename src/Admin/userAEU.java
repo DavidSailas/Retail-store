@@ -439,7 +439,6 @@ public boolean upCheck() {
 
         u_pass.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         u_pass.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        u_pass.setEnabled(false);
         u_pass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 u_passActionPerformed(evt);

@@ -349,11 +349,13 @@ private String getMonthName(int month) {
         jLabel9 = new javax.swing.JLabel();
         panel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        title = new javax.swing.JLabel();
         panel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        title = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         topsales.setModel(new javax.swing.table.DefaultTableModel(
@@ -477,11 +479,6 @@ private String getMonthName(int month) {
 
         jPanel1.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
 
-        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Posify");
-        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-
         panel3.setBackground(new java.awt.Color(89, 196, 19));
         panel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -504,6 +501,18 @@ private String getMonthName(int month) {
         panel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 150, -1));
 
         jPanel1.add(panel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 200, 40));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        title.setForeground(new java.awt.Color(0, 102, 0));
+        title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/IMPos (2).png"))); // NOI18N
+        title.setText("IMPos");
+        jPanel3.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 40));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 200, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
@@ -623,6 +632,7 @@ private String getMonthName(int month) {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label;
     private javax.swing.JPanel panel;

@@ -54,6 +54,7 @@ public class PrintSalesDetails extends javax.swing.JFrame {
         setBackground(new java.awt.Color(89, 196, 19));
         setMaximumSize(new java.awt.Dimension(550, 650));
         setMinimumSize(new java.awt.Dimension(550, 650));
+        setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(550, 650));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -148,7 +149,7 @@ public class PrintSalesDetails extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(89, 196, 19));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("Posify");
+        jLabel12.setText("IMPos");
         page.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 500, 40));
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N

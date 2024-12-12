@@ -86,11 +86,13 @@ public class PrintUserDets extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(89, 196, 19));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         page.setBackground(new java.awt.Color(255, 255, 255));
+        page.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(89, 196, 19), 2));
         page.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         date.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -106,7 +108,7 @@ public class PrintUserDets extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(89, 196, 19));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Posify");
+        jLabel3.setText("IMPos");
         page.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 47, 530, -1));
 
         image.setBackground(new java.awt.Color(255, 255, 255));

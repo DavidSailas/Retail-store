@@ -143,9 +143,10 @@ private void hideColumn(JTable table, int columnIndex) {
         jLabel9 = new javax.swing.JLabel();
         panel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        title = new javax.swing.JLabel();
         panel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        title = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         label1 = new javax.swing.JLabel();
         searchBar = new javax.swing.JTextField();
@@ -434,11 +435,6 @@ private void hideColumn(JTable table, int columnIndex) {
 
         jPanel5.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
 
-        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Posify");
-        jPanel5.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-
         panel3.setBackground(new java.awt.Color(89, 196, 19));
         panel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -461,6 +457,18 @@ private void hideColumn(JTable table, int columnIndex) {
         panel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 150, -1));
 
         jPanel5.add(panel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 200, 40));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        title.setForeground(new java.awt.Color(0, 102, 0));
+        title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/IMPos (2).png"))); // NOI18N
+        title.setText("IMPos");
+        jPanel2.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 40));
+
+        jPanel5.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 200, 40));
 
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
@@ -872,6 +880,7 @@ try {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

@@ -56,5 +56,3 @@ public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws
 
 }
 
-    
-    

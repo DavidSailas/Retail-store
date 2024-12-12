@@ -25,12 +25,14 @@ import java.awt.TrayIcon;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.net.URI;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -219,9 +221,6 @@ public void dailySales() {
     }
 }
 
-
-
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -281,9 +280,10 @@ public void dailySales() {
         jLabel28 = new javax.swing.JLabel();
         panel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        title = new javax.swing.JLabel();
         panel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        title = new javax.swing.JLabel();
 
         view.setText("View");
         view.addActionListener(new java.awt.event.ActionListener() {
@@ -299,7 +299,7 @@ public void dailySales() {
         viewpanel.setMinimumSize(new java.awt.Dimension(450, 500));
         viewpanel.setPreferredSize(new java.awt.Dimension(450, 500));
 
-        print.setBackground(new java.awt.Color(83, 215, 105));
+        print.setBackground(new java.awt.Color(255, 24, 9));
         print.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         print.setForeground(new java.awt.Color(255, 255, 255));
         print.setText(" EXPORT");
@@ -496,7 +496,7 @@ public void dailySales() {
         jLabel24.setForeground(new java.awt.Color(27, 57, 77));
         jLabel24.setText("File name:");
 
-        pdf.setBackground(new java.awt.Color(89, 196, 19));
+        pdf.setBackground(new java.awt.Color(255, 24, 9));
         pdf.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         pdf.setForeground(new java.awt.Color(255, 255, 255));
         pdf.setText(" PDF");
@@ -542,6 +542,7 @@ public void dailySales() {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -636,7 +637,7 @@ public void dailySales() {
         });
         jPanel2.add(searchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 190, 220, -1));
 
-        export.setBackground(new java.awt.Color(83, 215, 105));
+        export.setBackground(new java.awt.Color(255, 24, 9));
         export.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         export.setForeground(new java.awt.Color(255, 255, 255));
         export.setText("EXPORT");
@@ -738,11 +739,6 @@ public void dailySales() {
 
         jPanel1.add(panel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 40));
 
-        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Posify");
-        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-
         panel3.setBackground(new java.awt.Color(89, 196, 19));
         panel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -765,6 +761,18 @@ public void dailySales() {
         panel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 10, 150, -1));
 
         jPanel1.add(panel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 200, 40));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        title.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        title.setForeground(new java.awt.Color(0, 102, 0));
+        title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/IMPos (2).png"))); // NOI18N
+        title.setText("IMPos");
+        jPanel3.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 40));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 200, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
@@ -930,153 +938,104 @@ try {
     document.add(pdfPTable);
     document.close();
 
-    // Show notification and open file in Chrome or default browser on click
-    if (SystemTray.isSupported()) {
-        SystemTray tray = SystemTray.getSystemTray();
-        Image image = Toolkit.getDefaultToolkit().getImage("icon.png"); // Add an icon if available
-        TrayIcon trayIcon = new TrayIcon(image, "PDF Notification");
-        trayIcon.setImageAutoSize(true);
-        tray.add(trayIcon);
+    // Show JOptionPane to notify and open file
+    int response = JOptionPane.showOptionDialog(null, 
+            "PDF generated successfully!\nFile saved to: " + fullPath + "\nWould you like to open the file?", 
+            "PDF Generated",
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.INFORMATION_MESSAGE, 
+            null, 
+            new Object[]{"Open File", "Close"}, 
+            "Open File");
 
-        // Add action listener to open the file in Chrome or the default browser
-        trayIcon.addActionListener(e -> {
-            try {
-                File file = new File(fullPath);
-                if (file.exists()) {
-                    // Open the PDF in the default web browser (e.g., Chrome)
-                    Desktop.getDesktop().browse(file.toURI());
-                } else {
-                    System.err.println("File does not exist.");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                System.err.println("Error opening file: " + ex.getMessage());
-            }
-        });
-
-        trayIcon.displayMessage("PDF Generated",
-                "File saved to: " + fullPath + "\nClick here to view in browser.",
-                TrayIcon.MessageType.INFO);
-
-        // Remove tray icon after 10 seconds
-        new java.util.Timer().schedule(new java.util.TimerTask() {
-            @Override
-            public void run() {
-                tray.remove(trayIcon);
-            }
-        }, 10000); // 10 seconds
-    } else {
-        System.out.println("System tray not supported!");
+ if (response == JOptionPane.YES_OPTION) {
+    try {
+        // Construct the file path as a URI
+        File file = new File(fullPath);
+        if (file.exists()) {
+            // Convert file path to URL for browser compatibility
+            String fileUrl = file.toURI().toURL().toString();
+            
+            // Open the PDF in the system's default web browser
+            Desktop.getDesktop().browse(new URI(fileUrl));
+        } else {
+            JOptionPane.showMessageDialog(null, "The file does not exist.");
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "An error occurred while opening the file in the browser.");
     }
+}
+
 
     nameField.setText("");
 } catch (DocumentException | FileNotFoundException e) {
     e.printStackTrace();
-    System.err.println("Document Error: " + e.getMessage());
+    JOptionPane.showMessageDialog(null, "An error occurred while generating the PDF: " + e.getMessage());
 } catch (SQLException ex) {
     ex.printStackTrace();
-    System.err.println("SQL Error: " + ex.getMessage());
-}       catch (AWTException ex) {
-            Logger.getLogger(transaction.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    JOptionPane.showMessageDialog(null, "An error occurred while accessing the database: " + ex.getMessage());
+}
 
         
     }//GEN-LAST:event_pdfActionPerformed
 
     private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
 
-    JPanel myPanel = new JPanel();
+JPanel myPanel = new JPanel();
 
-    try {
-        dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData(
-            "SELECT product_table.prod_name AS prodname, " +
-            "product_table.category AS cat, " +
-            "sales.quantity_sold AS quansold, " +
-            "product_table.price AS price, " +
-            "(product_table.price * sales.quantity_sold) AS total, " +
-            "sales.date AS date, " +
-            "sales.time AS time, " +
-            "product_table.expire AS expire " +
-            "FROM sales " +
-            "JOIN product_table ON sales.prod_id = product_table.prod_id " +
-            "WHERE sales.sale_id = '" + sales_list.getValueAt(sales_list.getSelectedRow(), 0).toString() + "'"
-        );
+try {
+    dbConnector dbc = new dbConnector();
+    ResultSet rs = dbc.getData(
+        "SELECT product_table.prod_name AS prodname, " +
+        "product_table.category AS cat, " +
+        "sales.quantity_sold AS quansold, " +
+        "product_table.price AS price, " +
+        "(product_table.price * sales.quantity_sold) AS total, " +
+        "sales.date AS date, " +
+        "sales.time AS time, " +
+        "product_table.expire AS expire " +
+        "FROM sales " +
+        "JOIN product_table ON sales.prod_id = product_table.prod_id " +
+        "WHERE sales.sale_id = '" + sales_list.getValueAt(sales_list.getSelectedRow(), 0).toString() + "'"
+    );
 
-        if (rs.next()) {
-            // Create a PrintSalesDetails instance
-            PrintSalesDetails psd = new PrintSalesDetails();
+    if (rs.next()) {
+        // Create a PrintSalesDetails instance
+        PrintSalesDetails psd = new PrintSalesDetails();
 
-            // Populate the fields in the print panel
-            psd.prodname.setText(rs.getString("prodname"));
-            psd.cat.setText(rs.getString("cat"));
-            psd.quansold.setText(rs.getString("quansold"));
-            psd.price.setText(rs.getString("price"));
-            psd.total.setText(rs.getString("total"));
-            psd.date.setText(rs.getString("date"));
-            psd.time.setText(rs.getString("time"));
+        // Populate the fields in the print panel
+        psd.prodname.setText(rs.getString("prodname"));
+        psd.cat.setText(rs.getString("cat"));
+        psd.quansold.setText(rs.getString("quansold"));
+        psd.price.setText(rs.getString("price"));
+        psd.total.setText(rs.getString("total"));
+        psd.date.setText(rs.getString("date"));
+        psd.time.setText(rs.getString("time"));
 
-            // Handle expiration date
-            String expireDate = rs.getString("expire");
-            if ("0001-12-31".equals(expireDate)) {
-                psd.expire.setText("No Expiry Date"); // Set 'No Expire' if expiration date is 9999-12-31
-            } else {
-                psd.expire.setText(expireDate); // Otherwise, display the actual expiration date
-            }
-
-            // Use PanelPrinter to print or export the populated panel
-            PanelPrinter pPrint = new PanelPrinter(psd.page); // Assuming `page` is a JPanel in PrintSalesDetails
-            pPrint.printPanel();
-
-            // Notify user via system tray after printing
-            if (SystemTray.isSupported()) {
-                SystemTray tray = SystemTray.getSystemTray();
-                Image image = Toolkit.getDefaultToolkit().getImage("icon.png"); // Add an icon if available
-                TrayIcon trayIcon = new TrayIcon(image, "Print Notification");
-                trayIcon.setImageAutoSize(true);
-                tray.add(trayIcon);
-
-                // Add action listener to open the file in Chrome or the default browser
-                trayIcon.addActionListener(e -> {
-                    try {
-                        // Replace with your file location, for example:
-                        String filePath = "path/to/your/file.pdf";
-                        File file = new File(filePath);
-                        if (file.exists()) {
-                            // Open the PDF in the default web browser (e.g., Chrome)
-                            Desktop.getDesktop().browse(file.toURI());
-                        } else {
-                            System.err.println("File does not exist.");
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        System.err.println("Error opening file: " + ex.getMessage());
-                    }
-                });
-
-                trayIcon.displayMessage("Print Completed",
-                        "Click here to view the file.",
-                        TrayIcon.MessageType.INFO);
-
-                // Remove tray icon after 10 seconds
-                new java.util.Timer().schedule(new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        tray.remove(trayIcon);
-                    }
-                }, 10000); // 10 seconds
-            } else {
-                System.out.println("System tray not supported!");
-            }
-        }
-    } catch (SQLException ex) {
-        System.out.println("Error: " + ex.getMessage());
-    }   catch (AWTException ex) {
-            Logger.getLogger(transaction.class.getName()).log(Level.SEVERE, null, ex);
+        // Handle expiration date
+        String expireDate = rs.getString("expire");
+        if ("0001-12-31".equals(expireDate)) {
+            psd.expire.setText("No Expiry Date"); // Set 'No Expire' if expiration date is 9999-12-31
+        } else {
+            psd.expire.setText(expireDate); // Otherwise, display the actual expiration date
         }
 
-            
+        // Use PanelPrinter to print or export the populated panel
+        PanelPrinter pPrint = new PanelPrinter(psd.page); // Assuming `page` is a JPanel in PrintSalesDetails
+        pPrint.printPanel();
+
+        // Notify user via JOptionPane after printing
+        JOptionPane.showMessageDialog(null, "Print completed successfully!", "Print Notification", JOptionPane.INFORMATION_MESSAGE);
+    }
+} catch (SQLException ex) {
+    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+} catch (Exception ex) {
+    JOptionPane.showMessageDialog(null, "An unexpected error occurred: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+}
+        
     }//GEN-LAST:event_printActionPerformed
+
 
     private void viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewActionPerformed
 
@@ -1214,7 +1173,7 @@ try {
     private void panel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel3MouseExited
         panel3.setBackground(new Color(89,196,19));
     }//GEN-LAST:event_panel3MouseExited
-
+    
     /**
      * @param args the command line arguments
      */
@@ -1285,6 +1244,7 @@ try {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;

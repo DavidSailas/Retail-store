@@ -2,6 +2,8 @@ package form;
 
 import Admin.adminDashboard;
 import User.userDashboard;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import config.Session;
 import config.dbConnector;
 import java.awt.Color;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 
 public class Loginfrom extends javax.swing.JFrame {
@@ -20,6 +23,7 @@ public class Loginfrom extends javax.swing.JFrame {
     public Loginfrom() {
         initComponents();
         show.setVisible(false);
+        password.setEchoChar('\u25CF');
     }
 
     public static String status;
@@ -99,6 +103,7 @@ public class Loginfrom extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -167,6 +172,7 @@ public class Loginfrom extends javax.swing.JFrame {
 
         password.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         password.setBorder(null);
+        password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordActionPerformed(evt);
@@ -222,7 +228,7 @@ public class Loginfrom extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Arial", 1, 30)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(89, 196, 19));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("Posify!");
+        jLabel12.setText("IMPos");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 250, -1));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -263,6 +269,11 @@ public class Loginfrom extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(89, 196, 19));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/IMPos (1).png"))); // NOI18N
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 450));
+
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 520, 450));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 450));
@@ -284,7 +295,8 @@ public class Loginfrom extends javax.swing.JFrame {
     private void showMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMouseClicked
         hide.setVisible(true);
         show.setVisible(false);
-        password.setEchoChar('*');
+       password.setEchoChar('\u25CF'); // Reset to default dot character
+
     }//GEN-LAST:event_showMouseClicked
 
 
@@ -375,21 +387,16 @@ if (loginAcc(username.getText(), hashing(password.getText()))) {
 
     public static void main(String args[]) {
 
+       FlatMacLightLaf.setup();
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Loginfrom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Loginfrom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Loginfrom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Loginfrom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            UIManager.setLookAndFeel( new FlatLightLaf() );
+        } catch( Exception ex ) {
+            System.err.println( "Failed to initialize LaF" );
         }
         //</editor-fold>
 
@@ -403,6 +410,7 @@ if (loginAcc(username.getText(), hashing(password.getText()))) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel hide;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
